@@ -2,9 +2,31 @@
     <!-- 主页 -->
     <div class="box">
         <el-container>
-            <el-header>团队内部知识共享平台系统</el-header>
+            <el-header>
+                团队内部知识共享平台系统  
+                <el-dropdown class="create">
+                    <span class="el-dropdown-link">
+                        <i class="el-icon-circle-plus"></i><i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>新建文档</el-dropdown-item>
+                        <el-dropdown-item>新建团队</el-dropdown-item>
+                        <el-dropdown-item>新建知识库</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+                <el-dropdown class="user">
+                    <span class="el-dropdown-link">
+                        <i class="el-icon-user-solid"></i><i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>个人主页</el-dropdown-item>
+                        <el-dropdown-item>账户设置</el-dropdown-item>
+                        <el-dropdown-item>退出登录</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </el-header>
             <el-container>
-                <el-aside width="150px">
+                <el-aside width="20%">
                     <el-row class="tac">
                         <el-col :span="12">
                             <el-menu
@@ -104,10 +126,33 @@ export default {
         line-height: 320px;
     }
 
+
     //侧栏 NavMenu导航菜单
     .el-col-12{
         height: 100%;
         width: 100%;
     }
 
+
+    //el-header里面的el-dropdown 下拉菜单
+    .el-header{
+        position: relative;
+    }
+    .el-dropdown{
+        position: absolute;
+    }
+    .create{
+        right: 15%;
+    }
+    .user{
+        right: 5%;
+    }
+    .el-dropdown-link {
+        cursor: pointer;
+        color: #409EFF;
+        font-size: 18px;  //设置子元素icon（i）的图标的大小
+    }
+    .el-icon-arrow-down {
+        font-size: 12px;
+    }
 </style>
