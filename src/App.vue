@@ -64,7 +64,7 @@
                     </el-row>
                 </el-aside>
                 <el-container>
-                <el-main>Main 
+                <el-main>
                     <router-view></router-view> 
                 </el-main>
                 </el-container>
@@ -113,7 +113,9 @@ export default {
         background-color: #E9EEF3;
         color: #333;
         text-align: center;
-        line-height: 160px;
+        // line-height: 160px;
+        //解决el-main中放Element-UI 的table时，表头高度设置不了的问题
+        line-height: 30px !important;
     }
     body > .el-container {
         margin-bottom: 40px;
@@ -155,4 +157,5 @@ export default {
     .el-icon-arrow-down {
         font-size: 12px;
     }
+
 </style>
