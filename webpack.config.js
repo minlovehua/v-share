@@ -49,8 +49,8 @@ module.exports={
         ] 
     },
     resolve:{
-        alias:{  //修改vue被导入时的包的路径
-            //"vue$":"vue/dist/vue.js"
+        alias:{  //修改vue被导入时的包的路径,解决 “runtime-only”问题
+            "vue$":"vue/dist/vue.js"
         }
     }
 }

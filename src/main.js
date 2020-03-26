@@ -5,7 +5,9 @@ console.log('ok'); //测试代码
 import Vue from 'vue'
 
 //导入根组件
-import app from './App.vue'
+//import app from './App.vue'
+//导入开始页面 组件
+// import start from './components/start.vue'
 
 //完整引入ElementUI
 import ElementUI from 'element-ui';
@@ -23,7 +25,7 @@ import router from './router.js'
 
 var vm = new Vue({
     el:'#app',
-    render:c=>c(app),
+    //render:c=>c(start),
     router  //1.4 挂载路由对象到VM实例
 })
 

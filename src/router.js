@@ -1,18 +1,27 @@
 //导入 vue-router
 import VueRouter from 'vue-router'
 
-//导入组件
-import collection from './components/collection.vue'
-import deletehouse from './components/deletehouse.vue'
-import document from './components/document.vue'
-import groups from './components/groups.vue'
-import platform from './components/platform.vue'
-import storehouse from './components/storehouse.vue'
+//导入开始页面组件
+import start from './components/start.vue'
+//导入登录、注册组件
+import login from './components/Login/login.vue'
+import register from './components/Login/register.vue'
+//导入侧边栏对应的组件
+import collection from './components/NavMenu/collection.vue'
+import deletehouse from './components/NavMenu/deletehouse.vue'
+import document from './components/NavMenu/document.vue'
+import groups from './components/NavMenu/groups.vue'
+import platform from './components/NavMenu/platform.vue'
+import storehouse from './components/NavMenu/storehouse.vue'
+
+
 
 //创建路由对象
 var router = new VueRouter({
     routes:[ //配置路由规则
-        {path:'/',redirect:'platform'},   //根路径/时也是进入工作台
+        {path:'/',component:start},
+        {path:'/login',component:login},
+        {path:'/register',component:register},
         {path:'/collection',component:collection},
         {path:'/deletehouse',component:deletehouse},
         {path:'/document',component:document},
