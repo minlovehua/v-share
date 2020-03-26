@@ -32,8 +32,8 @@ export default {
     },
     methods: {
         login(){ //登录
-            // 假设登陆成功，则跳转到 index 组件
-            this.$router.replace('/').catch(data => {  });
+            // 假设登陆成功，则跳转到 工作台 /platform
+            this.$router.replace('/platform').catch(data => {  });
         },
         resetForm(formName) {  //重置
             this.$refs[formName].resetFields();

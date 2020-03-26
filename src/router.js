@@ -6,6 +6,9 @@ import start from './components/start.vue'
 //导入登录、注册组件
 import login from './components/Login/login.vue'
 import register from './components/Login/register.vue'
+
+//导入登录之后的主页面组件
+import app from './App.vue'
 //导入侧边栏对应的组件
 import collection from './components/NavMenu/collection.vue'
 import deletehouse from './components/NavMenu/deletehouse.vue'
@@ -22,12 +25,16 @@ var router = new VueRouter({
         {path:'/',component:start},
         {path:'/login',component:login},
         {path:'/register',component:register},
-        {path:'/collection',component:collection},
-        {path:'/deletehouse',component:deletehouse},
-        {path:'/document',component:document},
-        {path:'/groups',component:groups},
-        {path:'/platform',component:platform},
-        {path:'/storehouse',component:storehouse}
+        {path:'/index',component:app,
+            children:[
+                {path:'/platform',component:platform},
+                {path:'/platform/collection',component:collection},
+                {path:'/platform/deletehouse',component:deletehouse},
+                {path:'/platform/document',component:document},
+                {path:'/platform/groups',component:groups},
+                {path:'/platform/storehouse',component:storehouse}
+            ]
+        }
     ]
 })
 

@@ -4,11 +4,6 @@ console.log('ok'); //测试代码
 //导入 Vue
 import Vue from 'vue'
 
-//导入根组件
-//import app from './App.vue'
-//导入开始页面 组件
-// import start from './components/start.vue'
-
 //完整引入ElementUI
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';

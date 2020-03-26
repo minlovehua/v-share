@@ -39,23 +39,23 @@
                                 <i class="el-icon-menu"></i>
                                 <span slot="title">工作台</span>
                             </el-menu-item>
-                            <el-menu-item index="/document">
+                            <el-menu-item index="/platform/document">
                                 <i class="el-icon-document"></i>
                                 <span slot="title">文档&nbsp;&nbsp;&nbsp;</span>
                             </el-menu-item>
-                            <el-menu-item index="/storehouse">
+                            <el-menu-item index="/platform/storehouse">
                                 <i class="el-icon-school"></i>
                                 <span slot="title">知识库</span>
                             </el-menu-item>
-                            <el-menu-item index="/groups">
+                            <el-menu-item index="/platform/groups">
                                 <i class="el-icon-help"></i>
                                 <span slot="title">团队&nbsp;&nbsp;&nbsp;</span>
                             </el-menu-item>
-                            <el-menu-item index="/collection">
+                            <el-menu-item index="/platform/collection">
                                 <i class="el-icon-star-off"></i>
                                 <span slot="title">收藏&nbsp;&nbsp;&nbsp;</span>
                             </el-menu-item>
-                            <el-menu-item index="/deletehouse">
+                            <el-menu-item index="/platform/deletehouse">
                                 <i class="el-icon-delete"></i>
                                 <span slot="title">回收站</span>
                             </el-menu-item>
