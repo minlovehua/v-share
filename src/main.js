@@ -24,8 +24,11 @@ import router from './router.js'
 import axios from 'axios'
 //配置请求根路径
 // axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
-//这样的话，每个vue的组件都可以通过this直接访问到$http，从而发起axios请求。
-Vue.prototype.$http = axios
+//这样的话，每个vue的组件都可以通过this直接访问到$axios，从而发起axios请求。
+Vue.prototype.$axios = axios
+
+Vue.prototype.HOST = 'http://localhost:3009'
+Vue.config.productionTip = false
 
 
 var vm = new Vue({

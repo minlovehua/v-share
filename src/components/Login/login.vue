@@ -6,7 +6,7 @@
                 <span>团队内部知识共享平台</span>
             </div>
             <!-- form表单 -->
-            <el-form :model="loginForm" status-icon ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <el-form :model="loginForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 <el-form-item label="用户名" prop="username">
                     <el-input prefix-icon="el-icon-s-custom" type="text" v-model="loginForm.username" autocomplete="off"></el-input>
                 </el-form-item>
@@ -14,10 +14,12 @@
                     <el-input prefix-icon="el-icon-lock" type="password" v-model="loginForm.password" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item class="btn">
-                    <el-button type="primary" @click="login">登录</el-button>
+                    <el-button type="primary" @click="login('ruleForm')">登录</el-button>
                     <el-button @click="resetForm('ruleForm')">重置</el-button>
+                    <div class="msg">测试：{{loginForm.msg}}</div>
                 </el-form-item>
             </el-form>
+            
         </el-card>
     </div>
 </template>
@@ -28,8 +30,9 @@ export default {
       return {
         //登录表单的数据绑定对象
         loginForm: {
-          username: 'huahua',
-          password: '520'
+          username: 'huahua',   //用户名
+          password: '123456',      //密码
+          msg:'2333'                //接收后台返回的数据，默认值2333
         },
         //登录表单的验证规则
         rules:{
@@ -47,28 +50,36 @@ export default {
       };
     },
     methods: {
-        login(){ //登录
+        login(formName){ //登录
             // 登录前表单数据预验证
             //this.$refs[formName] 拿到表单的验证对象。等价于this.$refs.ruleForm
             //validate() 接收一个回调函数，从而拿到验证的结果
-            this.$refs.ruleForm.validate(async valid=>{  //第一个形参是个布尔值
-                console.log(valid); //验证成功时valid的值为true，失败时是false
+            this.$refs[formName].validate((valid)=>{  //第一个形参是个布尔值
+                //验证成功时valid的值为true（仅满足登录验证规则），失败时是false
+                console.log('valid:'+valid);
 
-                //验证不成功，则不发送请求
+                //不满足登录验证规则，则不发送请求
                 if(!valid) return;  //如果valid值为false，则return，不发送请求。
-                //验证成功，则发送登录请求
-                //参数1：请求的地址。参数2：传入的参数
-                // const result = this.$http.post("login",this.loginForm); 
-                // console.log(result);
-                //解构赋值 {data:res}
-                //data才是服务器返回的真实数据，将它重命名为res
-                // const {data:res} = await this.$http.post("login",this.loginForm);
-                // if(res.meta.status!==200) return console.log("登录失败")
-                // console.log("登录成功");
+
+                //满足登录验证规则，则向服务器端(http://localhost:3009/api/login)发送登录请求，同时传递参数(参数2)
+                this.$axios.post(this.HOST+'/api/login',{username:this.loginForm.username,password:this.loginForm.password})
+                .then(result=>{
+                    console.log(result.data)  //{status: 1, msg: "登录成功"}
+                    //这里注意了，是this.loginForm.msg，而不是this.msg。
+                    this.loginForm.msg = result.data.msg;   
+
+                    if(result.data.msg == '登录成功'){
+                        // 登陆成功，则跳转到 工作台 /platform
+                        this.$router.replace('/platform').catch(data => {  });
+                    }else{
+                        //密码错误
+                    }
+                })
+                .catch(err=>{
+                    console.log(err)
+                })
             });
 
-            // 假设登陆成功，则跳转到 工作台 /platform
-            this.$router.replace('/platform').catch(data => {  });
         },
         resetForm(formName) {  //重置
             console.log(this); //测试代码
@@ -129,5 +140,12 @@ export default {
     .btn{
         display: flex;
         justify-content: flex-start;
+    }
+
+    //登录错误提示信息 div
+    .msg{
+        display: inline;
+        color:red;
+        margin-right: 5px;
     }
 </style>
