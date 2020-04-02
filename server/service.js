@@ -36,6 +36,21 @@ exports.login = (req,res)=>{
 
 // 注册处理
 exports.register = (req,res)=>{
-    console.log(req.body)
-    res.send('测试')
+    let uname = req.body.username;
+    // 查询语句
+    let sql = 'select * from user where username = ?';
+    let data = uname;                        
+    db.base(sql,data,(result)=>{             
+        if(result.length){
+            return res.json({ status: 1, msg: '该用户已存在' });
+        }else{
+            let info = req.body;                      //获取表单提交的数据
+            let sql = 'insert into user set ?';       // 插入语句
+            db.base(sql,info,(result)=>{              //查询username为data的那条数据
+                if(result.affectedRows == 1){
+                    return res.json({ status: 1, msg: '注册成功' });
+                }
+            });
+        }
+    });
 }

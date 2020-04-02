@@ -16,10 +16,10 @@
                 <el-form-item class="btn">
                     <el-button type="primary" @click="login('ruleForm')">登录</el-button>
                     <el-button @click="resetForm('ruleForm')">重置</el-button>
-                    <div class="msg">测试：{{loginForm.msg}}</div>
+                    <div class="msg">{{loginForm.msg}}</div>    <!--   密码错误或用户不存在提示区域 -->
+                    <router-link to="/register">注册</router-link>
                 </el-form-item>
             </el-form>
-            
         </el-card>
     </div>
 </template>
@@ -30,9 +30,9 @@ export default {
       return {
         //登录表单的数据绑定对象
         loginForm: {
-          username: 'huahua',   //用户名
-          password: '123456',      //密码
-          msg:'2333'                //接收后台返回的数据，默认值2333
+          username: '',   //用户名
+          password: '',   //密码
+          msg:''          //接收后台返回的数据
         },
         //登录表单的验证规则
         rules:{
@@ -64,7 +64,7 @@ export default {
                 //满足登录验证规则，则向服务器端(http://localhost:3009/api/login)发送登录请求，同时传递参数(参数2)
                 this.$axios.post(this.HOST+'/api/login',{username:this.loginForm.username,password:this.loginForm.password})
                 .then(result=>{
-                    console.log(result.data)  //{status: 1, msg: "登录成功"}
+                    //console.log(result.data)  //{status: 1, msg: "登录成功"}
                     //这里注意了，是this.loginForm.msg，而不是this.msg。
                     this.loginForm.msg = result.data.msg;   
 
@@ -86,6 +86,7 @@ export default {
             //this.$refs[formName] 拿到表单的验证对象。等价于this.$refs.ruleForm
             //resetFields() 方法，重置表单
             this.$refs[formName].resetFields();
+            this.loginForm.msg = '';
         }
     }
   }
@@ -144,8 +145,14 @@ export default {
 
     //登录错误提示信息 div
     .msg{
-        display: inline;
+        display: inline-block;
         color:red;
         margin-right: 5px;
+        width: 110px;
+    }
+
+    // 登录界面 标题
+    .clearfix span{
+        font-size: 20px;
     }
 </style>
