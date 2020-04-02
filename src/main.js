@@ -1,6 +1,9 @@
 // 入口文件
 console.log('ok'); //测试代码
 
+//导入全局样式
+import './css/global.css'
+
 //导入 Vue
 import Vue from 'vue'
 
@@ -16,6 +19,13 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 //1.3导入自己的 router.js路由模块
 import router from './router.js'
+
+//配置axios
+import axios from 'axios'
+//配置请求根路径
+// axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+//这样的话，每个vue的组件都可以通过this直接访问到$http，从而发起axios请求。
+Vue.prototype.$http = axios
 
 
 var vm = new Vue({
