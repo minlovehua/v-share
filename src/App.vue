@@ -29,7 +29,8 @@
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>个人主页</el-dropdown-item>
                         <el-dropdown-item>账户设置</el-dropdown-item>
-                        <el-dropdown-item>退出登录</el-dropdown-item>
+                        <!-- dropdown的点击事件@click无效，要@click.native才有效 -->
+                        <el-dropdown-item @click.native="exit">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </el-header>
@@ -98,6 +99,25 @@
                 nowUser:{  //当前登录的用户
                     username:Cookie.get('username')
                 }
+            }
+        },
+        mounted(){         //禁止主页面浏览器“返回”键，防止从主页面返回开始页面
+            if (window.history && window.history.pushState) {   
+                history.pushState(null, null, document.URL); 
+                window.addEventListener('popstate', function () { 
+                    history.pushState(null, null, document.URL);
+                }, false);      
+            }
+        },
+        methods:{
+            exit:function(){//退出登录
+                //回到开始界面
+                this.$router.replace('/').catch(data => {  });  
+                //禁用浏览器的“返回”按钮
+                history.pushState(null, null, document.URL);
+                window.addEventListener("popstate",function(e) {  
+                    history.pushState(null, null, document.URL);
+                }, false);    
             }
         }
     }

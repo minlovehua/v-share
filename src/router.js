@@ -17,8 +17,6 @@ import groups from './components/NavMenu/groups.vue'
 import platform from './components/NavMenu/platform.vue'
 import storehouse from './components/NavMenu/storehouse.vue'
 
-
-
 //创建路由对象
 var router = new VueRouter({
     routes:[ //配置路由规则
