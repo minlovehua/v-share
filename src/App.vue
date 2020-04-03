@@ -97,7 +97,8 @@
         data(){
             return{
                 nowUser:{  //当前登录的用户
-                    username:Cookie.get('username')
+                    username:Cookie.get('username'), 
+                    team:''   //所属团队
                 }
             }
         },
