@@ -25,71 +25,70 @@
 </template>
 
 <script>
-export default {
-    data() {
-      return {
-        //登录表单的数据绑定对象
-        loginForm: {
-          username: '',   //用户名
-          password: '',   //密码
-          msg:''          //接收后台返回的数据
+    import Cookie from 'js-cookie'
+    export default {
+        data() {
+            return {
+                //登录表单的数据绑定对象
+                loginForm: {
+                    username: 'huahua',   //用户名
+                    password: '123456',   //密码
+                    msg:''          //接收后台返回的数据
+                },
+                rules:{   //登录表单的验证规则
+                    username:[  //验证用户名是否合法
+                        { required: true, message: '请输入用户名', trigger: 'blur' },
+                        { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+                    ],
+                    password:[  //验证密码是否合法
+                        { required: true, message: '请输入密码', trigger: 'blur' },
+                        { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
+                    ]
+                }
+            };
         },
-        //登录表单的验证规则
-        rules:{
-            //验证用户名是否合法
-            username:[
-                { required: true, message: '请输入用户名', trigger: 'blur' },
-                { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
-            ],
-            //验证密码是否合法
-            password:[
-                { required: true, message: '请输入密码', trigger: 'blur' },
-                { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
-            ]
-        }
-      };
-    },
-    methods: {
-        login(formName){ //登录
-            // 登录前表单数据预验证
-            //this.$refs[formName] 拿到表单的验证对象。等价于this.$refs.ruleForm
-            //validate() 接收一个回调函数，从而拿到验证的结果
-            this.$refs[formName].validate((valid)=>{  //第一个形参是个布尔值
-                //验证成功时valid的值为true（仅满足登录验证规则），失败时是false
-                console.log('valid:'+valid);
+        methods: {
+            login(formName){ //登录
+                // 登录前表单数据预验证
+                //this.$refs[formName] 拿到表单的验证对象。等价于this.$refs.ruleForm
+                //validate() 接收一个回调函数，从而拿到验证的结果
+                this.$refs[formName].validate((valid)=>{  //第一个形参是个布尔值
+                    //验证成功时valid的值为true（仅满足登录验证规则），失败时是false
+                    console.log('valid:'+valid);
 
-                //不满足登录验证规则，则不发送请求
-                if(!valid) return;  //如果valid值为false，则return，不发送请求。
+                    //不满足登录验证规则，则不发送请求
+                    if(!valid) return;  //如果valid值为false，则return，不发送请求。
 
-                //满足登录验证规则，则向服务器端(http://localhost:3009/api/login)发送登录请求，同时传递参数(参数2)
-                this.$axios.post(this.HOST+'/api/login',{username:this.loginForm.username,password:this.loginForm.password})
-                .then(result=>{
-                    //console.log(result.data)  //{status: 1, msg: "登录成功"}
-                    //这里注意了，是this.loginForm.msg，而不是this.msg。
-                    this.loginForm.msg = result.data.msg;   
+                    //满足登录验证规则，则向服务器端(http://localhost:3009/api/login)发送登录请求，同时传递参数(参数2)
+                    this.$axios.post(this.HOST+'/api/login',{username:this.loginForm.username,password:this.loginForm.password})
+                    .then(result=>{
+                        //console.log(result.data)  //{status: 1, msg: "登录成功"}
+                        //这里注意了，是this.loginForm.msg，而不是this.msg。
+                        this.loginForm.msg = result.data.msg;   
 
-                    if(result.data.msg == '登录成功'){
-                        // 登陆成功，则跳转到 工作台 /platform
-                        this.$router.replace('/platform').catch(data => {  });
-                    }else{
-                        //密码错误
-                    }
-                })
-                .catch(err=>{
-                    console.log(err)
-                })
-            });
+                        if(result.data.msg == '登录成功'){
+                            Cookie.set('username',this.loginForm.username);
+                            // 登陆成功，则跳转到 工作台 /platform
+                            this.$router.replace('/platform').catch(data => {  });
+                        }else{
+                            //密码错误
+                        }
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                    })
+                });
 
-        },
-        resetForm(formName) {  //重置
-            console.log(this); //测试代码
-            //this.$refs[formName] 拿到表单的验证对象。等价于this.$refs.ruleForm
-            //resetFields() 方法，重置表单
-            this.$refs[formName].resetFields();
-            this.loginForm.msg = '';
+            },
+            resetForm(formName) {  //重置
+                console.log(this); //测试代码
+                //this.$refs[formName] 拿到表单的验证对象。等价于this.$refs.ruleForm
+                //resetFields() 方法，重置表单
+                this.$refs[formName].resetFields();
+                this.loginForm.msg = '';
+            }
         }
     }
-  }
 </script>
 
 <style lang="scss" scoped>

@@ -30,7 +30,6 @@ Vue.prototype.$axios = axios
 Vue.prototype.HOST = 'http://localhost:3009'
 Vue.config.productionTip = false
 
-
 var vm = new Vue({
     el:'#app',
     //render:c=>c(start),

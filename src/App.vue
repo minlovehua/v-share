@@ -2,8 +2,11 @@
     <!-- 主页 -->
     <div class="box">
         <el-container>
+
+            <!-- 主页头部 el-header-->
             <el-header>
                 团队内部知识共享平台系统  
+                <!-- 主页右上角的“+”新建按钮 el-dropdown-->
                 <el-dropdown class="create">
                     <span class="el-dropdown-link">
                         <i class="el-icon-circle-plus"></i><i class="el-icon-arrow-down el-icon--right"></i>
@@ -14,9 +17,14 @@
                         <el-dropdown-item>新建知识库</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
+                <!-- 主页右上角的“用户”按钮 el-dropdown-->
                 <el-dropdown class="user">
                     <span class="el-dropdown-link">
-                        <i class="el-icon-user-solid"></i><i class="el-icon-arrow-down el-icon--right"></i>
+                        <!-- 显示头像图标 -->
+                        <!-- <i class="el-icon-user-solid"></i> -->
+                        <!-- 显示当前登录的用户名 -->
+                        <span>{{nowUser.username}}</span>
+                        <i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>个人主页</el-dropdown-item>
@@ -25,7 +33,10 @@
                     </el-dropdown-menu>
                 </el-dropdown>
             </el-header>
+
+            <!-- 主页中间部分（除了页头和页脚） -->
             <el-container>
+                <!-- 主页侧边栏 el-aside -->
                 <el-aside width="20%">
                     <el-row class="tac">
                         <el-col :span="12">
@@ -63,25 +74,33 @@
                         </el-col>
                     </el-row>
                 </el-aside>
+
+                <!-- 主页中间放其它组件的大块区域 el-main -->
                 <el-container>
-                <el-main>
-                    <router-view></router-view> 
-                </el-main>
+                    <el-main>
+                        <router-view></router-view> 
+                    </el-main>
                 </el-container>
             </el-container>
+
+            <!-- 主页页脚部分 el-footer -->
             <el-footer>Footer</el-footer>
+
         </el-container>
     </div>
 </template>
 
 <script>
-export default {
-    data(){
-        return{
-            
+    import Cookie from 'js-cookie'
+    export default {
+        data(){
+            return{
+                nowUser:{  //当前登录的用户
+                    username:Cookie.get('username')
+                }
+            }
         }
     }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -158,4 +177,8 @@ export default {
         font-size: 12px;
     }
 
+    //主页右上角 当前登录用户名 样式
+    .el-dropdown-link span{
+        font-size: 16px;
+    }
 </style>
