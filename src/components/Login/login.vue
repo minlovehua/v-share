@@ -31,8 +31,8 @@
             return {
                 //登录表单的数据绑定对象
                 loginForm: {
-                    username: 'huahua',   //用户名
-                    password: '123456',   //密码
+                    username: '',   //用户名
+                    password: '',   //密码
                     msg:''          //接收后台返回的数据
                 },
                 rules:{   //登录表单的验证规则
@@ -67,7 +67,10 @@
                         this.loginForm.msg = result.data.msg;   
 
                         if(result.data.msg == '登录成功'){
+                            //成功登录之后，将当前登录用户存储到cookie
                             Cookie.set('username',this.loginForm.username);
+                            //成功登录之后，马上初始化$store.state.username
+                            this.$store.commit('initUsername',Cookie.get('username'))
                             // 登陆成功，则跳转到 工作台 /platform
                             this.$router.replace('/platform').catch(data => {  });
                         }else{

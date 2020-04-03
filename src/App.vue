@@ -22,8 +22,9 @@
                     <span class="el-dropdown-link">
                         <!-- 显示头像图标 -->
                         <!-- <i class="el-icon-user-solid"></i> -->
-                        <!-- 显示当前登录的用户名 -->
-                        <span>{{nowUser.username}}</span>
+                        <!-- 主页右上角显示当前登录的用户名 -->
+                        <!-- <span>{{nowUser.username}}</span> -->
+                        <span>{{$store.state.username}}</span>
                         <i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
@@ -97,11 +98,26 @@
         data(){
             return{
                 nowUser:{  //当前登录的用户
-                    username:Cookie.get('username'), 
+                    // username:Cookie.get('username'), 
+                    // username:this.$store.state.username,
                     team:''   //所属团队
                 }
             }
         },
+        // created钩子函数：实例已经在内存中创建OK，此时 data 和 methods 已经创建OK，此时还没有开始 编译模板。
+        created(){   //解决主页刷新之后store中数据丢失(导致主页右上角当前登录用户名消失)的问题 --- 第三步(共三步)
+                     //2.在页面加载时再从localStorage里将数据取回来放到vuex里。
+
+            //在页面加载时读取localStorage里的状态信息
+            localStorage.getItem("stateMsg") && this.$store.replaceState(Object.assign(this.$store.state,JSON.parse(localStorage.getItem("stateMsg"))));
+
+            //在页面刷新时将vuex里的信息保存到localStorage里（当浏览器窗口关闭或者刷新时,会触发beforeunload事件。）
+            window.addEventListener("beforeunload",()=>{
+                localStorage.setItem("stateMsg",JSON.stringify(this.$store.state))
+            })
+
+        },
+        // mounted钩子函数：此时，已经将编译好的模板，挂载到了页面指定的容器中显示。
         mounted(){         //禁止主页面浏览器“返回”键，防止从主页面返回开始页面
             if (window.history && window.history.pushState) {   
                 history.pushState(null, null, document.URL); 
@@ -116,9 +132,9 @@
                 this.$router.replace('/').catch(data => {  });  
                 //禁用浏览器的“返回”按钮
                 history.pushState(null, null, document.URL);
-                window.addEventListener("popstate",function(e) {  
-                    history.pushState(null, null, document.URL);
-                }, false);    
+                window.addEventListener("popstate",function(e) {  
+                    history.pushState(null, null, document.URL);
+            }, false);    
             }
         }
     }

@@ -26,14 +26,46 @@ import axios from 'axios'
 // axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
 //这样的话，每个vue的组件都可以通过this直接访问到$axios，从而发起axios请求。
 Vue.prototype.$axios = axios
-
 Vue.prototype.HOST = 'http://localhost:3009'
 Vue.config.productionTip = false
+
+//导入cookie
+import Cookie from 'js-cookie'
+
+//解决主页刷新之后store中数据丢失(导致主页右上角当前登录用户名消失)的问题 --- 第一步(共三步)
+//声明一个将store中的state存储到localStorage中的方法
+function storeLocalStore (state) {
+    window.localStorage.setItem("stateMsg",JSON.stringify(state));
+}
+
+//2.1 导入 vuex
+import Vuex from 'vuex'
+//2.2 注册 vuex
+Vue.use(Vuex)
+//2.3 创建store实例
+var store = new Vuex.Store({
+    state:{  //获取state中数据的方式 this.$store.state.xxx
+        username:''
+    },
+    mutations:{  //调用mutations中方法的方式 this.$store.commit('方法名','按需传递的参数')
+        initUsername(state,uname){  //登录之后，再初始化$store.state.username
+            state.username = uname;
+            //解决主页刷新之后store中数据丢失(导致主页右上角当前登录用户名消失)的问题 --- 第二步(共三步)
+            //1.将store的state保存到localStorage中
+            storeLocalStore (state);
+        }
+    },
+    getters:{    //获取getters提供的数据的方式 this.$store.getters.xxx
+
+    }
+});
 
 var vm = new Vue({
     el:'#app',
     //render:c=>c(start),
-    router  //1.4 挂载路由对象到VM实例
+    router,  //1.4 挂载路由对象到VM实例
+    store    //2.4 挂载store状态管理对象到VM实例
 })
+
 
 
