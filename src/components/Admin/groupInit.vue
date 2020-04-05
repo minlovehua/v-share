@@ -7,8 +7,8 @@
             </div>
             <!-- form表单 -->
             <el-form :model="initForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="管理员" prop="adminName">
-                    <el-input prefix-icon="el-icon-s-custom" type="text" v-model="initForm.adminName" autocomplete="off"></el-input>
+                <el-form-item label="管理员" prop="username">
+                    <el-input prefix-icon="el-icon-s-custom" type="text" v-model="initForm.username" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
                     <el-input prefix-icon="el-icon-lock" type="password" v-model="initForm.password" autocomplete="off"></el-input>
@@ -36,8 +36,8 @@ export default {
       return {
         //初始化团队表单的数据绑定对象
         initForm: {
-          adminName: '',   //管理员用户名
-          role: 1,         // 1 管理员，2 普通用户
+          username: '',   //管理员用户名
+          role: '1',         // 1 管理员，2 普通用户
           password: '',    //密码
           groupName: '',   //团队名称
           description: '',  //团队描述
@@ -46,7 +46,7 @@ export default {
         //登录表单的验证规则
         rules:{
             //验证用户名是否合法
-            adminName:[
+            username:[
                 { required: true, message: '请输入用户名', trigger: 'blur' },
                 { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
             ],
@@ -72,21 +72,14 @@ export default {
         register(formName){
             this.$refs[formName].validate((valid)=>{
                 //验证成功时valid的值为true（仅满足注册验证规则），失败时是false
-                console.log('valid:'+valid);
+                // console.log('valid:'+valid);
                 //不满足注册验证规则，则不发送请求
                 if(!valid) return;  //如果valid值为false，则return，不发送请求。
 
-                //满足登录验证规则，则向服务器端(http://localhost:3009/api/login)发送注册请求，同时传递参数(参数2)
+                //满足登录验证规则，则向服务器端(http://localhost:3009/api/Aregister)发送注册请求，同时传递参数(参数2)
                 this.$axios.post(
-                    this.HOST+'/api/register',
-                    {username:this.initForm.adminName,
-                    password:this.initForm.password,
-                    role:this.initForm.role,
-                    group:this.initForm.groupName,
-                    description:this.initForm.description}
-                ).then(result=>{
+                    this.HOST+'/api/Aregister',this.initForm).then(result=>{
                     this.initForm.msg = result.data.msg;   
-
                     if(result.data.msg == '注册成功'){
                         // 初始化成功，则跳转到 后台管理界面 /manage
                         this.$router.replace('/manage').catch(data => {  });
@@ -98,7 +91,6 @@ export default {
                     console.log(err)
                 })
             });
-
         },
         resetForm(formName) {
             this.$refs[formName].resetFields();

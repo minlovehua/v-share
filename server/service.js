@@ -34,7 +34,7 @@ exports.login = (req,res)=>{
    
 }
 
-// 注册处理
+// 普通注册处理
 exports.register = (req,res)=>{              
     db.base('select * from user where username = ?',req.body.username,(result)=>{             
         if(result.length){ //用户名无效
@@ -79,6 +79,23 @@ exports.isCode=(req,res)=>{
                     return res.json({ status: 1, msg: '该邀请码可以使用' });
                 }
             });
+        }
+    });
+}
+
+// 管理员注册处理
+exports.Aregister = (req,res)=>{  
+    db.base('select * from user where username = ?',req.body.username,(result)=>{
+        if(result.length){
+            return res.json({msg:'该用户已存在'});
+        }else{
+            db.base('insert into user set ?',{username:req.body.username,password:req.body.password,role:req.body.role},(result)=>{
+                if(result.affectedRows != 1){
+                    res.json({msg:'数据插入失败'});
+                }
+            });
+            //返回响应给客户端
+            return res.json({ msg: '注册成功' });  
         }
     });
 }

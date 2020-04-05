@@ -28,6 +28,7 @@ var router = new VueRouter({
     routes:[ //配置路由规则
         //管理员
         {path:'/',component:groupInit},
+        {path:'/manage',component:groupManage},
         //用户注册、登录
         {path:'/start',component:start},
         {path:'/login',component:login},
