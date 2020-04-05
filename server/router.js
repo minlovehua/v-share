@@ -12,4 +12,7 @@ router.post('/api/login',service.login)
 // 参数2：匹配路由时要执行的函数。访问service.js里面的register方法
 router.post('/api/register',service.register)
 
+// 校验新生成的邀请码是否与数据库中的不重复
+router.post('/api/isCode',service.isCode)
+
 module.exports = router

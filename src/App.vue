@@ -25,6 +25,7 @@
                         <!-- 主页右上角显示当前登录的用户名 -->
                         <!-- <span>{{nowUser.username}}</span> -->
                         <span>{{$store.state.username}}</span>
+                        <span>{{$store.state.role}}</span>
                         <i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
@@ -45,8 +46,6 @@
                             <el-menu
                             :default-active="this.$route.path"
                             class="el-menu-vertical-demo"
-                            @open="handleOpen"
-                            @close="handleClose"
                             router>
                             <el-menu-item index="/platform" >
                                 <i class="el-icon-menu"></i>
@@ -71,6 +70,11 @@
                             <el-menu-item index="/platform/deletehouse">
                                 <i class="el-icon-delete"></i>
                                 <span slot="title">回收站</span>
+                            </el-menu-item>
+                            <!-- 只有管理员(role为1)才能看到“管理”功能 -->
+                            <el-menu-item v-if="$store.state.role==1?true:false" index="/platform/manage">
+                                <i class="el-icon-circle-plus-outline"></i>
+                                <span slot="title">管理&nbsp;&nbsp;&nbsp;</span>
                             </el-menu-item>
                             </el-menu>
                         </el-col>
@@ -129,7 +133,7 @@
         methods:{
             exit:function(){//退出登录
                 //回到开始界面
-                this.$router.replace('/').catch(data => {  });  
+                this.$router.replace('/start').catch(data => {  });  
                 //禁用浏览器的“返回”按钮
                 history.pushState(null, null, document.URL);
                 window.addEventListener("popstate",function(e) {  

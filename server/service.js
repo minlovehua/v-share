@@ -17,13 +17,13 @@ exports.login = (req,res)=>{
             return res.json({ status: 1, msg: '该用户不存在！' });
         }else{
             if(result[0].password==pwd){
-                return res.json({ status: 1, msg: '登录成功' });
+                console.log(result[0].role);
+                return res.json({ status: 1, msg: '登录成功',role:result[0].role});
             }
             return res.json({ status: 1, msg: '密码错误' });
         }
     });
- 
-     
+
    /* //测试代码
    let sql = 'select * from user';
    let data = null;
@@ -35,20 +35,48 @@ exports.login = (req,res)=>{
 }
 
 // 注册处理
-exports.register = (req,res)=>{
-    let uname = req.body.username;
-    // 查询语句
-    let sql = 'select * from user where username = ?';
-    let data = uname;                        
-    db.base(sql,data,(result)=>{             
+exports.register = (req,res)=>{              
+    db.base('select * from user where username = ?',req.body.username,(result)=>{             
+        if(result.length){ //用户名无效
+            return res.json({ msg: '该用户已存在' });
+        }else{ //用户名有效，判断邀请码（如果数据库存在该邀请码，且flag=true，则OK）。
+            db.base('select * from identifycode where code = ?',req.body.code,(result)=>{
+                if(!result.length){  //数据库中不存在这个邀请码
+                    return res.json({ msg: '邀请码无效' });
+                }else{     
+                    if(result[0].flag == 'false'){  //数据库中有这个邀请码但是flag为false
+                        return res.json({ msg: '邀请码无效' });  
+                    }else{ //数据库中有这个邀请码且flag为true，邀请码有效
+                        //注册成功，向user插入该用户
+                        db.base('insert into user set ?',{username:req.body.username,password:req.body.password,role:'2'},(result)=>{
+                            if(result.affectedRows != 1){
+                                return res.json({ msg: '插入数据库失败' });
+                            }
+                        });
+                        //修改identify表中该邀请码的flag为false，表示该邀请码不再可用。（一个邀请码只邀请一个人）
+                        db.base('update identifycode set flag=? where code=?',['false',req.body.code],(result)=>{
+                            if(result.affectedRows != 1){
+                                return res.json({ msg: '修改邀请码状态失败' });
+                            }
+                        });
+                        //返回响应给客户端
+                        return res.json({ msg: '注册成功' });
+                    }
+                }
+            });
+        }
+    });
+}
+
+// 校验新生成的邀请码是否与数据库中的不重复
+exports.isCode=(req,res)=>{
+    db.base('select * from identifycode where code = ?',req.body.code,(result)=>{
         if(result.length){
-            return res.json({ status: 1, msg: '该用户已存在' });
+            return res.json({status: 1,msg:'该邀请码已存在'});
         }else{
-            let info = req.body;                      //获取表单提交的数据
-            let sql = 'insert into user set ?';       // 插入语句
-            db.base(sql,info,(result)=>{              //查询username为data的那条数据
+            db.base('insert into identifycode set ?',req.body,(result)=>{              //查询username为data的那条数据
                 if(result.affectedRows == 1){
-                    return res.json({ status: 1, msg: '注册成功' });
+                    return res.json({ status: 1, msg: '该邀请码可以使用' });
                 }
             });
         }

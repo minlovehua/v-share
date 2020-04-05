@@ -3,7 +3,7 @@
         <el-card>
             <!-- 登录界面标题 -->
             <div slot="header" class="clearfix">
-                <span>团队内部知识共享平台</span>
+                <span>团队内部知识共享平台 --- 登录</span>
             </div>
             <!-- form表单 -->
             <el-form :model="loginForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -31,8 +31,8 @@
             return {
                 //登录表单的数据绑定对象
                 loginForm: {
-                    username: '',   //用户名
-                    password: '',   //密码
+                    username: 'baobao',   //用户名
+                    password: '5201314',   //密码
                     msg:''          //接收后台返回的数据
                 },
                 rules:{   //登录表单的验证规则
@@ -54,7 +54,7 @@
                 //validate() 接收一个回调函数，从而拿到验证的结果
                 this.$refs[formName].validate((valid)=>{  //第一个形参是个布尔值
                     //验证成功时valid的值为true（仅满足登录验证规则），失败时是false
-                    console.log('valid:'+valid);
+                    // console.log('valid:'+valid);
 
                     //不满足登录验证规则，则不发送请求
                     if(!valid) return;  //如果valid值为false，则return，不发送请求。
@@ -62,15 +62,16 @@
                     //满足登录验证规则，则向服务器端(http://localhost:3009/api/login)发送登录请求，同时传递参数(参数2)
                     this.$axios.post(this.HOST+'/api/login',{username:this.loginForm.username,password:this.loginForm.password})
                     .then(result=>{
-                        //console.log(result.data)  //{status: 1, msg: "登录成功"}
+                        //console.log(result.data)  //{status: 1, msg: "登录成功",role:'2'}
                         //这里注意了，是this.loginForm.msg，而不是this.msg。
                         this.loginForm.msg = result.data.msg;   
 
                         if(result.data.msg == '登录成功'){
                             //成功登录之后，将当前登录用户存储到cookie
                             Cookie.set('username',this.loginForm.username);
+                            Cookie.set('role',result.data.role)
                             //成功登录之后，马上初始化$store.state.username
-                            this.$store.commit('initUsername',Cookie.get('username'))
+                            this.$store.commit('initUsername',{username:Cookie.get('username'),role:Cookie.get('role')})
                             // 登陆成功，则跳转到 工作台 /platform
                             this.$router.replace('/platform').catch(data => {  });
                         }else{

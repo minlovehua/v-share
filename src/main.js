@@ -1,5 +1,5 @@
 // 入口文件
-console.log('ok'); //测试代码
+// console.log('ok'); //测试代码
 
 //导入全局样式
 import './css/global.css'
@@ -45,11 +45,15 @@ Vue.use(Vuex)
 //2.3 创建store实例
 var store = new Vuex.Store({
     state:{  //获取state中数据的方式 this.$store.state.xxx
-        username:''
+        username:'',    //用户名
+        role:'',        //角色  管理员1  普通用户2
+        // group:'',       //团队
+        // description:''  //团队简介
     },
     mutations:{  //调用mutations中方法的方式 this.$store.commit('方法名','按需传递的参数')
-        initUsername(state,uname){  //登录之后，再初始化$store.state.username
-            state.username = uname;
+        initUsername(state,user){  //登录之后，再初始化$store.state.username
+            state.username = user.username;
+            state.role = user.role;
             //解决主页刷新之后store中数据丢失(导致主页右上角当前登录用户名消失)的问题 --- 第二步(共三步)
             //1.将store的state保存到localStorage中
             storeLocalStore (state);
