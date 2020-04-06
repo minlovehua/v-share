@@ -23,12 +23,14 @@ import groups from './components/NavMenu/groups.vue'
 import platform from './components/NavMenu/platform.vue'
 import storehouse from './components/NavMenu/storehouse.vue'
 
+import initManage from './components/Admin/initManage.vue'
+
 //创建路由对象
 var router = new VueRouter({
     routes:[ //配置路由规则
         //管理员
-        {path:'/',component:groupInit},
-        {path:'/manage',component:groupManage},
+        {path:'/',component:groupInit}, //团队初始化页面
+        // {path:'/',component:login},  //测试入口
         //用户注册、登录
         {path:'/start',component:start},
         {path:'/login',component:login},

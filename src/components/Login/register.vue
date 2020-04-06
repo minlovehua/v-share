@@ -1,25 +1,25 @@
 <template>
-    <div class="login-container">
+    <div class="register-container">
         <el-card>
             <!-- 注册界面标题 -->
             <div slot="header" class="clearfix">
                 <span>团队内部知识共享平台 --- 注册</span> 
             </div>
             <!-- form表单 -->
-            <el-form :model="loginForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <el-form :model="registerForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 <el-form-item label="用户名" prop="username">
-                    <el-input prefix-icon="el-icon-s-custom" type="text" v-model="loginForm.username" autocomplete="off"></el-input>
+                    <el-input prefix-icon="el-icon-s-custom" type="text" v-model="registerForm.username" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
-                    <el-input prefix-icon="el-icon-lock" type="password" v-model="loginForm.password" autocomplete="off"></el-input>
+                    <el-input prefix-icon="el-icon-lock" type="password" v-model="registerForm.password" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="邀请码" prop="identifyCode">
-                    <el-input prefix-icon="el-icon-s-flag" type="text" v-model="loginForm.code" autocomplete="off"></el-input>
+                    <el-input prefix-icon="el-icon-s-flag" type="text" v-model="registerForm.code" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item class="btn">
                     <el-button type="primary" @click="register('ruleForm')">注册</el-button>
                     <el-button @click="resetForm('ruleForm')">重置</el-button>
-                    <div class="msg">{{loginForm.msg}}</div>    <!--   用户已经存在提示区域 -->
+                    <div class="msg">{{registerForm.msg}}</div>    <!--   用户已经存在提示区域 -->
                     <router-link to="/login">登录</router-link>
                 </el-form-item>
             </el-form>
@@ -32,7 +32,7 @@ export default {
     data() {
       return {
         //注册表单的数据绑定对象
-        loginForm: {
+        registerForm: {
           username: '',   //用户名
           password: '',   //密码
           code:'',
@@ -65,15 +65,15 @@ export default {
                 //不满足注册验证规则，则不发送请求
                 if(!valid) return;  //如果valid值为false，则return，不发送请求。
 
-                //满足登录验证规则，则向服务器端(http://localhost:3009/api/login)发送注册请求，同时传递参数(参数2)
-                this.$axios.post(this.HOST+'/api/register',this.loginForm)
+                //满足登录验证规则，则向服务器端(http://localhost:3009/api/register)发送注册请求，同时传递参数(参数2)
+                this.$axios.post(this.HOST+'/api/register',this.registerForm)
                 .then(result=>{
                     //console.log(result.data)  //{ msg: "注册成功"}
                     if(result.data.msg == '注册成功'){
                         // 注册成功，则跳转到 登录界面 /login
                         this.$router.replace('/login').catch(data => {  });
                     }else{
-                        this.loginForm.msg = result.data.msg; 
+                        this.registerForm.msg = result.data.msg; 
                     }
                 })
                 .catch(err=>{
@@ -84,7 +84,7 @@ export default {
         },
         resetForm(formName) {
             this.$refs[formName].resetFields();
-            this.loginForm.msg = '';
+            this.registerForm.msg = '';
         }
     }
   }
@@ -130,7 +130,7 @@ export default {
     }
 
     //注册div
-    .login-container{
+    .register-container{
         background: #809477;   //#566b32  darkolivegreen
         height: 100%;
     }

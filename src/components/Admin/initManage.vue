@@ -1,9 +1,18 @@
 <template>
-    <!-- 主页的团队管理页面 -->
     <div>
-        <h3>邀请新成员</h3>
-        <el-button type="primary" size="small" @click="randomCode">生成邀请码</el-button>
-        <span v-text="identityCode.code"></span>
+        <div>
+            <h3>邀请新成员</h3>
+            <el-button type="primary" size="small" @click="randomCode">生成邀请码</el-button>
+            <span v-text="identityCode.code"></span>
+        </div>
+        <div>
+            <h3>人员管理</h3>
+            <div>头像 用户名 删除</div>
+        </div>
+        <div>
+            <h3>分区管理</h3>
+            <div>分区列表</div>
+        </div>
     </div>
 </template>
 

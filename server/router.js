@@ -18,4 +18,7 @@ router.post('/api/Aregister',service.Aregister)
 // 校验新生成的邀请码是否与数据库中的不重复
 router.post('/api/isCode',service.isCode)
 
+//获取团队信息
+router.get('/api/getGroup',service.getGroup)
+
 module.exports = router

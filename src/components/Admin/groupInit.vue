@@ -17,13 +17,13 @@
                     <el-input prefix-icon="el-icon-s-home" v-model="initForm.groupName" placeholder="请输入团队的名称" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="团队简介" prop="description">
-                    <el-input prefix-icon="el-icon-edit" v-model="initForm.description" type="textarea" :rows="3" placeholder="简单介绍一下你的团队吧" autocomplete="off"></el-input>
+                    <el-input prefix-icon="el-icon-edit" v-model="initForm.description" maxlength="200" show-word-limit :autosize="{ minRows: 2, maxRows: 6}" type="textarea" :rows="3" placeholder="简单介绍一下你的团队吧" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item class="btn">
-                    <el-button type="primary" @click="register('ruleForm')">创建</el-button>
+                    <el-button type="primary" @click="Aregister('ruleForm')">创建</el-button>
                     <el-button @click="resetForm('ruleForm')">重置</el-button>
                     <div class="msg">{{initForm.msg}}</div>     <!--  用户已经存在提示区域 -->
-                    <router-link to="/manage">登录</router-link>
+                    <router-link to="/login">登录</router-link>
                 </el-form-item>
             </el-form>
         </el-card>
@@ -69,22 +69,18 @@ export default {
       };
     },
     methods: {
-        register(formName){
+        Aregister(formName){ //管理员(团队)注册
             this.$refs[formName].validate((valid)=>{
                 //验证成功时valid的值为true（仅满足注册验证规则），失败时是false
                 // console.log('valid:'+valid);
                 //不满足注册验证规则，则不发送请求
                 if(!valid) return;  //如果valid值为false，则return，不发送请求。
-
                 //满足登录验证规则，则向服务器端(http://localhost:3009/api/Aregister)发送注册请求，同时传递参数(参数2)
-                this.$axios.post(
-                    this.HOST+'/api/Aregister',this.initForm).then(result=>{
-                    this.initForm.msg = result.data.msg;   
-                    if(result.data.msg == '注册成功'){
-                        // 初始化成功，则跳转到 后台管理界面 /manage
-                        this.$router.replace('/manage').catch(data => {  });
+                this.$axios.post(this.HOST+'/api/Aregister',this.initForm).then(result=>{
+                    if(result.data.msg == '团队初始化成功'){  // 初始化成功，则跳转到 登录界面 /login
+                        this.$router.replace('/login').catch(data => {  });
                     }else{
-                        //密码错误
+                        this.initForm.msg = result.data.msg;
                     }
                 })
                 .catch(err=>{
@@ -92,7 +88,7 @@ export default {
                 })
             });
         },
-        resetForm(formName) {
+        resetForm(formName) { //重置
             this.$refs[formName].resetFields();
         }
     }

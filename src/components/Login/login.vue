@@ -31,8 +31,8 @@
             return {
                 //登录表单的数据绑定对象
                 loginForm: {
-                    username: 'baobao',   //用户名
-                    password: '5201314',   //密码
+                    username: '',   //用户名
+                    password: '',   //密码
                     msg:''          //接收后台返回的数据
                 },
                 rules:{   //登录表单的验证规则
@@ -70,7 +70,7 @@
                             //成功登录之后，将当前登录用户存储到cookie
                             Cookie.set('username',this.loginForm.username);
                             Cookie.set('role',result.data.role)
-                            //成功登录之后，马上初始化$store.state.username
+                            //登录成功之后，马上初始化$store.state.username
                             this.$store.commit('initUsername',{username:Cookie.get('username'),role:Cookie.get('role')})
                             // 登陆成功，则跳转到 工作台 /platform
                             this.$router.replace('/platform').catch(data => {  });
@@ -82,7 +82,6 @@
                         console.log(err)
                     })
                 });
-
             },
             resetForm(formName) {  //重置
                 console.log(this); //测试代码
