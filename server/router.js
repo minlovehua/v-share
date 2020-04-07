@@ -24,5 +24,8 @@ router.get('/api/getGroup',service.getGroup)
 //新建知识库
 router.post('/api/createStore',service.createStore)
 
+//获取所有知识库
+router.get('/api/getAllStore',service.getAllStore)
+
 
 module.exports = router

@@ -136,3 +136,13 @@ exports.createStore = (req,res)=>{
     });
 }
 
+//获取所有知识库
+exports.getAllStore = (req,res)=>{
+    db.base('select * from storehouse',null,(result)=>{
+        if(result.length){ //查询成功
+            return res.json({msg:'知识库查询成功',result:result});
+        }else{
+            return res.json({msg:'知识库查询失败'});
+        }
+    })
+}

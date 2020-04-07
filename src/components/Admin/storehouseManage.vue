@@ -1,11 +1,11 @@
 <template>
     <div class="box">
         <!-- 知识库管理 -->
-        <!-- 知识库1 -->
-        <el-card>
+        <!-- 知识库 -->
+        <el-card v-for="item in storehouse" :key="item.storeName">
             <div slot="header" class="clearfix">
                 <i class="el-icon-folder"></i>
-                <span>前端开发</span>
+                <span>{{item.storeName}}</span>
                 <el-dropdown  style="float: right; padding: 3px 0">
                     <span class="el-dropdown-link">
                         <i class="el-icon-arrow-down el-icon--right"></i>
@@ -15,7 +15,7 @@
                         <el-dropdown-item>删除</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
-                <span class="storeDesc">关于前端的学习建议关于前端的学习建议关于前端的学习建议关于前端的学习建议</span>
+                <span class="storeDesc">{{item.storeDesc}}</span>
             </div>
             <ul>
                 <li class="text item"><div><i class="el-icon-document"></i>&nbsp;&nbsp;Vue23333</div><div>2020-01-05</div></li>
@@ -23,49 +23,6 @@
                 <li class="text item"><div><i class="el-icon-document"></i>&nbsp;&nbsp;Angular233333</div><div>2020-01-05</div></li>
             </ul>
         </el-card>
-        <!-- 知识库2 -->
-        <el-card>
-            <div slot="header" class="clearfix">
-                <i class="el-icon-folder"></i>
-                <span>前端开发</span>
-                <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button><br/>
-                <span class="storeDesc">关于前端的学习建议关于前端的学习建议关于前端的学习建议关于前端的学习建议</span>
-            </div>
-            <ul>
-                <li class="text item"><div><i class="el-icon-document"></i>&nbsp;&nbsp;Vue23333</div><div>2020-01-05</div></li>
-                <li class="text item"><div><i class="el-icon-document"></i>&nbsp;&nbsp;React233</div><div>2020-01-05</div></li>
-                <li class="text item"><div><i class="el-icon-document"></i>&nbsp;&nbsp;Angular2333</div><div>2020-01-05</div></li>
-            </ul>
-        </el-card>
-        <!-- 知识库3 -->
-        <el-card>
-            <div slot="header" class="clearfix">
-                <i class="el-icon-folder"></i>
-                <span>前端开发</span>
-                <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
-                <span class="storeDesc">关于前端的学习建议关于前端的学习建议关于前端的学习建议关于前端的学习建议</span>
-            </div>
-            <ul>
-                <li class="text item"><div><i class="el-icon-document"></i>&nbsp;&nbsp;Vue2333</div><div>2020-01-05</div></li>
-                <li class="text item"><div><i class="el-icon-document"></i>&nbsp;&nbsp;React233</div><div>2020-01-05</div></li>
-                <li class="text item"><div><i class="el-icon-document"></i>&nbsp;&nbsp;Angular23</div><div>2020-01-05</div></li>
-            </ul>
-        </el-card>
-        <!-- 知识库4 -->
-        <el-card>
-            <div slot="header" class="clearfix">
-                <i class="el-icon-folder"></i>
-                <span>前端开发</span>
-                <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
-                <span class="storeDesc">关于前端的学习建议关于前端的学习建议关于前端的学习建议关于前端的学习建议</span>
-            </div>
-            <ul>
-                <li class="text item"><div><i class="el-icon-document"></i>&nbsp;&nbsp;Vue233</div><div>2020-01-05</div></li>
-                <li class="text item"><div><i class="el-icon-document"></i>&nbsp;&nbsp;React2333</div><div>2020-01-05</div></li>
-                <li class="text item"><div><i class="el-icon-document"></i>&nbsp;&nbsp;Angular23</div><div>2020-01-05</div></li>
-            </ul>
-        </el-card>
-
         <!-- 新建知识库 -->
         <el-card class="add">
             <div slot="header" class="clearfix">
@@ -95,6 +52,7 @@
                     storeDesc:'',  //知识库简介
                     storeManager:''
                 },
+                storehouse:[], //存储所有知识库的数组，默认为空
                 msg:'', //测试
                 //新建知识库的验证规则
                 rules:{
@@ -111,6 +69,9 @@
                 }
             }
         },
+        created(){
+            this.getAllStore();  //页面一旦创建就展示所有知识库
+        },
         methods:{
             createStore(formName){ //创建知识库
                 // console.log(this.storeForm);
@@ -120,6 +81,7 @@
                     this.$axios.post(this.HOST+'/api/createStore',this.storeForm).then(result=>{
                         this.msg = result.data.msg;
                         if(result.data.msg == '知识库新建成功'){ //清空表单
+                            this.getAllStore();  //重新从数据库获取数据，同步到网页上
                             this.storeForm.storeName = '';
                             this.storeForm.storeDesc = '';
                         }
@@ -128,6 +90,17 @@
                         console.log(err)
                     })
                 });
+            },
+            getAllStore(){ //展示知识库
+                this.$axios.get(this.HOST+'/api/getAllStore').then(result=>{
+                    if(result.data.msg == '知识库查询失败'){
+                        this.msg = result.data.msg;
+                    }else{
+                        // console.log(result.data.result);
+                        this.storehouse = result.data.result;
+                    }
+                })
+
             }
         }
     }
