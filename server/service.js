@@ -117,3 +117,22 @@ exports.getGroup = (req,res)=>{
     });
 }
 
+//新建知识库
+exports.createStore = (req,res)=>{
+    // console.log('进来了');
+    // console.log(req.body);
+    db.base('select * from storehouse where storeName = ?',req.body.storeName,(result)=>{
+        if(result.length){
+            return res.json({msg:'该知识库已存在'});
+        }else{
+            db.base('insert into storehouse set ?',req.body,(result)=>{
+                if(result.affectedRows != 1){
+                    return res.json({msg: '知识库新建失败'});
+                }else{
+                    return res.json({msg: '知识库新建成功'});
+                }
+            });
+        }
+    });
+}
+

@@ -21,4 +21,8 @@ router.post('/api/isCode',service.isCode)
 //获取团队信息
 router.get('/api/getGroup',service.getGroup)
 
+//新建知识库
+router.post('/api/createStore',service.createStore)
+
+
 module.exports = router
