@@ -25,11 +25,16 @@ import storehouse from './components/NavMenu/storehouse.vue'
 
 import initManage from './components/Admin/initManage.vue'
 
+//管理页面 子组件
+import membersManage from './components/Admin/membersManage.vue'
+import storehouseManage from './components/Admin/storehouseManage.vue'
+
 //创建路由对象
 var router = new VueRouter({
     routes:[ //配置路由规则
         //管理员
-        {path:'/',component:groupInit}, //团队初始化页面
+        {path:'/',redirect:'/platform/manage'},  //测试入口
+        // {path:'/',component:groupInit}, //团队初始化页面 【这个是要的】
         // {path:'/',component:login},  //测试入口
         //用户注册、登录
         {path:'/start',component:start},
@@ -44,7 +49,14 @@ var router = new VueRouter({
                 {path:'/platform/document',component:document},
                 {path:'/platform/groups',component:groups},
                 {path:'/platform/storehouse',component:storehouse},
-                {path:'/platform/manage',component:groupManage}
+                {path:'/platform/manage',redirect:'/platform/manage/storehouse'}, 
+                {path:'/platform/manage',component:groupManage,
+                    children:[
+                        {path:'/platform/manage/members',component:membersManage},
+                        {path:'/platform/manage/storehouse',component:storehouseManage}
+                    ]
+                }
+                
             ]
         }
     ]

@@ -89,7 +89,7 @@
             </el-container>
 
             <!-- 主页页脚部分 el-footer -->
-            <el-footer>Footer</el-footer>
+            <!-- <el-footer>Footer</el-footer> -->
 
         </el-container>
     </div>
@@ -164,6 +164,12 @@
         width: 100%;
         height: 100%;
     }
+    .box{
+        height: 100%;
+    }
+    .box>.el-container{
+        height: 100%;
+    }
     .el-aside { //使得布局全屏的条件之二
         height:100vh;
     }
@@ -188,9 +194,9 @@
         //解决el-main中放Element-UI 的table时，表头高度设置不了的问题
         line-height: 30px !important;
     }
-    body > .el-container {
-        margin-bottom: 40px;
-    }
+    // body > .el-container {
+    //     margin-bottom: 40px;
+    // }
     .el-container:nth-child(5) .el-aside,
     .el-container:nth-child(6) .el-aside {
         line-height: 260px;
@@ -246,4 +252,11 @@
     .el-header{
         position: relative;
     }
+
+    .el-aside{ //解决了因为el-aside太长，导致页面出现滚动条的问题
+        height: 100%;
+    }
 </style>
+
+
+

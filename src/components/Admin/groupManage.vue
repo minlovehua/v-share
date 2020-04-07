@@ -1,9 +1,16 @@
 <template>
     <!-- 主页的团队管理页面 -->
-    <div>
-        <h3>邀请新成员</h3>
-        <el-button type="primary" size="small" @click="randomCode">生成邀请码</el-button>
-        <span v-text="identityCode.code"></span>
+    <div class="manageBox">
+        <!-- 管理页面导航栏 -->
+        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+            <el-menu-item index="1"><router-link to="/platform/manage/storehouse" tag="span">知识库管理</router-link></el-menu-item>
+            <el-menu-item index="2"><router-link to="/platform/manage/members" tag="span">成员管理</router-link></el-menu-item>
+            
+        </el-menu>
+        <div class="groupmanage">
+            <router-view></router-view>
+        </div>
+
     </div>
 </template>
 
@@ -11,12 +18,14 @@
     export default {
         data(){
             return {
-                identityCode:{
+                identityCode:{  //邀请码
                     code:'',
                     flag:'true'
                 },
                 jschars:['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 
-                'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+                'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+                activeIndex: '1',
+                activeIndex2: '1'
             }
         },
         methods:{
@@ -39,11 +48,21 @@
                 })
                 
 
+            },
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
             }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-
+    .manageBox{
+        border: 1px solid rgb(214, 214, 214);
+        width: 90%;
+    }
+    .groupmanage{
+        min-height:300px;
+        background-color:#f1dfe2;
+    }
 </style>
