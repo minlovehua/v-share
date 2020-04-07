@@ -146,3 +146,14 @@ exports.getAllStore = (req,res)=>{
         }
     })
 }
+
+//获取团队所有成员
+exports.getAllMember = (req,res)=>{
+    db.base('select * from user',null,(result)=>{
+        if(result.length){ //查询成功
+            return res.json({msg:'查询团队所有成员成功',result:result});
+        }else{
+            return res.json({msg:'查询团队所有成员失败'});
+        }
+    })
+}

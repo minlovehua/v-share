@@ -49,7 +49,8 @@ var router = new VueRouter({
                 {path:'/platform/document',component:document},
                 {path:'/platform/groups',component:groups},
                 {path:'/platform/storehouse',component:storehouse},
-                {path:'/platform/manage',redirect:'/platform/manage/storehouse'}, 
+                // {path:'/platform/manage',redirect:'/platform/manage/storehouse'}, //这个是要的
+                {path:'/platform/manage',redirect:'/platform/manage/members'},  //测试
                 {path:'/platform/manage',component:groupManage,
                     children:[
                         {path:'/platform/manage/members',component:membersManage},

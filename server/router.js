@@ -27,5 +27,7 @@ router.post('/api/createStore',service.createStore)
 //获取所有知识库
 router.get('/api/getAllStore',service.getAllStore)
 
+//获取团队所有成员
+router.get('/api/getAllMember',service.getAllMember)
 
 module.exports = router

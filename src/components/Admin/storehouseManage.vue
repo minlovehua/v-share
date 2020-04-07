@@ -100,7 +100,6 @@
                         this.storehouse = result.data.result;
                     }
                 })
-
             }
         }
     }
