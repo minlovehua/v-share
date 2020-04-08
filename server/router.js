@@ -30,4 +30,7 @@ router.get('/api/getAllStore',service.getAllStore)
 //获取团队所有成员
 router.get('/api/getAllMember',service.getAllMember)
 
+//获取所有文档
+router.get('/api/getAllDosc',service.getAllDosc)
+
 module.exports = router

@@ -29,11 +29,14 @@ import initManage from './components/Admin/initManage.vue'
 import membersManage from './components/Admin/membersManage.vue'
 import storehouseManage from './components/Admin/storehouseManage.vue'
 
+//导入编辑文档组件
+import createDosc from './components/createDosc.vue'
+
 //创建路由对象
 var router = new VueRouter({
     routes:[ //配置路由规则
         //管理员
-        {path:'/',redirect:'/platform/manage'},  //测试入口
+        {path:'/',redirect:'/platform/document'},  //测试入口
         // {path:'/',component:groupInit}, //团队初始化页面 【这个是要的】
         // {path:'/',component:login},  //测试入口
         //用户注册、登录
@@ -59,7 +62,8 @@ var router = new VueRouter({
                 }
                 
             ]
-        }
+        },
+        {path:'/createDosc',component:createDosc}
     ]
 })
 

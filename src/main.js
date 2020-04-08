@@ -64,7 +64,8 @@ var store = new Vuex.Store({
             //解决主页刷新之后store中数据丢失(导致主页右上角当前登录用户名消失)的问题 --- 第二步(共三步)
             //1.将store的state保存到localStorage中
             storeLocalStore (state);
-        }
+        },
+
     },
     getters:{    //获取getters提供的数据的方式 this.$store.getters.xxx
 

@@ -157,3 +157,14 @@ exports.getAllMember = (req,res)=>{
         }
     })
 }
+
+//获取所有文档
+exports.getAllDosc = (req,res)=>{
+    db.base('select * from dosc',null,(result)=>{
+        if(result.length){ //查询成功
+            return res.json({msg:'文档查询成功',result:result});
+        }else{
+            return res.json({msg:'文档查询失败'});
+        }
+    })
+}
