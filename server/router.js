@@ -33,4 +33,10 @@ router.get('/api/getAllMember',service.getAllMember)
 //获取所有文档
 router.get('/api/getAllDosc',service.getAllDosc)
 
+//将 新建的文档 插入数据库
+router.post('/api/createDosc',service.createDosc)
+
+
+
+
 module.exports = router

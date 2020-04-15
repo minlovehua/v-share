@@ -30,7 +30,7 @@ import membersManage from './components/Admin/membersManage.vue'
 import storehouseManage from './components/Admin/storehouseManage.vue'
 
 //导入编辑文档组件
-import createDosc from './components/createDosc.vue'
+import createDosc from './components/Dosc/createDosc.vue'
 
 //创建路由对象
 var router = new VueRouter({

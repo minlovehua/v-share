@@ -19,10 +19,10 @@
               prop="author"
               label="作者">
           </el-table-column>
-          <el-table-column label="操作">
+          <el-table-column label="操作" class="caozuo">
             <!-- 文字按钮 <el-button type="text">编辑</el-button>-->
             <template slot-scope="scope">
-              <el-button class="edit(scope.$index, scope.row)" type="text" @click="edit">编辑</el-button>
+              <el-button class="edit" type="text" @click="edit(scope.$index, scope.row)">编辑</el-button>
             </template>
           </el-table-column>
           </el-table>
@@ -47,7 +47,7 @@
           flag:false,
           clickStore:'',
           doscForm:[],
-
+          // time:new Date()  //测试
         }
       },
       created(){
@@ -55,11 +55,12 @@
         this.getAllDosc();
       },
       methods:{
-        createDosc(storeName){
+        createDosc(storeName){ //点击知识库标签之后，跳转到文档编辑页面同时将这个知识库的名字通过query传递过去
           this.clickStore = storeName;
+          // console.log(this.time|dateFormat('YYYY-MM-DD'));
           //这个知识库的名字可以通过啥传递给编辑页面呢??? URL地址。那么URL地址可以带有中文吗
           // this.$router.push('/createDosc/'+this.clickStore).catch(data => {  });
-          this.$router.push('/createDosc').catch(data => {  });
+          this.$router.push({path:'/createDosc',query:{storeName:this.clickStore}}).catch(data => {  });
         },
         getAllStore(){ //展示知识库
             this.$axios.get(this.HOST+'/api/getAllStore').then(result=>{
@@ -85,7 +86,8 @@
         edit(index,row){ //编辑文档
           // this.$router.push('/createDosc').catch(data => {  }); //测试代码
           console.log(index,row)
-        }
+        },
+
       }
     }
 </script>
@@ -120,11 +122,17 @@
         right: 10px;
       }
 
-      .edit{
+      .caozuo{ //"编辑"按钮的父元素，即“操作”
+        position: relative;
+      }
 
+      .edit{ //“编辑”按钮
+        position: absolute;
+        left: 9px;
+        top: 5px;
       }
     }
-
+    
     //右侧“新建文档”操作框
     .createDoscBox{
       width: 25%;

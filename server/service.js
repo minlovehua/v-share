@@ -168,3 +168,14 @@ exports.getAllDosc = (req,res)=>{
         }
     })
 }
+
+//将 新建的文档 插入数据库
+exports.createDosc = (req,res)=>{
+    db.base('insert into dosc set ?',req.body,(result)=>{
+        if(result.affectedRows != 1){
+            return res.json({msg: '新建文档失败'});
+        }else{
+            return res.json({msg: '新建文档成功'});
+        }
+    });
+}

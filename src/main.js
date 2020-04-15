@@ -12,6 +12,11 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 
+// // 导入markdown编辑器组件及组件样式
+// import { mavonEditor } from 'mavon-editor'
+// import 'mavon-editor/dist/css/index.css'
+
+
 //1.1导入路由包
 //(通过npm下载的包在node_modules，import VueRouter from 'vue-router' 会自动去node_modules中去找vue-router这个包)
 import VueRouter from 'vue-router'
@@ -71,6 +76,13 @@ var store = new Vuex.Store({
 
     }
 });
+
+//导入时间插件
+import moment from 'moment'
+//定义全局过滤器
+Vue.filter('dateFormat',function(dateStr,pattern = "YYYY-MM-DD HH:mm:ss"){
+    return moment(dateStr).format(pattern);
+})
 
 var vm = new Vue({
     el:'#app',
