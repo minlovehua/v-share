@@ -179,3 +179,19 @@ exports.createDosc = (req,res)=>{
         }
     });
 }
+
+//修改文档
+exports.updateDosc = (req,res)=>{
+    console.log(req.body)
+    let sql = 'update dosc set doscName=?,author=?,status=?,content=?,storeName=?,html=? where id=?';
+    let info = req.body;
+    let data = [info.doscName,info.author,info.status,info.content,info.storeName,info.html,info.id];
+    db.base(sql,data,(result)=>{
+        if(result.affectedRows != 1){
+            return res.json({msg: '更新文档失败'});
+        }else{
+            return res.json({msg: '更新文档成功'});
+        }
+    });
+}
+

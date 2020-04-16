@@ -16,7 +16,7 @@
             &nbsp;&nbsp;&nbsp;/&nbsp;
             <!-- 这里的el-input必须给个宽度width，否则不会显示这个输入框 -->
             <el-input style="width:30%;" v-model="doscForm.doscName" placeholder="请输入内容"></el-input>
-            <span style="color:skyblue;">{{this.msg}}</span>
+            <span style="color:skyblue;" id="Msg">{{this.msg}}</span>
             <button class="submitButton" @click="submit">提交</button>
         </div>
         
@@ -54,6 +54,18 @@
 
             }
         },
+        created(){
+            // created钩子函数：实例已经在内存中创建OK，此时 data 和 methods 已经创建OK，此时还没有开始 编译模板。
+            //解决主页刷新之后store中数据丢失(导致主页右上角当前登录用户名消失)的问题 --- 第三步(共三步)
+            //2.在页面加载时再从localStorage里将数据取回来放到vuex里。
+            //在页面加载时读取localStorage里的状态信息
+            localStorage.getItem("stateMsg") && 
+            this.$store.replaceState(Object.assign(this.$store.state,JSON.parse(localStorage.getItem("stateMsg"))));
+            //在页面刷新时将vuex里的信息保存到localStorage里（当浏览器窗口关闭或者刷新时,会触发beforeunload事件。）
+            window.addEventListener("beforeunload",()=>{
+                localStorage.setItem("stateMsg",JSON.stringify(this.$store.state))
+            })
+        },
         methods: {
             // 所有操作都会被解析重新渲染
             change(value, render){
@@ -62,8 +74,6 @@
             },
             // 提交
             submit(){
-                // console.log(this.doscForm.content);
-                // console.log(this.doscForm.html);
                 if(this.doscForm.content == ''){
                     this.msg = '文档内容不能为空';
                 }else if(this.doscForm.doscName == '' || this.doscForm.doscName == '无标题'){

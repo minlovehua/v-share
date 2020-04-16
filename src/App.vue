@@ -114,6 +114,7 @@
             window.addEventListener("beforeunload",()=>{
                 localStorage.setItem("stateMsg",JSON.stringify(this.$store.state))
             })
+            
             //created() 组件一创建就调用getGroup方法向服务器发送请求来获得团队(名称和简介)数据
             this.getGroup()
         },

@@ -31,6 +31,8 @@ import storehouseManage from './components/Admin/storehouseManage.vue'
 
 //导入编辑文档组件
 import createDosc from './components/Dosc/createDosc.vue'
+//导入修改(更新)文档组件
+import updateDosc from './components/Dosc/updateDosc.vue'
 
 //创建路由对象
 var router = new VueRouter({
@@ -63,7 +65,8 @@ var router = new VueRouter({
                 
             ]
         },
-        {path:'/createDosc',component:createDosc}
+        {path:'/createDosc',name:'/createDosc',component:createDosc},
+        {path:'/updateDosc',name:'/updateDosc',component:updateDosc}
     ]
 })
 

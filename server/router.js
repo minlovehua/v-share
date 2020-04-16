@@ -36,7 +36,8 @@ router.get('/api/getAllDosc',service.getAllDosc)
 //将 新建的文档 插入数据库
 router.post('/api/createDosc',service.createDosc)
 
-
+//修改文档  put 不行？
+router.post('/api/updateDosc',service.updateDosc)
 
 
 module.exports = router

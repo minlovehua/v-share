@@ -44,9 +44,9 @@
       data() {
         return {
           storehouse:[], //存储所有知识库的数组，默认为空
-          flag:false,
-          clickStore:'',
-          doscForm:[],
+          flag:false,     // flag为true 则右边的“选择知识库”框框显示，否则隐藏
+          clickStore:'',  // 所选择的知识库
+          doscForm:[],    // 用于存储获取到的所有文档
           // time:new Date()  //测试
         }
       },
@@ -83,9 +83,11 @@
               }
           })
         },
-        edit(index,row){ //编辑文档
-          // this.$router.push('/createDosc').catch(data => {  }); //测试代码
-          console.log(index,row)
+        edit(index,dosc){ //编辑文档
+          // console.log(index,dosc)
+          //this.$router.push() 方法中path不能和params一起使用，否则params将无效。只能用name来指定页面。
+          this.$router.push({ name: '/updateDosc', params:{dosc:dosc}}).catch(data => {  }); //测试代码
+          
         },
 
       }
