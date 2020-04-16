@@ -39,5 +39,8 @@ router.post('/api/createDosc',service.createDosc)
 //修改文档  put 不行？
 router.post('/api/updateDosc',service.updateDosc)
 
+//获取团队的所有已发布的文档
+router.get('/api/getAllGroupDosc',service.getAllGroupDosc)
+
 
 module.exports = router

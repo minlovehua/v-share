@@ -158,7 +158,7 @@ exports.getAllMember = (req,res)=>{
     })
 }
 
-//获取所有文档
+//获取所有文档（要改成获取当前登录用户的文档）
 exports.getAllDosc = (req,res)=>{
     db.base('select * from dosc',null,(result)=>{
         if(result.length){ //查询成功
@@ -182,7 +182,7 @@ exports.createDosc = (req,res)=>{
 
 //修改文档
 exports.updateDosc = (req,res)=>{
-    console.log(req.body)
+    // console.log(req.body)
     let sql = 'update dosc set doscName=?,author=?,status=?,content=?,storeName=?,html=? where id=?';
     let info = req.body;
     let data = [info.doscName,info.author,info.status,info.content,info.storeName,info.html,info.id];
@@ -193,5 +193,17 @@ exports.updateDosc = (req,res)=>{
             return res.json({msg: '更新文档成功'});
         }
     });
+}
+
+//获取团队的所有已发布的文档
+exports.getAllGroupDosc = (req,res)=>{
+    db.base('select * from dosc where status = ?','已发布',(result)=>{
+        if(result.length){ //查询成功
+            // console.log(result)
+            return res.json({msg:'获取文档成功',result:result});
+        }else{
+            return res.json({msg:'获取文档失败'});
+        }
+    })
 }
 

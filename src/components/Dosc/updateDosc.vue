@@ -20,7 +20,7 @@
             <button class="submitButton" @click="submit">更新</button>
         </div>
         
-        <div>
+        <div>   <!-- markdown编辑器 -->
             <mavon-editor 
                 v-model="doscForm.content" 
                 ref="md" 
