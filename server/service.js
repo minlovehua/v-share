@@ -207,3 +207,28 @@ exports.getAllGroupDosc = (req,res)=>{
     })
 }
 
+//发布评论
+exports.postComment = (req,res)=>{
+    // console.log(req.body.comment);
+    db.base('insert into comment set ?',req.body.comment,(result)=>{
+        if(result.affectedRows != 1){
+            return res.json({msg: '评论插入数据库失败'});
+        }else{
+            return res.json({msg: '评论插入数据库成功'});
+        }
+    });
+}
+
+//获取评论
+exports.getComment = (req,res)=>{  //get请求是这样子拿到参数值的 req.params.id
+    db.base('select * from comment where doscId = ? order by id desc',req.params.id,(result)=>{
+        if(result.length){ //查询成功
+            // console.log(result)
+            return res.json({msg:'获取评论成功',comments:result});
+        }else{
+            return res.json({msg:'获取评论失败'});
+        }
+    })    
+}
+
+
