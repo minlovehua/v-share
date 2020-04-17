@@ -6,7 +6,7 @@
             <!-- 主页头部 el-header-->
             <el-header>
                 <div class="groupName">团队：{{$store.state.groupName}} 简介：{{$store.state.description}}</div>
-                团队内部知识共享平台系统
+                <span class="title">团队内部知识共享平台系统</span>
                 <!-- 主页右上角的“+”新建按钮 el-dropdown-->
                 <el-dropdown class="create">
                     <span class="el-dropdown-link">
@@ -182,13 +182,14 @@
         line-height: 60px;
     }
     .el-aside {
-        background-color: white;
         color: #333;
         text-align: center;
         line-height: 200px;
     }
     .el-main {
-        background-color: #E9EEF3;
+        // background-color: #E9EEF3;
+        background: url('images/bg.jpg');
+        background-size: cover; //让背景图片充满整个页面
         color: #333;
         text-align: center;
         // line-height: 160px;
@@ -217,6 +218,7 @@
     //el-header里面的el-dropdown 下拉菜单
     .el-header{
         position: relative;
+        // background-color: #f9f5ef;
     }
     .el-dropdown{
         position: absolute;
@@ -256,6 +258,16 @@
 
     .el-aside{ //解决了因为el-aside太长，导致页面出现滚动条的问题
         height: 100%;
+        // background-color: #e3eefa;
+    }
+
+    //.el-menu{  
+        // background-color: #e3eefa;
+    //}
+
+    .title{
+        font-size: 20px;
+        font-weight: 900;
     }
 </style>
 

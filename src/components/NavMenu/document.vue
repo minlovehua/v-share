@@ -104,6 +104,7 @@
         border: 1px solid rgb(214, 214, 214);
         width: 70%;
         float:left;
+        background-color: rgba($color: white, $alpha: 0.1);
 
       //标题
       .title{
@@ -113,6 +114,7 @@
         text-align: left;
         font-size: 20px;
         background-color: snow;
+        // background-color: rgba($color: white, $alpha: 0.1);
         box-sizing: border-box;
         border-bottom: 1px solid #eaeaea;
         position: relative;

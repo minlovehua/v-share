@@ -4,7 +4,7 @@
             <el-card class="box-card" v-for="item in doscForm" :key="item.id">
                 <div class="xx">
                     <div class="title">
-                        <span>{{item.doscName}}</span>                 
+                        <span><i class="el-icon-document"></i>&nbsp;{{item.doscName}}</span>                 
                     </div>
                     <div class="doscMsg">
                         <span>{{item.storeName}}</span>&nbsp;/&nbsp;
@@ -64,6 +64,7 @@ export default {
     .el-card{
         padding: 0px;
         margin: 10px;
+        background-color: rgba($color: white, $alpha: 0.6);  //设置背景颜色和透明度
     }
     .xx{
         height: 30px;  //必须给高度，否则不会垂直居中对齐，而是偏下
@@ -81,5 +82,8 @@ export default {
         font-size: 20px;
         font-weight: 900;
         text-align: left;
+    }
+    .edit{
+        color:rgb(6, 65, 241)
     }
 </style>
