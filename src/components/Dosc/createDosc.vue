@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="createDosc-container">
         <!-- 编辑文档 -->
         <div class="editDoscHeader">
             <!-- 返回工作台、文档列表 -->
@@ -15,7 +15,7 @@
             <span>{{doscForm.storeName}}</span>
             &nbsp;&nbsp;&nbsp;/&nbsp;
             <!-- 这里的el-input必须给个宽度width，否则不会显示这个输入框 -->
-            <el-input style="width:30%;" v-model="doscForm.doscName" placeholder="请输入内容"></el-input>
+            <el-input style="width:30%;" v-model="doscForm.doscName" placeholder="请输入文档标题"></el-input>
             <span style="color:skyblue;" id="Msg">{{this.msg}}</span>
             <button class="submitButton" @click="submit">提交</button>
         </div>
@@ -49,7 +49,7 @@
                     storeName:this.$route.query.storeName,  //当前这篇文档所属知识库
                     author:this.$store.state.username,
                     status:'未发布', //默认 未发布
-                    // updateTime:this.$route.query.nowTime
+                    updateTime:new Date()
                 }
 
             }
@@ -79,11 +79,13 @@
                 }else if(this.doscForm.doscName == '' || this.doscForm.doscName == '无标题'){
                     this.msg = '给文档起个标题吧';
                 }else{
+                    this.doscForm.updateTime = new Date();
                     //将数据插入数据库
                     this.$axios.post(this.HOST+'/api/createDosc',this.doscForm)
                     .then(result=>{
                         if(result.data.msg == '新建文档成功'){
                             this.msg = '新建文档成功';
+                            this.$router.replace('/platform/document');
                         }else{
                             // console.log(result.data.msg);
                         }
@@ -102,6 +104,10 @@
 </script>
 
 <style lang="scss" scoped>
+    // .createDosc-container{
+    //     border-radius: 5px;
+    // }
+
     .title{
         font-weight: 900;
     }

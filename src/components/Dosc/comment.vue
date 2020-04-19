@@ -98,7 +98,7 @@ export default {
         box-sizing: border-box;
         min-height: 300px;
         margin-bottom: 20px;
-        
+        border-radius: 5px;
         h3{
             font-size: 18px;
         }

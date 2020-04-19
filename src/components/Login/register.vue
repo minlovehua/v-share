@@ -131,7 +131,9 @@ export default {
 
     //注册div
     .register-container{
-        background: #809477;   //#566b32  darkolivegreen
+        background: url('../../images/bg.jpg');
+        background-size: cover;
+        // background: #809477;   //#566b32  darkolivegreen
         height: 100%;
     }
 

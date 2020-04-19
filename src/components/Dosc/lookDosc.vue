@@ -5,7 +5,10 @@
             <div class="title">{{dosc.doscName}}</div>
 
             <!-- 内容 -->
-            <div class="content"><div v-html="dosc.html"></div></div>
+            <div class="content">
+                <div v-html="dosc.html"></div>
+                <div class="who"><span class="from">作者：{{dosc.author}} &nbsp;&nbsp; 更新于：{{dosc.updateTime|dateFormat}}</span></div>
+            </div>
 
             <!-- 评论 -->
             <div class="comment"><comment-box :id="dosc.id"></comment-box></div>
@@ -83,18 +86,31 @@ export default {
         box-sizing: border-box;
         padding: 5px 5px 10px;
         background-color: rgb(255, 252, 223);
+        border-radius: 5px;
     }
     .content{
         width: 100%;
         box-sizing: border-box;
         background-color: rgb(255, 252, 223);
         padding: 20px;
-
+        border-radius: 5px;
     }
     .comment{
         width: 100%;
         margin: 20px 0px;
         box-sizing: border-box;
     }
+    .who{  //文档信息（作者和更新时间）的样式
+        margin-top: 10px;
+        text-align: right;
+    }
+    .from{ //文档信息（作者和更新时间）的样式
+        // margin-top: 20px;
+        // border: 1px solid grey;
+        color:rgba($color: grey, $alpha: 1.0);
+        background-color: white;
+        padding: 5px;
+        border-radius: 3px;
 
+    }
 </style>

@@ -1,6 +1,7 @@
 <template>
     <div>
         <div class="cardBox">
+            <div class="tip">最新发布</div>
             <el-card class="box-card" v-for="item in doscForm" :key="item.id">
                 <div class="xx">
                     <div class="title">
@@ -9,7 +10,7 @@
                     <div class="doscMsg">
                         <span>{{item.storeName}}</span>&nbsp;/&nbsp;
                         <span>{{item.author}}</span>&nbsp;/&nbsp;
-                        <span>屌屌哒时间</span> &nbsp;&nbsp;
+                        <span>{{item.updateTime|dateFormat}}</span> &nbsp;&nbsp;
                         <el-button class="edit" type="text" @click="look(item)">查看全文</el-button>
                     </div>
                 </div>                             
@@ -85,5 +86,12 @@ export default {
     }
     .edit{
         color:rgb(6, 65, 241)
+    }
+    .tip{
+        font-size: 22px;
+        color: rgb(189, 192, 8);
+        font-weight: 900;
+        text-align: left;
+        margin-left: 10px;
     }
 </style>

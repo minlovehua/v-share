@@ -80,7 +80,8 @@ var store = new Vuex.Store({
 //导入时间插件
 import moment from 'moment'
 //定义全局过滤器
-Vue.filter('dateFormat',function(dateStr,pattern = "YYYY-MM-DD HH:mm:ss"){
+// Vue.filter('dateFormat',function(dateStr,pattern = "YYYY-MM-DD HH:mm:ss"){
+Vue.filter('dateFormat',function(dateStr,pattern = "YYYY-MM-DD"){
     return moment(dateStr).format(pattern);
 })
 

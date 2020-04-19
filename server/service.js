@@ -158,9 +158,9 @@ exports.getAllMember = (req,res)=>{
     })
 }
 
-//获取所有文档（要改成获取当前登录用户的文档）
-exports.getAllDosc = (req,res)=>{
-    db.base('select * from dosc',null,(result)=>{
+//获取当前用户自己所有文档
+exports.getMyAllDosc = (req,res)=>{
+    db.base("select * from dosc where author = ? and status != '已删除' order by id desc",req.params.username,(result)=>{
         if(result.length){ //查询成功
             return res.json({msg:'文档查询成功',result:result});
         }else{
@@ -197,7 +197,7 @@ exports.updateDosc = (req,res)=>{
 
 //获取团队的所有已发布的文档
 exports.getAllGroupDosc = (req,res)=>{
-    db.base('select * from dosc where status = ?','已发布',(result)=>{
+    db.base('select * from dosc where status = ? order by id desc','已发布',(result)=>{
         if(result.length){ //查询成功
             // console.log(result)
             return res.json({msg:'获取文档成功',result:result});
@@ -231,4 +231,18 @@ exports.getComment = (req,res)=>{  //get请求是这样子拿到参数值的 req
     })    
 }
 
+//将删除的文档放进回收站
+exports.toDeletehouse =(req,res)=>{
+    // console.log(req.body)
+    let sql = 'update dosc set doscName=?,author=?,status=?,content=?,storeName=?,html=? where id=?';
+    let info = req.body;
+    let data = [info.doscName,info.author,info.status,info.content,info.storeName,info.html,info.id];
+    db.base(sql,data,(result)=>{
+        if(result.affectedRows != 1){
+            return res.json({msg: '文档放进回收站失败'});
+        }else{
+            return res.json({msg: '文档成功放进回收站'});
+        }
+    });  
+}
 

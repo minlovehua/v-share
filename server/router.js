@@ -30,8 +30,8 @@ router.get('/api/getAllStore',service.getAllStore)
 //获取团队所有成员
 router.get('/api/getAllMember',service.getAllMember)
 
-//获取所有文档(应该改成获取当前用户的)
-router.get('/api/getAllDosc',service.getAllDosc)
+//获取当前用户自己所有文档
+router.get('/api/getMyAllDosc/:username',service.getMyAllDosc)
 
 //将 新建的文档 插入数据库
 router.post('/api/createDosc',service.createDosc)
@@ -42,8 +42,13 @@ router.post('/api/updateDosc',service.updateDosc)
 //获取团队的所有已发布的文档
 router.get('/api/getAllGroupDosc',service.getAllGroupDosc)
 
+//提交评论
 router.post('/api/postComment',service.postComment)
-
+//获取评论
 router.get('/api/getComment/:id',service.getComment)
+
+//将删除的文档放进回收站
+router.post('/api/toDeletehouse',service.toDeletehouse)
+
 
 module.exports = router

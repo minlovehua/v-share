@@ -78,6 +78,7 @@
                     .then(result=>{
                         if(result.data.msg == '更新文档成功'){
                             this.msg = '更新文档成功';
+                            this.$router.replace('/platform/document');
                         }else{
                             // console.log(result.data.msg);
                         }

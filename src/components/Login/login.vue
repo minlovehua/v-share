@@ -126,6 +126,7 @@
         top: 50%;    //先走父元素的一半
         left: 50%;   //先走父元素的一半
         transform: translate(-50%,-70%);  //再往回走自己的一半
+        // background-color: rgba($color: white, $alpha: 0);
     }
 
     //form 表单
@@ -135,7 +136,9 @@
 
     //登录div
     .login-container{
-        background: #809477;   //#566b32  darkolivegreen
+        background: url('../../images/bg.jpg');
+        background-size: cover;
+        // background: #809477;   //#566b32  darkolivegreen
         height: 100%;
     }
 

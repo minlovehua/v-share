@@ -48,32 +48,32 @@
                             router>
                             <el-menu-item index="/platform" >
                                 <i class="el-icon-menu"></i>
-                                <span slot="title">工作台</span>
+                                <span slot="title">团队发布</span>
                             </el-menu-item>
                             <el-menu-item index="/platform/document">
                                 <i class="el-icon-document"></i>
-                                <span slot="title">文档&nbsp;&nbsp;&nbsp;</span>
+                                <span slot="title">我的文档</span>
                             </el-menu-item>
                             <el-menu-item index="/platform/storehouse">
                                 <i class="el-icon-school"></i>
-                                <span slot="title">知识库</span>
+                                <span slot="title">知识库&nbsp;&nbsp;&nbsp;</span>
                             </el-menu-item>
                             <el-menu-item index="/platform/groups">
                                 <i class="el-icon-help"></i>
-                                <span slot="title">团队&nbsp;&nbsp;&nbsp;</span>
+                                <span slot="title">团队&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             </el-menu-item>
                             <el-menu-item index="/platform/collection">
                                 <i class="el-icon-star-off"></i>
-                                <span slot="title">收藏&nbsp;&nbsp;&nbsp;</span>
+                                <span slot="title">收藏&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             </el-menu-item>
                             <el-menu-item index="/platform/deletehouse">
                                 <i class="el-icon-delete"></i>
-                                <span slot="title">回收站</span>
+                                <span slot="title">回收站&nbsp;&nbsp;&nbsp;</span>
                             </el-menu-item>
                             <!-- 只有管理员(role为1)才能看到“管理”功能 -->
                             <el-menu-item v-if="$store.state.role==1?true:false" index="/platform/manage">
                                 <i class="el-icon-circle-plus-outline"></i>
-                                <span slot="title">管理&nbsp;&nbsp;&nbsp;</span>
+                                <span slot="title">管理&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             </el-menu-item>
                             </el-menu>
                         </el-col>
@@ -167,6 +167,7 @@
     }
     .box{
         height: 100%;
+        // background: #809477;
     }
     .box>.el-container{
         height: 100%;
@@ -188,7 +189,7 @@
     }
     .el-main {
         // background-color: #E9EEF3;
-        background: url('images/bg.jpg');
+        // background: url('images/bg.jpg');
         background-size: cover; //让背景图片充满整个页面
         color: #333;
         text-align: center;
