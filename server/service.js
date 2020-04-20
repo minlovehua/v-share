@@ -22,15 +22,6 @@ exports.login = (req,res)=>{
             return res.json({msg: '密码错误'});
         }
     });
-
-   /* //测试代码
-   let sql = 'select * from user';
-   let data = null;
-   db.base(sql,data,(result)=>{ 
-        console.log('测试代码：'+result.body); //
-        res.json({status:1,msg:'查询成功'});
-   });*/
-   
 }
 
 // 普通注册处理
@@ -231,18 +222,67 @@ exports.getComment = (req,res)=>{  //get请求是这样子拿到参数值的 req
     })    
 }
 
-//将删除的文档放进回收站
-exports.toDeletehouse =(req,res)=>{
-    // console.log(req.body)
+//将删除的文档放到回收站
+exports.toDeletehouse = (req,res)=>{
     let sql = 'update dosc set doscName=?,author=?,status=?,content=?,storeName=?,html=? where id=?';
     let info = req.body;
     let data = [info.doscName,info.author,info.status,info.content,info.storeName,info.html,info.id];
     db.base(sql,data,(result)=>{
         if(result.affectedRows != 1){
-            return res.json({msg: '文档放进回收站失败'});
+            return res.json({msg: 'toDeletehouseOrReturn操作失败'});
         }else{
-            return res.json({msg: '文档成功放进回收站'});
+            return res.json({msg: 'toDeletehouseOrReturn操作成功'});
         }
     });  
 }
 
+//获取所有当前用户的status值为“已删除”的文档
+exports.getMyAllDeleteDosc = (req,res)=>{
+    db.base("select * from dosc where author = ? and status = '已删除' order by id desc",req.params.username,(result)=>{
+        if(result.length){ //查询成功
+            return res.json({msg:'文档查询成功',result:result});
+        }else{
+            return res.json({msg:'文档查询失败'});
+        }
+    })    
+}
+
+//从回收站恢复文档
+exports.returnTOMyDosc = (req,res)=>{
+    let sql = 'update dosc set doscName=?,author=?,status=?,content=?,storeName=?,html=? where id=?';
+    let info = req.body;
+    let data = [info.doscName,info.author,info.status,info.content,info.storeName,info.html,info.id];
+    db.base(sql,data,(result)=>{
+        if(result.affectedRows != 1){
+            return res.json({msg: '文档恢复失败'});
+        }else{
+            return res.json({msg: '文档恢复成功'});
+        }
+    });  
+}
+
+//彻底删除文档
+exports.verySureDelete = (req,res)=>{
+    db.base('delete from dosc where id = ?',req.params.id,(result)=>{
+        if(result.affectedRows != 1){
+            return res.json({msg: '彻底删除失败'});
+        }else{
+            return res.json({msg: '彻底删除成功'});
+        }
+    })
+}
+
+//彻底删除多选框选中的文档
+exports.deleteAllSelected = (req,res)=>{
+    var i = 0;
+    req.body.forEach(item => {
+        db.base('delete from dosc where id = ?',item.id,(result)=>{
+            if(result.affectedRows) i++;   
+        })
+    });
+    if(i == req.body.length){
+        return res.json({msg: '彻底删除成功'});
+    }else{
+        return res.json({msg: '彻底删除失败'});
+    }
+}

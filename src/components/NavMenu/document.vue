@@ -1,5 +1,5 @@
 <template>
-    <!-- 文档界面 -->
+    <!-- 我的文档界面 -->
     <div class="Box">
       <div class="tableBox">
           <div class="title">我的文档<el-button class="newDosc" type="primary" size="small" @click="flag=!flag">新建文档</el-button></div>

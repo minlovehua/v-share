@@ -50,5 +50,15 @@ router.get('/api/getComment/:id',service.getComment)
 //将删除的文档放进回收站
 router.post('/api/toDeletehouse',service.toDeletehouse)
 
+router.get('/api/getMyAllDeleteDosc/:username',service.getMyAllDeleteDosc)
+
+//从回收站恢复文档
+router.post('/api/returnTOMyDosc',service.returnTOMyDosc)
+
+//彻底删除
+router.post('/api/verySureDelete/:id',service.verySureDelete)
+
+//彻底删除多选框选中的文档
+router.post('/api/deleteAllSelected',service.deleteAllSelected)
 
 module.exports = router

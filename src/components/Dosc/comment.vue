@@ -6,8 +6,8 @@
         <el-button type="primary" size="small" @click="postComment">发表评论</el-button>
         <div class="comment-list">
             <div class="comment-item" v-for="(item,i) in comments" :key="i">
-                <span class="user"><i class="el-icon-user"></i>&nbsp;{{item.user_name}}</span> &nbsp;&nbsp; 
-                <span class="time">{{item.add_time|dateFormat}}</span> &nbsp;&nbsp; 
+                <span class="user"><i class="el-icon-user"></i>&nbsp;{{item.user_name}}</span> &nbsp;
+                <span class="time"><i class="el-icon-time"></i>&nbsp;{{item.add_time|dateFormat}}</span> &nbsp;&nbsp; 
                 <span>{{item.content === 'undefined'?'此用户很懒，啥也没说。' : item.content}}</span>
             </div>
         </div>
@@ -73,12 +73,10 @@ export default {
             this.$axios.post(this.HOST+'/api/postComment',{comment:this.comment})
             .then(result=>{
                 if(result.data.msg == '评论插入数据库成功'){
-                    // this.comments.unshift(this.comment); //将新评论添加到评论数组开头
                     this.getComments();
                     this.msg = "";  //清空评论输入框
-                    Toast("发表评论成功！");
                 }else{
-                    // console.log(result.data.msg);
+                    console.log(result.data.msg);
                 }
             })
             .catch(err=>{

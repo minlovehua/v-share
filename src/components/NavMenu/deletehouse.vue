@@ -1,32 +1,73 @@
 <template>
-    <!-- 文档界面 -->
+    <!-- 回收站 -->
     <div class="Box">
       <div class="tableBox">
-          <div class="title">被遗弃的文档</div>
+          <div class="title">
+            回收站
+            <el-button class="newDosc" type="danger" size="small" v-if="multipleSelection.length" 
+            @click="deleteSelected = true">删除选中</el-button>
+          </div>
           <el-table
           :data="doscForm"
+          @row-click="lookDosc"
           style="width: 100%"
-          fit>
+          fit
+          @selection-change="handleSelectionChange">
+          <el-table-column
+            type="selection"
+            width="55">
+          </el-table-column>
           <el-table-column
               prop="doscName"
               label="名称">
           </el-table-column>
           <el-table-column
-              prop="status"
-              label="状态">
-          </el-table-column>
-          <el-table-column
-              prop="author"
-              label="作者">
+              prop="storeName"
+              label="所属知识库">
           </el-table-column>
           <el-table-column label="操作" class="caozuo">
             <!-- 文字按钮 <el-button type="text">编辑</el-button>-->
             <template slot-scope="scope">
-                <el-button class="edit" type="primary" size="mini" @click="edit(scope.$index, scope.row)">编辑</el-button>
-                <el-button class="delete" type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                <el-button class="edit" @click.stop="deleteVisible = true" type="primary" size="mini" 
+                @click="handleReturn(scope.$index, scope.row)">恢复</el-button>
+                <el-button class="delete" @click.stop="deleteVisible = true" type="danger" size="mini" 
+                @click="handleDelete(scope.$index, scope.row)">彻底删除</el-button>
             </template>
           </el-table-column>
           </el-table>
+          <!-- 弹框确认是否恢复文档 -->
+          <el-dialog
+            title="确定要恢复文档吗？"
+            :visible.sync="returnVisible"
+            width="30%">
+            <span>文档将恢复到【我的文档】模块</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button class="cancelButton" type="primary" size="mini" @click="returnVisible = false">取 消</el-button>
+              <el-button class="sureButton" type="primary" size="mini" @click="returnTOMyDosc()">确 定</el-button>
+            </span>
+          </el-dialog> 
+          <!-- 弹框确认是否彻底删除文档 -->
+          <el-dialog
+            title="确定要彻底删除此文档吗？"
+            :visible.sync="dialogVisible"
+            width="30%">
+            <span>慎重考虑哦！</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button class="cancelButton" type="primary" size="mini" @click="dialogVisible = false">取 消</el-button>
+              <el-button class="sureButton" type="primary" size="mini" @click="verySureDelete()">确 定</el-button>
+            </span>
+          </el-dialog>
+          <!-- 弹框确认是否彻底删除多选框选中的文档 -->
+          <el-dialog
+            title="确定要彻底删除选中的文档吗？"
+            :visible.sync="deleteSelected"
+            width="30%">
+            <span>删除将不可恢复！</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button class="cancelButton" type="primary" size="mini" @click="deleteSelected = false">取 消</el-button>
+              <el-button class="sureButton" type="primary" size="mini" @click="deleteAllSelected()">确 定</el-button>
+            </span>
+          </el-dialog>
       </div>
     </div>
 </template>
@@ -35,59 +76,87 @@
     export default {
       data() {
         return {
-          storehouse:[], //存储所有知识库的数组，默认为空
-          flag:false,     // flag为true 则右边的“选择知识库”框框显示，否则隐藏
-          clickStore:'',  // 所选择的知识库
-          doscForm:[],    // 用于存储获取到的所有文档
-          // time:new Date()  //测试
+          doscForm:[],                 // 用于存储获取到的所有文档
+          dialogVisible: false,        //控制是否弹框确认 彻底删除
+          returnVisible:false,         //控制是否弹框确认 恢复文档
+          row:{},                      //当前被点击的行对应的文档对象
+          deleteSelected:false,        //控制是否弹框确认 删除选中
+          multipleSelection: []        //被选中的文档对象组成的数组(多选框Checkbox选中的文档)
         }
       },
       created(){
-        this.getAllStore();  //页面一旦创建就展示所有知识库
-        this.getAllDosc();
+        this.getMyAllDeleteDosc()      //组件一旦创建完成，就获取数据渲染到页面是
       },
       methods:{
-        createDosc(storeName){ //点击知识库标签之后，跳转到文档编辑页面同时将这个知识库的名字通过query传递过去
-          this.clickStore = storeName;
-          // console.log(this.time|dateFormat('YYYY-MM-DD'));
-          //这个知识库的名字可以通过啥传递给编辑页面呢??? URL地址。那么URL地址可以带有中文吗
-          // this.$router.push('/createDosc/'+this.clickStore).catch(data => {  });
-          this.$router.push({path:'/createDosc',query:{storeName:this.clickStore}}).catch(data => {  });
+        lookDosc(row, event, column){  //点击行，查看文档详情
+          //解决了直接用this.$route.query.dosc时页面刷新之后数据会丢失的问题（第一步）。第二步在lookDosc.vue
+          sessionStorage.setItem("dosc",JSON.stringify(row))
+          //跳转到文档详情页面
+          this.$router.push({ name: '/lookDosc', query:{dosc:row}}).catch(data=>{});
         },
-        getAllStore(){ //展示知识库
-            this.$axios.get(this.HOST+'/api/getAllStore').then(result=>{
-                if(result.data.msg == '知识库查询失败'){
-                    this.msg = result.data.msg;
-                }else{
-                    // console.log(result.data.result);
-                    this.storehouse = result.data.result;
-                }
-            })
-        },
-        getAllDosc(){ //获取所有文档
-          this.$axios.get(this.HOST+'/api/getAllDosc').then(result=>{
+        getMyAllDeleteDosc(){ 
+          this.$axios.get(this.HOST+'/api/getMyAllDeleteDosc/'+this.$store.state.username).then(result=>{
               if(result.data.msg == '文档查询失败'){
-                  console.log(result.data.msg);
+                  this.doscForm = []; 
               }else{
-                  // console.log(result.data.result);
-                  // console.log(result.data.msg);
                   this.doscForm = result.data.result;
               }
           })
+          .catch(err=>{
+              console.log(err);
+          })   
         },
-        edit(index,dosc){ //编辑文档
-          // console.log(index,dosc)
-          //this.$router.push() 方法中path不能和params一起使用，否则params将无效。只能用name来指定页面。
-          this.$router.push({ name: '/updateDosc', params:{dosc:dosc}}).catch(data => {  }); //测试代码
+        handleReturn(index,row){       //确定恢复文档吗
+          this.returnVisible = true
+          this.row = row
         },
-        handleDelete(index,dosc){
-
+        returnTOMyDosc(){              //恢复文档
+          this.returnVisible = false; //关闭弹框
+          this.row.status = '未发布'
+          this.$axios.post(this.HOST+'/api/returnTOMyDosc',this.row).then(result=>{
+              if(result.data.msg == '文档恢复失败'){
+                  console.log(result.data.msg);
+              }else{ //文档成功放进回收站
+                  this.getMyAllDeleteDosc(); //刷新页面
+              }
+          })
+          .catch(err=>{
+              console.log(err);
+          })
+        },
+        handleDelete(index,row){       //确定彻底删除吗
+          this.dialogVisible = true
+          this.row = row
+        },
+        verySureDelete(){              //彻底删除
+          this.dialogVisible = false; //关闭弹框
+          this.$axios.post(this.HOST+'/api/verySureDelete/'+this.row.id).then(result=>{
+            if(result.data.msg == '彻底删除失败'){
+              console.log(result.data.msg);
+            }else{
+              this.getMyAllDeleteDosc(); //刷新页面
+            }
+          })
+        },
+        handleSelectionChange(val) {   //获取多选框选中的文档
+          this.multipleSelection = val;//参数val 是被选中的文档对象组成的数组
+        },
+        deleteAllSelected(){           //彻底删除多选框选中的文档
+          this.deleteSelected = false; //关闭弹框
+          this.$axios.post(this.HOST+'/api/deleteAllSelected',this.multipleSelection).then(result=>{
+            if(result.data.msg == '彻底删除多选框选中文档失败'){
+              console.log(result.data.msg);
+            }else{
+              this.getMyAllDeleteDosc(); //刷新页面
+            }
+          })
         }
+
       }
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .Box{
       width: 100%;
     }
@@ -114,7 +183,7 @@
       }
 
       //'新建文档'按钮
-      .el-button{
+      .newDosc{
         position: absolute;
         right: 10px;
       }
@@ -126,51 +195,34 @@
       .edit{ //“编辑”按钮
         position: absolute;
         left: 9px;
-        top: 5px;
+        top: 10px;
       }
       .delete{
         position: absolute;
         left: 69px;
-        top: 5px;
+        top: 10px;
       }
     }
-    
-    //右侧“新建文档”操作框
-    .createDoscBox{
-      width: 25%;
-      float: right;
-      // height: 300px;
-      border-radius: 5px 5px;
-      // border: 1px solid #eaeaea;
-      border: 1px solid #c7c6c6;
 
-      .title{
-        width: 100%;
-        height: 70px;
-        padding: 10px;
-        text-align: left;
-        font-size: 18px;
-        box-sizing: border-box;
-        border-bottom: 1px solid #c7c6c6;
-        position: relative;
-
-        span{
+    //Dialog弹框
+    .el-dialog{
+      .el-dialog__header {
+          padding: 20px !important;
+          text-align: left;
+      }
+      .el-dialog__body {
+          padding: 20px !important;
+          color: #606266;
           font-size: 14px;
-          color: rgb(17, 15, 19);
-        }
+          word-break: break-all;
       }
-
-      .tag{
-        display: inline-block;
-        margin: 5px;
-        padding: 5px;
-
-        .el-tag{
-          background-color: white;
-        }
+      .el-dialog__footer {
+          padding: 20px !important;
+          text-align: right;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
       }
     }
-
 </style>
 
 

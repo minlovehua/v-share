@@ -7,7 +7,7 @@
             <!-- 内容 -->
             <div class="content">
                 <div v-html="dosc.html"></div>
-                <div class="who"><span class="from">作者：{{dosc.author}} &nbsp;&nbsp; 更新于：{{dosc.updateTime|dateFormat}}</span></div>
+                <div class="who"><span class="from"><i class="el-icon-user"></i>&nbsp;{{dosc.author}} &nbsp;&nbsp; <i class="el-icon-time"></i>&nbsp;{{dosc.updateTime|dateFormat}}</span></div>
             </div>
 
             <!-- 评论 -->

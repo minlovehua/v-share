@@ -8,9 +8,9 @@
                         <span><i class="el-icon-document"></i>&nbsp;{{item.doscName}}</span>                 
                     </div>
                     <div class="doscMsg">
-                        <span>{{item.storeName}}</span>&nbsp;/&nbsp;
-                        <span>{{item.author}}</span>&nbsp;/&nbsp;
-                        <span>{{item.updateTime|dateFormat}}</span> &nbsp;&nbsp;
+                        <span><i class="el-icon-folder"></i>&nbsp;{{item.storeName}}</span>&nbsp;&nbsp;
+                        <span><i class="el-icon-user"></i>&nbsp;{{item.author}}</span>&nbsp;&nbsp;
+                        <span><i class="el-icon-time"></i>&nbsp;{{item.updateTime|dateFormat}}</span> &nbsp;&nbsp;
                         <el-button class="edit" type="text" @click="look(item)">查看全文</el-button>
                     </div>
                 </div>                             
