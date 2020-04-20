@@ -2,44 +2,25 @@
     <!-- 回收站 -->
     <div class="Box">
       <div class="tableBox">
-          <div class="title">
-            回收站
+          <div class="title">回收站
             <el-button class="newDosc" type="danger" size="small" v-if="multipleSelection.length" 
             @click="deleteSelected = true">删除选中</el-button>
           </div>
-          <el-table
-          :data="doscForm"
-          @row-click="lookDosc"
-          style="width: 100%"
-          fit
-          @selection-change="handleSelectionChange">
-          <el-table-column
-            type="selection"
-            width="55">
-          </el-table-column>
-          <el-table-column
-              prop="doscName"
-              label="名称">
-          </el-table-column>
-          <el-table-column
-              prop="storeName"
-              label="所属知识库">
-          </el-table-column>
-          <el-table-column label="操作" class="caozuo">
-            <!-- 文字按钮 <el-button type="text">编辑</el-button>-->
-            <template slot-scope="scope">
-                <el-button class="edit" @click.stop="deleteVisible = true" type="primary" size="mini" 
-                @click="handleReturn(scope.$index, scope.row)">恢复</el-button>
-                <el-button class="delete" @click.stop="deleteVisible = true" type="danger" size="mini" 
-                @click="handleDelete(scope.$index, scope.row)">彻底删除</el-button>
-            </template>
-          </el-table-column>
+          <el-table :data="doscForm" @row-click="lookDosc" style="width: 100%" fit @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="55"></el-table-column>
+            <el-table-column prop="doscName" label="名称"></el-table-column>
+            <el-table-column prop="storeName" label="所属知识库"></el-table-column>
+            <el-table-column label="操作" class="caozuo">
+              <template slot-scope="scope">
+                  <el-button class="edit" @click.stop="deleteVisible = true" type="primary" size="mini" 
+                  @click="handleReturn(scope.$index, scope.row)">恢复</el-button>
+                  <el-button class="delete" @click.stop="deleteVisible = true" type="danger" size="mini" 
+                  @click="handleDelete(scope.$index, scope.row)">彻底删除</el-button>
+              </template>
+            </el-table-column>
           </el-table>
           <!-- 弹框确认是否恢复文档 -->
-          <el-dialog
-            title="确定要恢复文档吗？"
-            :visible.sync="returnVisible"
-            width="30%">
+          <el-dialog title="确定要恢复文档吗？" :visible.sync="returnVisible" width="30%">
             <span>文档将恢复到【我的文档】模块</span>
             <span slot="footer" class="dialog-footer">
               <el-button class="cancelButton" type="primary" size="mini" @click="returnVisible = false">取 消</el-button>
@@ -47,10 +28,7 @@
             </span>
           </el-dialog> 
           <!-- 弹框确认是否彻底删除文档 -->
-          <el-dialog
-            title="确定要彻底删除此文档吗？"
-            :visible.sync="dialogVisible"
-            width="30%">
+          <el-dialog title="确定要彻底删除此文档吗？" :visible.sync="dialogVisible" width="30%">
             <span>慎重考虑哦！</span>
             <span slot="footer" class="dialog-footer">
               <el-button class="cancelButton" type="primary" size="mini" @click="dialogVisible = false">取 消</el-button>
@@ -58,10 +36,7 @@
             </span>
           </el-dialog>
           <!-- 弹框确认是否彻底删除多选框选中的文档 -->
-          <el-dialog
-            title="确定要彻底删除选中的文档吗？"
-            :visible.sync="deleteSelected"
-            width="30%">
+          <el-dialog title="确定要彻底删除选中的文档吗？" :visible.sync="deleteSelected" width="30%">
             <span>删除将不可恢复！</span>
             <span slot="footer" class="dialog-footer">
               <el-button class="cancelButton" type="primary" size="mini" @click="deleteSelected = false">取 消</el-button>
@@ -101,10 +76,7 @@
               }else{
                   this.doscForm = result.data.result;
               }
-          })
-          .catch(err=>{
-              console.log(err);
-          })   
+          }).catch(err=>console.log(err))   
         },
         handleReturn(index,row){       //确定恢复文档吗
           this.returnVisible = true
@@ -119,10 +91,7 @@
               }else{ //文档成功放进回收站
                   this.getMyAllDeleteDosc(); //刷新页面
               }
-          })
-          .catch(err=>{
-              console.log(err);
-          })
+          }).catch(err=>console.log(err))   
         },
         handleDelete(index,row){       //确定彻底删除吗
           this.dialogVisible = true
@@ -136,7 +105,7 @@
             }else{
               this.getMyAllDeleteDosc(); //刷新页面
             }
-          })
+          }).catch(err=>console.log(err))   
         },
         handleSelectionChange(val) {   //获取多选框选中的文档
           this.multipleSelection = val;//参数val 是被选中的文档对象组成的数组
@@ -149,9 +118,8 @@
             }else{
               this.getMyAllDeleteDosc(); //刷新页面
             }
-          })
+          }).catch(err=>console.log(err))
         }
-
       }
     }
 </script>
@@ -224,5 +192,3 @@
       }
     }
 </style>
-
-

@@ -16,7 +16,7 @@
                 <el-form-item class="btn">
                     <el-button type="primary" @click="login('ruleForm')">登录</el-button>
                     <el-button @click="resetForm('ruleForm')">重置</el-button>
-                    <div class="msg">{{loginForm.msg}}</div>    <!--   密码错误或用户不存在提示区域 -->
+                    <div class="msg" autocomplete="off">{{loginForm.msg}}</div>    <!--   密码错误或用户不存在提示区域 -->
                     <router-link to="/register">注册</router-link>
                 </el-form-item>
             </el-form>
@@ -29,8 +29,7 @@
     export default {
         data() {
             return {
-                //登录表单的数据绑定对象
-                loginForm: {
+                loginForm: {        //登录表单的数据绑定对象
                     username: '',   //用户名
                     password: '',   //密码
                     msg:''          //接收后台返回的数据
@@ -48,46 +47,30 @@
             };
         },
         methods: {
-            login(formName){ //登录
-                // 登录前表单数据预验证
+            login(formName){ // 登录
                 //this.$refs[formName] 拿到表单的验证对象。等价于this.$refs.ruleForm
                 //validate() 接收一个回调函数，从而拿到验证的结果
                 this.$refs[formName].validate((valid)=>{  //第一个形参是个布尔值
                     //验证成功时valid的值为true（仅满足登录验证规则），失败时是false
-                    // console.log('valid:'+valid);
-
-                    //不满足登录验证规则，则不发送请求
                     if(!valid) return;  //如果valid值为false，则return，不发送请求。
-
-                    //满足登录验证规则，则向服务器端(http://localhost:3009/api/login)发送登录请求，同时传递参数(参数2)
-                    this.$axios.post(this.HOST+'/api/login',{username:this.loginForm.username,password:this.loginForm.password})
-                    .then(result=>{
-                        //console.log(result.data)  //{status: 1, msg: "登录成功",role:'2'}
-                        //这里注意了，是this.loginForm.msg，而不是this.msg。
+                    this.$axios.post(this.HOST+'/api/login',{username:this.loginForm.username,password:this.loginForm.password}).then(result=>{
                         this.loginForm.msg = result.data.msg;   
-
                         if(result.data.msg == '登录成功'){
-                            //成功登录之后，将当前登录用户存储到cookie
-                            Cookie.set('username',this.loginForm.username);
+                            Cookie.set('username',this.loginForm.username); //成功登录之后，将当前登录用户存储到cookie
                             Cookie.set('role',result.data.role)
                             //登录成功之后，马上初始化$store.state.username
                             this.$store.commit('initUsername',{username:Cookie.get('username'),role:Cookie.get('role')})
                             // 登陆成功，则跳转到 工作台 /platform
                             this.$router.replace('/platform').catch(data => {  });
                         }else{
-                            //密码错误
+                            console.log('密码错误');
                         }
-                    })
-                    .catch(err=>{
-                        console.log(err)
-                    })
+                    }).catch(err=>console.log(err))   
                 });
             },
-            resetForm(formName) {  //重置
-                console.log(this); //测试代码
+            resetForm(formName) { //重置
                 //this.$refs[formName] 拿到表单的验证对象。等价于this.$refs.ruleForm
-                //resetFields() 方法，重置表单
-                this.$refs[formName].resetFields();
+                this.$refs[formName].resetFields(); //resetFields() 方法，重置表单
                 this.loginForm.msg = '';
             }
         }
@@ -99,10 +82,8 @@
         //解决.box-card的height设置百分比无效果的问题
         //也是解决.box-card偏移补齐效果的问题。这样就可以顺利设置.box-card水平和垂直居中了。
         //height: 100%;    直接在全局样式 global.css里面设置即可  
-
         position: relative;
     }
-
     //card 卡片 
     .text {
         font-size: 14px;
@@ -118,46 +99,32 @@
     .clearfix:after {
         clear: both
     }
-
-    //card卡片 水平、垂直居中
-    .el-card {
+    .el-card {         //card卡片 水平、垂直居中
         width: 480px;
         position: absolute;
         top: 50%;    //先走父元素的一半
         left: 50%;   //先走父元素的一半
         transform: translate(-50%,-70%);  //再往回走自己的一半
-        // background-color: rgba($color: white, $alpha: 0);
-    }
-
-    //form 表单
-    .el-input{
+    }  
+    .el-input{         //form 表单
         width: 80%;
     }
-
-    //登录div
-    .login-container{
+    .login-container{  //登录div
         background: url('../../images/bg.jpg');
         background-size: cover;
-        // background: #809477;   //#566b32  darkolivegreen
         height: 100%;
     }
-
-    //登录、重置 按钮 居右
-    .btn{
+    .btn{              //登录、重置 按钮 居右
         display: flex;
         justify-content: flex-start;
-    }
-
-    //登录错误提示信息 div
-    .msg{
+    }   
+    .msg{              //登录错误提示信息 div
         display: inline-block;
         color:red;
         margin-right: 5px;
         width: 110px;
     }
-
-    // 登录界面 标题
-    .clearfix span{
+    .clearfix span{    // 登录界面 标题
         font-size: 20px;
     }
 </style>

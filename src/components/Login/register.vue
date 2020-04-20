@@ -13,13 +13,13 @@
                 <el-form-item label="密码" prop="password">
                     <el-input prefix-icon="el-icon-lock" type="password" v-model="registerForm.password" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="邀请码" prop="identifyCode">
+                <el-form-item label="邀请码" prop="code">
                     <el-input prefix-icon="el-icon-s-flag" type="text" v-model="registerForm.code" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item class="btn">
                     <el-button type="primary" @click="register('ruleForm')">注册</el-button>
                     <el-button @click="resetForm('ruleForm')">重置</el-button>
-                    <div class="msg">{{registerForm.msg}}</div>    <!--   用户已经存在提示区域 -->
+                    <div class="msg"  autocomplete="off">{{registerForm.msg}}</div>    <!--   用户已经存在提示区域 -->
                     <router-link to="/login">登录</router-link>
                 </el-form-item>
             </el-form>
@@ -31,58 +31,42 @@
 export default {
     data() {
       return {
-        //注册表单的数据绑定对象
-        registerForm: {
+        registerForm: {   //注册表单的数据绑定对象
           username: '',   //用户名
           password: '',   //密码
-          code:'',
+          code:'',        //邀请码
           msg:''          //接收后台返回的数据 "该用户已存在"
         },
-        //登录表单的验证规则
-        rules:{
-            //验证用户名是否合法
-            username:[
+        rules:{           //登录表单的验证规则
+            username:[    //验证用户名是否合法
                 { required: true, message: '请输入用户名', trigger: 'blur' },
                 { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
             ],
-            //验证密码是否合法
-            password:[
+            password:[    //验证密码是否合法
                 { required: true, message: '请输入密码', trigger: 'blur' },
                 { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
             ],
-            //验证邀请码是否合法
-            code:[
+            code:[        //验证邀请码是否合法
                 { required: true, message: '请输入邀请码', trigger: 'blur' }
             ]
         }
       };
     },
     methods: {
-        register(formName){
+        register(formName){   //注册
             this.$refs[formName].validate((valid)=>{
                 //验证成功时valid的值为true（仅满足注册验证规则），失败时是false
-                // console.log('valid:'+valid);
-                //不满足注册验证规则，则不发送请求
                 if(!valid) return;  //如果valid值为false，则return，不发送请求。
-
-                //满足登录验证规则，则向服务器端(http://localhost:3009/api/register)发送注册请求，同时传递参数(参数2)
-                this.$axios.post(this.HOST+'/api/register',this.registerForm)
-                .then(result=>{
-                    //console.log(result.data)  //{ msg: "注册成功"}
+                this.$axios.post(this.HOST+'/api/register',this.registerForm).then(result=>{
                     if(result.data.msg == '注册成功'){
-                        // 注册成功，则跳转到 登录界面 /login
-                        this.$router.replace('/login').catch(data => {  });
+                        this.$router.replace('/login').catch(data => {  }); // 注册成功，则跳转到 登录界面 /login
                     }else{
                         this.registerForm.msg = result.data.msg; 
                     }
-                })
-                .catch(err=>{
-                    console.log(err)
-                })
+                }).catch(err=>console.log(err))   
             });
-
         },
-        resetForm(formName) {
+        resetForm(formName) { //重置
             this.$refs[formName].resetFields();
             this.registerForm.msg = '';
         }
@@ -95,10 +79,8 @@ export default {
         //解决.box-card的height设置百分比无效果的问题
         //也是解决.box-card偏移补齐效果的问题。这样就可以顺利设置.box-card水平和垂直居中了。
         //height: 100%;    直接在全局样式 global.css里面设置即可  
-
         position: relative;
     }
-
     //card 卡片 
     .text {
         font-size: 14px;
@@ -114,46 +96,33 @@ export default {
     .clearfix:after {
         clear: both
     }
-
-    //card卡片 水平、垂直居中
-    .el-card {
+    .el-card {          //card卡片 水平、垂直居中
         width: 480px;
         position: absolute;
         top: 50%;    //先走父元素的一半
         left: 50%;   //先走父元素的一半
         transform: translate(-50%,-70%);  //再往回走自己的一半
     }
-
-    //form 表单
-    .el-input{
+    .el-input{          //form 表单
         width: 80%;
     }
-
-    //注册div
-    .register-container{
+    .register-container{//注册div
         background: url('../../images/bg.jpg');
         background-size: cover;
         // background: #809477;   //#566b32  darkolivegreen
         height: 100%;
     }
-
-    //注册、重置 按钮 居右
-    .btn{
+    .btn{               //注册、重置 按钮 居右
         display: flex;
         justify-content: flex-start;
     }
-
-    //注册错误提示信息 div
-    .msg{
+    .msg{               //注册错误提示信息 div
         display: inline-block;
         color:red;
         margin-right: 5px;
         width: 110px;
     }
-
-    // 注册界面 标题
-    .clearfix span{
+    .clearfix span{     // 注册界面 标题
         font-size: 20px;
     }
-
 </style>

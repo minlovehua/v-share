@@ -17,7 +17,6 @@
             </el-card>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -29,26 +28,21 @@ export default {
         }
     },
     created(){
-        //页面一旦创建，就获取团队的所有已发布的文档
-        this.getAllGroupDosc()
+        this.getAllGroupDosc() //页面一旦创建，就获取团队的所有已发布的文档
     },
     methods:{
-        getAllGroupDosc(){  //获取团队的所有已发布的文档
+        getAllGroupDosc(){ //获取团队的所有已发布的文档
           this.$axios.get(this.HOST+'/api/getAllGroupDosc').then(result=>{
               if(result.data.msg == '获取文档失败'){
                   console.log(result.data.msg);
               }else{
                   this.doscForm = result.data.result;
-                //   console.log(this.doscForm)
               }
-          })
+          }).catch(err=>console.log(err))
         },
-        look(dosc){  //点击“查看全文”,显示文章内容
-            // console.log(dosc);
-
+        look(dosc){        //点击“查看全文”,显示文章内容
             //解决了直接用this.$route.query.dosc时页面刷新之后数据会丢失的问题（第一步）。第二步在lookDosc.vue
             sessionStorage.setItem("dosc",JSON.stringify(dosc))
-
             this.$router.push({ name: '/lookDosc', query:{dosc:dosc}}).catch(data=>{});
         }
     }
@@ -69,7 +63,6 @@ export default {
     }
     .xx{
         height: 30px;  //必须给高度，否则不会垂直居中对齐，而是偏下
-        // background-color: pink;
         position: relative;
     }
     .title{

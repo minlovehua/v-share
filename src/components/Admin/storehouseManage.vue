@@ -1,7 +1,6 @@
 <template>
     <div class="box">
         <!-- 知识库管理 -->
-        <!-- 知识库 -->
         <el-card v-for="item in storehouse" :key="item.storeName">
             <div slot="header" class="clearfix">
                 <i class="el-icon-folder"></i>
@@ -48,21 +47,17 @@
         data(){
             return{
                 storeForm:{
-                    storeName:'', //知识库名称
+                    storeName:'',  //知识库名称
                     storeDesc:'',  //知识库简介
-                    storeManager:''
                 },
-                storehouse:[], //存储所有知识库的数组，默认为空
-                msg:'', //测试
-                //新建知识库的验证规则
-                rules:{
-                    //验证知识库名称是否合法
-                    storeName:[
+                storehouse:[],     //存储所有知识库的数组，默认为空
+                msg:'',            //测试
+                rules:{            //新建知识库的验证规则
+                    storeName:[    //验证知识库名称是否合法
                         { required: true, message: '请输入知识库名称', trigger: 'blur' },
                         { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
                     ],
-                    //验证知识库简介是否合法
-                    storeDesc:[
+                    storeDesc:[    //验证知识库简介是否合法
                         { required: true, message: '请输入知识库的简介', trigger: 'blur' },
                         { min: 1, max: 200, message: '长度在 1 到 200 个字符', trigger: 'blur' }
                     ],
@@ -70,14 +65,12 @@
             }
         },
         created(){
-            this.getAllStore();  //页面一旦创建就展示所有知识库
+            this.getAllStore();    //页面一旦创建就展示所有知识库
         },
         methods:{
             createStore(formName){ //创建知识库
-                // console.log(this.storeForm);
                 this.$refs[formName].validate((valid)=>{
                     if(!valid) return;  //如果valid值为false，则return，不发送请求。
-                    //满足登录验证规则，则向服务器端(http://localhost:3009/api/createStore)发送注册请求，同时传递参数(参数2)
                     this.$axios.post(this.HOST+'/api/createStore',this.storeForm).then(result=>{
                         this.msg = result.data.msg;
                         if(result.data.msg == '知识库新建成功'){ //清空表单
@@ -85,21 +78,17 @@
                             this.storeForm.storeName = '';
                             this.storeForm.storeDesc = '';
                         }
-                    })
-                    .catch(err=>{
-                        console.log(err)
-                    })
+                    }).catch(err=>console.log(err))
                 });
             },
-            getAllStore(){ //展示知识库
+            getAllStore(){         //展示知识库
                 this.$axios.get(this.HOST+'/api/getAllStore').then(result=>{
                     if(result.data.msg == '知识库查询失败'){
                         this.msg = result.data.msg;
                     }else{
-                        // console.log(result.data.result);
                         this.storehouse = result.data.result;
                     }
-                })
+                }).catch(err=>console.log(err))
             }
         }
     }

@@ -14,10 +14,13 @@
                     <el-input prefix-icon="el-icon-lock" type="password" v-model="initForm.password" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="团队名称" prop="groupName">
-                    <el-input prefix-icon="el-icon-s-home" v-model="initForm.groupName" placeholder="请输入团队的名称" autocomplete="off"></el-input>
+                    <el-input prefix-icon="el-icon-s-home" v-model="initForm.groupName" placeholder="请输入团队的名称" 
+                    autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="团队简介" prop="description">
-                    <el-input prefix-icon="el-icon-edit" v-model="initForm.description" maxlength="200" show-word-limit :autosize="{ minRows: 2, maxRows: 6}" type="textarea" :rows="3" placeholder="简单介绍一下你的团队吧" autocomplete="off"></el-input>
+                    <el-input prefix-icon="el-icon-edit" v-model="initForm.description" maxlength="200" 
+                    show-word-limit :autosize="{ minRows: 2, maxRows: 6}" type="textarea" :rows="3" 
+                    placeholder="简单介绍一下你的团队吧" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item class="btn">
                     <el-button type="primary" @click="Aregister('ruleForm')">创建</el-button>
@@ -34,34 +37,28 @@
 export default {
     data() {
       return {
-        //初始化团队表单的数据绑定对象
-        initForm: {
-          username: '',   //管理员用户名
+        initForm: {          //初始化团队表单的数据绑定对象
+          username: '',      //管理员用户名
           role: '1',         // 1 管理员，2 普通用户
-          password: '',    //密码
-          groupName: '',   //团队名称
-          description: '',  //团队描述
+          password: '',      //密码
+          groupName: '',     //团队名称
+          description: '',   //团队描述
           msg:''
         },
-        //登录表单的验证规则
-        rules:{
-            //验证用户名是否合法
-            username:[
+        rules:{//登录表单的验证规则
+            username:[ //验证用户名是否合法
                 { required: true, message: '请输入用户名', trigger: 'blur' },
                 { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
             ],
-            //验证密码是否合法
-            password:[
+            password:[ //验证密码是否合法
                 { required: true, message: '请输入密码', trigger: 'blur' },
                 { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
             ],
-            //验证团队名称是否合法
-            groupName:[
+            groupName:[  //验证团队名称是否合法
                 { required: true, message: '请输入团队名称', trigger: 'blur' },
                 { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
             ],
-            //验证团队简介是否合法
-            description:[
+            description:[  //验证团队简介是否合法
                 { required: true, message: '请输入团队简介', trigger: 'blur' },
                 { min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: 'blur' }
             ],
@@ -70,22 +67,15 @@ export default {
     },
     methods: {
         Aregister(formName){ //管理员(团队)注册
-            this.$refs[formName].validate((valid)=>{
-                //验证成功时valid的值为true（仅满足注册验证规则），失败时是false
-                // console.log('valid:'+valid);
-                //不满足注册验证规则，则不发送请求
+            this.$refs[formName].validate((valid)=>{ //验证成功时valid为true（仅满足注册验证规则），失败时是false
                 if(!valid) return;  //如果valid值为false，则return，不发送请求。
-                //满足登录验证规则，则向服务器端(http://localhost:3009/api/Aregister)发送注册请求，同时传递参数(参数2)
                 this.$axios.post(this.HOST+'/api/Aregister',this.initForm).then(result=>{
                     if(result.data.msg == '团队初始化成功'){  // 初始化成功，则跳转到 登录界面 /login
                         this.$router.replace('/login').catch(data => {  });
                     }else{
                         this.initForm.msg = result.data.msg;
                     }
-                })
-                .catch(err=>{
-                    console.log(err)
-                })
+                }).catch(err=>console.log(err))
             });
         },
         resetForm(formName) { //重置
@@ -158,5 +148,4 @@ export default {
     .clearfix span{
         font-size: 20px;
     }
-
 </style>

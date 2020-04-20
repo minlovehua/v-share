@@ -23,8 +23,6 @@ import groups from './components/NavMenu/groups.vue'
 import platform from './components/NavMenu/platform.vue'
 import storehouse from './components/NavMenu/storehouse.vue'
 
-import initManage from './components/Admin/initManage.vue'
-
 //管理页面 子组件
 import membersManage from './components/Admin/membersManage.vue'
 import storehouseManage from './components/Admin/storehouseManage.vue'

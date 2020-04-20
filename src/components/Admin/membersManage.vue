@@ -33,33 +33,28 @@ export default {
         this.getAllMember();
     },
     methods:{
-        getAllMember(){
+        getAllMember(){  //查询团队成员
             this.$axios.get(this.HOST+'/api/getAllMember').then(result=>{
                 if(result.data.msg == '查询团队所有成员失败'){
                     this.msg = result.data.msg;
                 }else{
-                    // console.log(result.data.result);
                     this.members = result.data.result;
                 }
-            })
+            }).catch(err=>console.log(err))
         },
-        randomCode(){ //生成随机邀请码
-            //生成邀请码
+        randomCode(){   //生成随机邀请码
             var newCode = "";
             for (var i = 0; i < 4 ; i++) {
                 var id = Math.ceil(Math.random() * 35);
                 newCode += this.jschars[id];
             }
-            //判断数据库有没有该邀请码（参数1：要请求的后台接口。参数2：交给后台处理的数据。）
-            this.$axios.post(this.HOST+'/api/isCode',{code:newCode,flag:'true'})
-            .then(result=>{
-                //console.log(result.data)  //{status: 1, msg: "该邀请码已存在"}
+            this.$axios.post(this.HOST+'/api/isCode',{code:newCode,flag:'true'}).then(result=>{  //判断数据库有没有该邀请码
                 if(result.data.msg == '该邀请码可以使用'){ //如果数据库没有该邀请码，则插入数据库，并显示在页面上
                     this.identityCode.code = newCode;
                 }else{
                     randomCode();  //如果数据库已经有该邀请码，重新生成邀请码
                 }
-            })
+            }).catch(err=>console.log(err))
         },
     }
 }

@@ -4,19 +4,11 @@ const db = require('./db.js')
 
 // 登录处理
 exports.login = (req,res)=>{
-    let uname = req.body.username;
-    let pwd = req.body.password;
-    //console.log('uname:'+uname,'pwd:'+pwd); //uname:huahua pwd:123456
-    // 查询语句
-    let sql = 'select * from user where username = ?';
-    let data = uname;                         //这里uname或[uname]结果都一样
-    db.base(sql,data,(result)=>{              //查询username为data的那条数据
-        //console.log('result:  '+ result);   //result:  [object Object]
+    db.base('select * from user where username = ?',req.body.username,(result)=>{
         if(!result.length){
             return res.json({msg: '该用户不存在！'});
         }else{
-            if(result[0].password==pwd){
-                // console.log(result[0].role);
+            if(result[0].password == req.body.password){
                 return res.json({msg: '登录成功',role:result[0].role});
             }
             return res.json({msg: '密码错误'});
@@ -64,7 +56,7 @@ exports.isCode=(req,res)=>{
         if(result.length){
             return res.json({msg:'该邀请码已存在'});
         }else{
-            db.base('insert into identifycode set ?',req.body,(result)=>{              //查询username为data的那条数据
+            db.base('insert into identifycode set ?',req.body,(result)=>{
                 if(result.affectedRows == 1){
                     return res.json({msg: '该邀请码可以使用'});
                 }
@@ -78,13 +70,11 @@ exports.Aregister = (req,res)=>{
     db.base('select * from user where username = ?',req.body.username,(result)=>{
         if(result.length){
             return res.json({msg:'该用户已存在'});
-        }else{
-            //将管理员插入数据库
+        }else{  //将管理员插入数据库
             db.base('insert into user set ?',{username:req.body.username,password:req.body.password,role:req.body.role},(result)=>{
                 if(result.affectedRows != 1){
                     return res.json({msg:'数据插入失败'});
-                }else{
-                    //将团队名称和简介插入数据库
+                }else{//将团队名称和简介插入数据库
                     db.base('insert into Agroup set ?',{groupName:req.body.groupName,description:req.body.description},(result)=>{
                         if(result.affectedRows != 1){
                             return res.json({msg:'数据插入失败'});
@@ -110,8 +100,6 @@ exports.getGroup = (req,res)=>{
 
 //新建知识库
 exports.createStore = (req,res)=>{
-    // console.log('进来了');
-    // console.log(req.body);
     db.base('select * from storehouse where storeName = ?',req.body.storeName,(result)=>{
         if(result.length){
             return res.json({msg:'该知识库已存在'});
@@ -173,7 +161,6 @@ exports.createDosc = (req,res)=>{
 
 //修改文档
 exports.updateDosc = (req,res)=>{
-    // console.log(req.body)
     let sql = 'update dosc set doscName=?,author=?,status=?,content=?,storeName=?,html=? where id=?';
     let info = req.body;
     let data = [info.doscName,info.author,info.status,info.content,info.storeName,info.html,info.id];
@@ -190,7 +177,6 @@ exports.updateDosc = (req,res)=>{
 exports.getAllGroupDosc = (req,res)=>{
     db.base('select * from dosc where status = ? order by id desc','已发布',(result)=>{
         if(result.length){ //查询成功
-            // console.log(result)
             return res.json({msg:'获取文档成功',result:result});
         }else{
             return res.json({msg:'获取文档失败'});
@@ -200,7 +186,6 @@ exports.getAllGroupDosc = (req,res)=>{
 
 //发布评论
 exports.postComment = (req,res)=>{
-    // console.log(req.body.comment);
     db.base('insert into comment set ?',req.body.comment,(result)=>{
         if(result.affectedRows != 1){
             return res.json({msg: '评论插入数据库失败'});
@@ -214,7 +199,6 @@ exports.postComment = (req,res)=>{
 exports.getComment = (req,res)=>{  //get请求是这样子拿到参数值的 req.params.id
     db.base('select * from comment where doscId = ? order by id desc',req.params.id,(result)=>{
         if(result.length){ //查询成功
-            // console.log(result)
             return res.json({msg:'获取评论成功',comments:result});
         }else{
             return res.json({msg:'获取评论失败'});
@@ -286,3 +270,5 @@ exports.deleteAllSelected = (req,res)=>{
         return res.json({msg: '彻底删除失败'});
     }
 }
+
+

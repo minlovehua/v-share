@@ -11,22 +11,19 @@
                     <el-dropdown-item @click.native="toplateform">返回工作台</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>&nbsp;&nbsp;&nbsp;
-
             <span>{{doscForm.storeName}}</span>
             &nbsp;&nbsp;&nbsp;/&nbsp;
             <!-- 这里的el-input必须给个宽度width，否则不会显示这个输入框 -->
             <el-input style="width:30%;" v-model="doscForm.doscName" placeholder="请输入文档标题"></el-input>
             <span style="color:skyblue;" id="Msg">{{this.msg}}</span>
             <button class="submitButton" @click="submit">提交</button>
-        </div>
-        
+        </div>     
         <div>
             <mavon-editor 
                 v-model="doscForm.content" 
                 ref="md" 
                 @change="change" 
                 style="min-height: 600px"/>
-            <!-- <button @click="submit">提交</button> -->
         </div>
     </div>
 </template>
@@ -35,7 +32,6 @@
     import { mavonEditor } from 'mavon-editor'
     import 'mavon-editor/dist/css/index.css'
     export default {
-        // 注册
         components: {
             mavonEditor,
         },
@@ -67,36 +63,27 @@
             })
         },
         methods: {
-            // 所有操作都会被解析重新渲染
-            change(value, render){
-                // render 为 markdown 解析后的结果[html]
-                this.doscForm.html = render;
+            change(value, render){// 所有操作都会被解析重新渲染到markdown
+                this.doscForm.html = render; // render 为 markdown 解析后的结果[html]
             },
-            // 提交
-            submit(){
+            submit(){             // 提交
                 if(this.doscForm.content == ''){
                     this.msg = '文档内容不能为空';
                 }else if(this.doscForm.doscName == '' || this.doscForm.doscName == '无标题'){
                     this.msg = '给文档起个标题吧';
                 }else{
                     this.doscForm.updateTime = new Date();
-                    //将数据插入数据库
-                    this.$axios.post(this.HOST+'/api/createDosc',this.doscForm)
-                    .then(result=>{
+                    this.$axios.post(this.HOST+'/api/createDosc',this.doscForm).then(result=>{ //将数据插入数据库
                         if(result.data.msg == '新建文档成功'){
-                            this.msg = '新建文档成功';
-                            this.$router.replace('/platform/document');
+                            this.msg = '新建文档成功'
+                            this.$router.replace('/platform/document')
                         }else{
-                            // console.log(result.data.msg);
+                            console.log(result.data.msg)
                         }
-                    })
-                    .catch(err=>{
-                        console.log(err);
-                    })                    
+                    }).catch(err=>console.log(err))                  
                 }
-            },
-            //返回 工作台
-            toplateform(){
+            },            
+            toplateform(){        //返回 工作台
                 this.$router.replace('/platform').catch(data => {  });
             },
         }
@@ -104,14 +91,9 @@
 </script>
 
 <style lang="scss" scoped>
-    // .createDosc-container{
-    //     border-radius: 5px;
-    // }
-
     .title{
         font-weight: 900;
     }
-
     .editDoscHeader{
         height: 50px;  
         line-height: 50px;
@@ -119,12 +101,10 @@
         padding-left: 10px;
         position: relative;
     }
-
     .time{
         font-size: 14px;
         color:grey;
     }
-
     //下拉框
     .el-dropdown-link {
         cursor: pointer;
@@ -134,8 +114,6 @@
     .el-icon-arrow-down {
         font-size: 12px;
     }
-
-
     .submitButton{
         position: absolute;
         right: 1%;
