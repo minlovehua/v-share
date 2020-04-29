@@ -61,4 +61,7 @@ router.post('/api/verySureDelete/:id',service.verySureDelete)
 //彻底删除多选框选中的文档
 router.post('/api/deleteAllSelected',service.deleteAllSelected)
 
+//根据知识库id获取该知识库下所有文档
+router.get('/api/getDoscList/:storeName',service.getDoscList)
+
 module.exports = router

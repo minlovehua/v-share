@@ -23,7 +23,8 @@ export default {
                 user_name:this.$store.state.username,     //评论人
                 add_time:new Date(),                      //评论时间
                 content:''                                //评论的内容
-            }
+            },
+            msg:''
         };
     },
     created(){

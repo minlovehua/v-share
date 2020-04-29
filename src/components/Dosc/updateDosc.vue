@@ -8,7 +8,7 @@
                     <i class="el-icon-s-grid"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item @click.native="toplateform">返回工作台</el-dropdown-item>
+                    <el-dropdown-item @click.native="toplateform">返回团队发布</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>&nbsp;&nbsp;&nbsp;
             <span>{{doscForm.storeName}}</span>
@@ -70,7 +70,7 @@
                     }).catch(err=>console.log(err))                    
                 }
             },
-            toplateform(){         //返回 工作台
+            toplateform(){         //返回 团队发布
                 this.$router.replace('/platform').catch(data => {  });
             },
         }

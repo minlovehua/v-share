@@ -21,7 +21,7 @@
                 <el-dropdown class="user">
                     <span class="el-dropdown-link">
                         <!-- 显示头像图标 -->
-                        <!-- <i class="el-icon-user-solid"></i> -->
+                        <i class="el-icon-user"></i>
                         <!-- 主页右上角显示当前登录的用户名 -->
                         <span>{{$store.state.username}}</span>
                         <!-- <span>{{$store.state.role}}</span> -->
@@ -138,26 +138,21 @@
                     history.pushState(null, null, document.URL);
                 }, false);    
             },
-            getGroup(){ //向服务器端发送请求，获取团队(名称和简介)数据
+            getGroup(){     //向服务器端发送请求，获取团队(名称和简介)数据
                 this.$axios.get(this.HOST+'/api/getGroup',null).then(result=>{
-                    // console.log(result.data) //测试
                     if(result.data.msg == '查询成功'){
                         // 将团队名称和团队简介存储到vuex的store的state中
                         this.$store.commit('initGroup',{groupName:result.data.Agroup.groupName,description:result.data.Agroup.description})
                     }else{//查询失败
                         this.$store.commit('initGroup',{groupName:'查询失败',description:'查询失败'})
                     }
-                })
-                .catch(err=>{
-                    console.log(err)
-                })
+                }).catch(err=>console.log(err))
             }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    // Container布局容器样式
     #app {  //使得布局全屏的条件之一
         position: absolute;
         top: 0;
@@ -167,7 +162,6 @@
     }
     .box{
         height: 100%;
-        // background: #809477;
     }
     .box>.el-container{
         height: 100%;
@@ -188,18 +182,12 @@
         line-height: 200px;
     }
     .el-main {
-        // background-color: #E9EEF3;
-        // background: url('images/bg.jpg');
         background-size: cover; //让背景图片充满整个页面
         color: #333;
         text-align: center;
-        // line-height: 160px;
         //解决el-main中放Element-UI 的table时，表头高度设置不了的问题
         line-height: 30px !important;
     }
-    // body > .el-container {
-    //     margin-bottom: 40px;
-    // }
     .el-container:nth-child(5) .el-aside,
     .el-container:nth-child(6) .el-aside {
         line-height: 260px;
@@ -207,19 +195,12 @@
     .el-container:nth-child(7) .el-aside {
         line-height: 320px;
     }
-
-
-    //侧栏 NavMenu导航菜单
-    .el-col-12{
+    .el-col-12{//侧栏 NavMenu导航菜单
         height: 100%;
         width: 100%;
     }
-
-
-    //el-header里面的el-dropdown 下拉菜单
-    .el-header{
+    .el-header{ //el-header里面的el-dropdown 下拉菜单
         position: relative;
-        // background-color: #f9f5ef;
     }
     .el-dropdown{
         position: absolute;
@@ -238,34 +219,22 @@
     .el-icon-arrow-down {
         font-size: 12px;
     }
-
-    //主页右上角 当前登录用户名 样式
-    .el-dropdown-link span{
+    .el-dropdown-link span{//主页右上角 当前登录用户名 样式
         font-size: 16px;
     }
-
-    //主页左上角 团队的名称
-    .groupName{
+    .groupName{  //主页左上角 团队的名称
         width: 500px;
         display: inline-block;
         position: absolute;
         left: 20px;
         border-radius: 5px;
     }
-
     .el-header{
         position: relative;
     }
-
     .el-aside{ //解决了因为el-aside太长，导致页面出现滚动条的问题
         height: 100%;
-        // background-color: #e3eefa;
     }
-
-    //.el-menu{  
-        // background-color: #e3eefa;
-    //}
-
     .title{
         font-size: 20px;
         font-weight: 900;

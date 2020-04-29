@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="cardBox">
-            <div class="tip">最新发布</div>
+            <div class="tip">团队最新发布</div>
             <el-card class="box-card" v-for="item in doscForm" :key="item.id">
                 <div class="xx">
                     <div class="title">

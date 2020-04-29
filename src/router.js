@@ -34,12 +34,14 @@ import updateDosc from './components/Dosc/updateDosc.vue'
 //导入“查看全文”组件
 import lookDosc from './components/Dosc/lookDosc.vue'
 
+import showDoscList from './components/StoreHouse/showDoscList.vue'
+
 //创建路由对象
 var router = new VueRouter({
     routes:[ //配置路由规则
         //管理员
-        {path:'/',redirect:'/platform/document'},  //测试入口
-        // {path:'/',component:groupInit}, //团队初始化页面 【这个是要的】
+        // {path:'/',redirect:'/platform/document'},  //测试入口
+        {path:'/',component:groupInit}, //团队初始化页面 【这个是要的】
         // {path:'/',component:login},  //测试入口
         //用户注册、登录
         {path:'/start',component:start},
@@ -54,8 +56,8 @@ var router = new VueRouter({
                 {path:'/platform/document',component:document},
                 {path:'/platform/groups',component:groups},
                 {path:'/platform/storehouse',component:storehouse},
-                // {path:'/platform/manage',redirect:'/platform/manage/storehouse'}, //这个是要的
-                {path:'/platform/manage',redirect:'/platform/manage/members'},  //测试
+                {path:'/platform/manage',redirect:'/platform/manage/storehouse'}, //这个是要的
+                // {path:'/platform/manage',redirect:'/platform/manage/members'},  //测试
                 {path:'/platform/manage',component:groupManage,
                     children:[
                         {path:'/platform/manage/members',component:membersManage},
@@ -67,7 +69,8 @@ var router = new VueRouter({
         },
         {path:'/createDosc',name:'/createDosc',component:createDosc},
         {path:'/updateDosc',name:'/updateDosc',component:updateDosc},
-        {path:'/lookDosc',name:'/lookDosc',component:lookDosc}
+        {path:'/lookDosc',name:'/lookDosc',component:lookDosc},
+        {path:'/showDoscList',name:'/showDoscList',component:showDoscList}
     ]
 })
 

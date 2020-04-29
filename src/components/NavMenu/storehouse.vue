@@ -1,27 +1,11 @@
 <template>
     <!-- 文档界面 -->
     <div class="tableBox">
-        <div class="title">知识库<el-button type="primary" size="small">新建知识库</el-button></div>
-        <el-table
-        :data="tableData"
-        style="width: 100%"
-        fit>
-        <el-table-column
-            prop="name"
-            label="名称">
-        </el-table-column>
-        <el-table-column
-            prop="whose"
-            label="归属">
-        </el-table-column>
-        <el-table-column
-            prop="introduction"
-            label="简介">
-        </el-table-column>
-        <el-table-column
-            prop="edit"
-            label="操作">
-        </el-table-column>
+        <div class="title">知识库</div>
+        <!-- <div class="title">知识库<el-button type="primary" size="small">新建知识库</el-button></div> -->
+        <el-table :data="storehouse" style="width: 100%" @row-click="lookStore" fit>
+        <el-table-column prop="storeName" label="名称"></el-table-column>
+        <el-table-column prop="storeDesc" label="简介"></el-table-column>
         </el-table>
     </div>
 
@@ -31,23 +15,27 @@
     export default {
       data() {
         return {
-          tableData: [{
-            name:'后端开发',
-            whose:'locus',
-            introduction:'包括C++服务端, java web之类的',
-            edit:'管理'
-          }, {
-            name:'信安开发',
-            whose:'locus',
-            introduction:'学习信息安全的建议',
-            edit:'管理'
-          },{
-            name:'算法',
-            whose:'locus',
-            introduction:'包括数据结构, 算法分析',
-            edit:'管理'
-          }]
+          storehouse: [] //存储所有知识库
         }
+      },
+      created(){
+        this.getAllStore();
+      },
+      methods:{
+        getAllStore(){         //展示知识库
+            this.$axios.get(this.HOST+'/api/getAllStore').then(result=>{
+                if(result.data.msg == '知识库查询失败'){
+                    this.msg = result.data.msg;
+                }else{
+                    this.storehouse = result.data.result;
+                }
+            }).catch(err=>console.log(err))
+        },
+        lookStore(row, event, column){  //点击行，查看该知识库的所有文档列表
+          //解决了直接用this.$route.query.storehouse时页面刷新之后数据会丢失的问题（第一步）。第二步在showDoscList.vue
+          sessionStorage.setItem("storehouse",JSON.stringify(row))
+          this.$router.push({ name: '/showDoscList', query:{storehouse:row}}).catch(data=>{});
+        },
       }
     }
 </script>
