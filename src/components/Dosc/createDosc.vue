@@ -8,22 +8,19 @@
                     <i class="el-icon-s-grid"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item @click.native="toplateform">返回工作台</el-dropdown-item>
+                    <el-dropdown-item @click.native="toDocument">返回“我的文档”</el-dropdown-item>
                 </el-dropdown-menu>
-            </el-dropdown>&nbsp;&nbsp;&nbsp;
+            </el-dropdown>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <span>{{doscForm.storeName}}</span>
-            &nbsp;&nbsp;&nbsp;/&nbsp;
+            &nbsp;&nbsp;
             <!-- 这里的el-input必须给个宽度width，否则不会显示这个输入框 -->
             <el-input style="width:30%;" v-model="doscForm.doscName" placeholder="请输入文档标题"></el-input>
             <span style="color:skyblue;" id="Msg">{{this.msg}}</span>
             <button class="submitButton" @click="submit">提交</button>
         </div>     
         <div>
-            <mavon-editor 
-                v-model="doscForm.content" 
-                ref="md" 
-                @change="change" 
-                style="min-height: 600px"/>
+            <!-- markdown编辑器插件 -->
+            <mavon-editor v-model="doscForm.content" ref="md" @change="change" style="min-height: 600px"/>
         </div>
     </div>
 </template>
@@ -83,8 +80,8 @@
                     }).catch(err=>console.log(err))                  
                 }
             },            
-            toplateform(){        //返回 工作台
-                this.$router.replace('/platform').catch(data => {  });
+            toDocument(){        //返回"我的文档"
+                this.$router.replace('/platform/document').catch(data => {  });
             },
         }
     }

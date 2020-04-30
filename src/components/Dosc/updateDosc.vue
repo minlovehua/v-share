@@ -8,11 +8,11 @@
                     <i class="el-icon-s-grid"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item @click.native="toplateform">返回团队发布</el-dropdown-item>
+                    <el-dropdown-item @click.native="toplateform">返回到“团队发布”</el-dropdown-item>
                 </el-dropdown-menu>
-            </el-dropdown>&nbsp;&nbsp;&nbsp;
+            </el-dropdown>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <span>{{doscForm.storeName}}</span>
-            &nbsp;&nbsp;&nbsp;/&nbsp;
+            &nbsp;&nbsp;
             <!-- 这里的el-input必须给个宽度width，否则不会显示这个输入框 -->
             <el-input style="width:30%;" v-model="doscForm.doscName" placeholder="请输入内容"></el-input>
             <span style="color:skyblue;" id="Msg">{{this.msg}}</span>

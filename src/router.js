@@ -14,7 +14,9 @@ import login from './components/Login/login.vue'
 import register from './components/Login/register.vue'
 
 //导入登录之后的主页面组件
-import app from './App.vue'
+import app from './App.vue'  //这个是要的
+// import app from './test.vue'     //测试
+
 //导入侧边栏对应的组件
 import collection from './components/NavMenu/collection.vue'
 import deletehouse from './components/NavMenu/deletehouse.vue'

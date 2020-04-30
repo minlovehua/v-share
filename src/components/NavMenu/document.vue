@@ -27,10 +27,10 @@
       <!-- 新建文档 -->
       <div class="createDoscBox" v-if="flag">
         <div class="title">
-          新建文档<br/><span>请先选择一个知识库</span>
+          新建文档<br/><span>请先选择一个知识库吧</span>
         </div>
         <div class="tag"  v-for="item in storehouse" :key="item.storeName">
-          <el-tag type="info" @click="createDosc(item.storeName)">{{item.storeName}}</el-tag>
+          <el-tag @click="createDosc(item.storeName)">{{item.storeName}}</el-tag>
         </div>
       </div>
     </div>
@@ -106,75 +106,82 @@
 </script>
 
 <style lang="scss">
-    .Box{
-      width: 100%;
-    }
+  .Box{
+    width: 100%;
 
-    //给table弄一个浅灰色外边框
     .tableBox{  
-        border: 1px solid rgb(214, 214, 214);
-        width: 70%;
-        float:left;
-        background-color: rgba($color: white, $alpha: 0.1);
-
-      //标题
-      .title{
+      width: 70%;
+      float:left;
+      .title{  //标题
         width: 100%;
         height: 50px;
         padding: 10px;
         text-align: left;
         font-size: 18px;
         background-color: snow;
-        // background-color: rgba($color: white, $alpha: 0.1);
         box-sizing: border-box;
         border-bottom: 1px solid #eaeaea;
         position: relative;
+        .newDosc{ //'新建文档'按钮
+          position: absolute;
+          right: 10px;
+        }
       }
 
-      //'新建文档'按钮
-      .newDosc{
-        position: absolute;
-        right: 10px;
+      //Dialog弹框
+      .el-dialog{
+        .el-dialog__header {
+            padding: 20px !important;
+            text-align: left;
+        }
+        .el-dialog__body {
+            padding: 20px !important;
+            color: white;
+            font-size: 18px;
+            word-break: break-all;
+        }
+        .el-dialog__footer {
+            padding: 20px !important;
+            text-align: right;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
       }
 
       .caozuo{ //"编辑"按钮的父元素，即“操作”
         position: relative;
-      }
-
-      .edit{ //“编辑”按钮
-        position: absolute;
-        left: 9px;
-        top: 5px;
-      }
-      .delete{
-        position: absolute;
-        left: 69px;
-        top: 5px;
+        .edit{ //“编辑”按钮
+          position: absolute;
+          left: 9px;
+          top: 5px;
+        }
+        .delete{
+          position: absolute;
+          left: 69px;
+          top: 5px;
+        }
       }
     }
-    
-    //右侧“新建文档”操作框
-    .createDoscBox{
+
+    .createDoscBox{  //右侧“新建文档”操作框
       width: 25%;
       float: right;
-      // height: 300px;
       border-radius: 5px 5px;
-      // border: 1px solid #eaeaea;
       border: 1px solid #c7c6c6;
-
+      background-color: white;
       .title{
         width: 100%;
         height: 70px;
         padding: 10px;
         text-align: left;
         font-size: 18px;
+        // color: white;
         box-sizing: border-box;
         border-bottom: 1px solid #c7c6c6;
         position: relative;
-
         span{
           font-size: 14px;
-          color: rgb(17, 15, 19);
+          // color: white;
         }
       }
 
@@ -182,30 +189,10 @@
         display: inline-block;
         margin: 5px;
         padding: 5px;
-
         .el-tag{
           background-color: white;
         }
       }
     }
-
-    //Dialog弹框
-    .el-dialog{
-      .el-dialog__header {
-          padding: 20px !important;
-          text-align: left;
-      }
-      .el-dialog__body {
-          padding: 20px !important;
-          color: #606266;
-          font-size: 18px;
-          word-break: break-all;
-      }
-      .el-dialog__footer {
-          padding: 20px !important;
-          text-align: right;
-          -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-      }
-    }
+  }
 </style>

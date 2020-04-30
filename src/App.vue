@@ -3,38 +3,42 @@
     <div class="box">
         <el-container>
 
+            
             <!-- 主页头部 el-header-->
             <el-header>
-                <!-- <div class="groupName">团队：{{$store.state.groupName}} 简介：{{$store.state.description}}</div> -->
-                <span class="title">团队内部知识共享平台系统</span>
+                <span class="title">团&nbsp;队&nbsp;内&nbsp;部&nbsp;知&nbsp;识&nbsp;共&nbsp;享&nbsp;平&nbsp;台</span>
+
                 <!-- 主页右上角的“+”新建按钮 el-dropdown-->
-                <el-dropdown class="create">
+                 <!--<el-dropdown class="create">
                     <span class="el-dropdown-link">
                         <i class="el-icon-circle-plus"></i><i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>新建文档</el-dropdown-item>
                         <el-dropdown-item>新建知识库</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
+                    </el-dropdown-menu> 
+                </el-dropdown>-->     <!--待实现 -->
+
+
                 <!-- 主页右上角的“用户”按钮 el-dropdown-->
                 <el-dropdown class="user">
                     <span class="el-dropdown-link">
                         <!-- 显示头像图标 -->
-                        <i class="el-icon-user"></i>
+                        <i class="el-icon-user"></i>&nbsp;
                         <!-- 主页右上角显示当前登录的用户名 -->
                         <span>{{$store.state.username}}</span>
                         <!-- <span>{{$store.state.role}}</span> -->
                         <i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>个人主页</el-dropdown-item>
-                        <el-dropdown-item>账户设置</el-dropdown-item>
+                        <!-- <el-dropdown-item>个人主页</el-dropdown-item> -->  <!--待实现 -->
+                        <!-- <el-dropdown-item>账户设置</el-dropdown-item> -->  <!--待实现 -->
                         <!-- dropdown的点击事件@click无效，要@click.native才有效 -->
                         <el-dropdown-item @click.native="exit">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </el-header>
+            
 
             <!-- 主页中间部分（除了页头和页脚） -->
             <el-container>
@@ -45,6 +49,9 @@
                             <el-menu
                             :default-active="this.$route.path"
                             class="el-menu-vertical-demo"
+                            background-color="#0000"
+                            text-color="#fff"
+                            active-text-color="#0af7d6"
                             router>
                             <el-menu-item index="/platform" >
                                 <i class="el-icon-menu"></i>
@@ -77,7 +84,7 @@
                             </el-menu-item>
                             </el-menu>
                         </el-col>
-                    </el-row>
+                    </el-row> 
                 </el-aside>
 
                 <!-- 主页中间放其它组件的大块区域 el-main -->
@@ -89,8 +96,7 @@
             </el-container>
 
             <!-- 主页页脚部分 el-footer -->
-            <!-- <el-footer>Footer</el-footer> -->
-
+            <el-footer>Finished By Wmm-2020</el-footer>
         </el-container>
     </div>
 </template>
@@ -152,7 +158,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     #app {  //使得布局全屏的条件之一
         position: absolute;
         top: 0;
@@ -162,24 +168,41 @@
     }
     .box{
         height: 100%;
+        min-width: 1000px;
+        min-height: 600px;
     }
     .box>.el-container{
         height: 100%;
+        background: url('images/bg3.jpg');
+        background-size: cover;
     }
-    .el-aside { //使得布局全屏的条件之二
-        height:100vh;
+    .el-header{
+        color: white;
+        text-align: center;
+        line-height: 60px;
+        position: relative;
+        // padding-left: 30%;
+        border-bottom: 1px solid rgb(151, 149, 149);
+        .title{
+            font-size: 26px;
+            font-weight: 500;
+            // background-color: rgba($color: black, $alpha: 0.9);
+            padding: 0px 3px;
+            text-shadow: 2px 2px 2px rgb(12, 12, 11); //水平位置 垂直位置 模糊距离 阴影颜色
+        }
     }
-    .el-header, .el-footer {
-        background-color: white;
-        border-bottom: 1px solid rgba($color: #000000, $alpha:0.1);
-        color: #333;
+    .el-footer {
+        color: white;
         text-align: center;
         line-height: 60px;
     }
     .el-aside {
-        color: #333;
+        color: red;
         text-align: center;
         line-height: 200px;
+        border-right: 1px solid rgb(151, 149, 149);
+        // height:100vh; //使得布局全屏的条件之二
+        height: 100%; //解决了因为el-aside太长，导致页面出现滚动条的问题
     }
     .el-main {
         background-size: cover; //让背景图片充满整个页面
@@ -187,35 +210,36 @@
         text-align: center;
         //解决el-main中放Element-UI 的table时，表头高度设置不了的问题
         line-height: 30px !important;
-        background: url('images/bg.jpg');
         background-size: cover;
     }
-    .el-container:nth-child(5) .el-aside,
-    .el-container:nth-child(6) .el-aside {
-        line-height: 260px;
-    }
-    .el-container:nth-child(7) .el-aside {
-        line-height: 320px;
+    .el-menu {
+        border-right: solid 0px #0000;
+        list-style: none;
+        position: relative;
+        margin: 0;
+        padding-left: 0;
+        i{
+            color: white;
+        }
     }
     .el-col-12{//侧栏 NavMenu导航菜单
         height: 100%;
         width: 100%;
-    }
-    .el-header{ //el-header里面的el-dropdown 下拉菜单
-        position: relative;
     }
     .el-dropdown{
         position: absolute;
     }
     .create{
         right: 15%;
+        margin-right: 30px;
     }
     .user{
         right: 5%;
     }
     .el-dropdown-link {
         cursor: pointer;
-        color: #409EFF;
+        // color: #409EFF;
+        color: white;
         font-size: 18px;  //设置子元素icon（i）的图标的大小
     }
     .el-icon-arrow-down {
@@ -224,24 +248,5 @@
     .el-dropdown-link span{//主页右上角 当前登录用户名 样式
         font-size: 16px;
     }
-    .groupName{  //主页左上角 团队的名称
-        width: 500px;
-        display: inline-block;
-        position: absolute;
-        left: 20px;
-        border-radius: 5px;
-    }
-    .el-header{
-        position: relative;
-    }
-    .el-aside{ //解决了因为el-aside太长，导致页面出现滚动条的问题
-        height: 100%;
-    }
-    .title{
-        font-size: 20px;
-        font-weight: 900;
-    }
+
 </style>
-
-
-

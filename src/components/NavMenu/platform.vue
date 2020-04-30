@@ -3,7 +3,7 @@
         <div class="cardBox">
             <div class="tip">团队最新发布</div>
             <el-card class="box-card" v-for="item in doscForm" :key="item.id">
-                <div class="xx">
+                <div class="eachCard">
                     <div class="title">
                         <span><i class="el-icon-document"></i>&nbsp;{{item.doscName}}</span>                 
                     </div>
@@ -49,42 +49,44 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .cardBox{
         width: 70%;
-        // background-color: bisque;
         box-sizing: border-box;
         padding: 10px;
-    }
-    .el-card{
-        padding: 0px;
-        margin: 10px;
-        background-color: rgba($color: white, $alpha: 0.6);  //设置背景颜色和透明度
-    }
-    .xx{
-        height: 30px;  //必须给高度，否则不会垂直居中对齐，而是偏下
-        position: relative;
-    }
-    .title{
-        float: left;
-    }
-    .doscMsg{
-        position: absolute;
-        right: 10px;
-    }
-    .title span{
-        font-size: 20px;
-        font-weight: 900;
-        text-align: left;
-    }
-    .edit{
-        color:rgb(6, 65, 241)
-    }
-    .tip{
-        font-size: 22px;
-        color: rgb(189, 192, 8);
-        font-weight: 900;
-        text-align: left;
-        margin-left: 10px;
+        .tip{
+            font-size: 18px;
+            // color: rgb(189, 192, 8);
+            color: white;
+            text-align: left;
+            margin-left: 10px;
+        }
+        .el-card{
+            padding: 0px;
+            margin: 15px 10px;
+            background-color: rgba($color: white, $alpha: 1.0);  //设置背景颜色和透明度
+            .el-card__body {
+                padding: 15px;
+            }
+            .eachCard{
+                height: 30px;  //必须给高度，否则不会垂直居中对齐，而是偏下
+                position: relative;
+                .title{
+                    float: left;
+                    span{
+                        font-size: 18px;
+                        font-weight: 600;
+                        text-align: left;
+                    } 
+                }
+                .doscMsg{
+                    position: absolute;
+                    right: 10px;
+                    .edit{
+                        color:rgb(6, 65, 241)
+                    }
+                }
+            }
+        }
     }
 </style>

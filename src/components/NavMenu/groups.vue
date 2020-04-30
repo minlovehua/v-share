@@ -104,13 +104,13 @@
       width: 100%;
       height: 100%;
       position: relative;
-      overflow-y: auto;
-      // background: url('../../images/bg.jpg');
       background-size: cover;
+      color: white;
 
       .box{
         width: 70%;
-        border: 1px solid rgb(211, 209, 209);
+        border: 1px solid rgb(12, 12, 11);
+        background-color: white;
         position: absolute;
         left: 50%;
         top: 50%;
@@ -119,7 +119,8 @@
         justify-content: space-between;
         .left{
           width: 40%;
-          background-color: rgba($color: rgb(241, 227, 248), $alpha: 0.7);
+          // background-color: rgba($color: rgb(241, 227, 248), $alpha: 0.5);
+          background-color: rgba($color: rgb(12, 12, 11), $alpha: 0.3);
           border-right: 1px solid rgb(211, 209, 209);
           padding: 50px 20px;
           position: relative;
@@ -137,7 +138,8 @@
         }
         .right{
           width: 60%;
-          background-color: rgba($color: rgb(236, 252, 215), $alpha: 0.7);
+          // background-color: rgba($color: rgb(236, 252, 215), $alpha: 0.5);
+          background-color: rgba($color: rgb(12, 12, 11), $alpha: 0.3);
           .members{
             text-align:left;
             padding:50px 20px;
@@ -150,5 +152,3 @@
       }
     }
 </style>
-
-
