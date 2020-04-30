@@ -281,3 +281,14 @@ exports.getDoscList = (req,res)=>{
         }
     })    
 }
+
+//获取可用邀请码
+exports.getUseCode = (req,res)=>{
+    db.base("select * from identifycode where flag = ?",'true',(result)=>{
+        if(result.length){ //查询成功
+            return res.json({msg:'查询可用邀请码成功',code:result});
+        }else{
+            return res.json({msg:'查询可用邀请码失败'});
+        }
+    })        
+}

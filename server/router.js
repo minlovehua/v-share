@@ -64,4 +64,7 @@ router.post('/api/deleteAllSelected',service.deleteAllSelected)
 //根据知识库id获取该知识库下所有文档
 router.get('/api/getDoscList/:storeName',service.getDoscList)
 
+//获取可用邀请码
+router.get('/api/getUseCode',service.getUseCode)
+
 module.exports = router

@@ -1,39 +1,33 @@
 <template>
     <!-- 团队界面 -->
     <div class="group-container">
-      <div class="tableBox">
-          <div class="title">我参与的团队<el-button type="primary" size="small" @click="createGroup">新建团队</el-button></div>
-          <el-table
-          :data="tableData"
-          style="width: 100%"
-          fit>
-          <el-table-column
-              prop="name"
-              label="名称">
-          </el-table-column>
-          <el-table-column
-              prop="introduction"
-              label="简介">
-          </el-table-column>
-          <el-table-column
-              prop="member"
-              label="成员">
-          </el-table-column>
-          </el-table>
-      </div>
-
-      <!-- 点击“新建团队”后的弹框 -->
-      <div class="editCreateGroup" v-if="dialogVisible">
-        <div class="dialogTitle">新建团队 <span> 一起编写文档、交流想法、沉淀经验</span>
-        <el-button type="primary" size="small" @click="dialogVisible = false">确定新建</el-button></div>
-        <el-form :label-position="labelPosition" label-width="60px" :model="formLabelAlign">
-          <el-form-item label="名称">
-            <el-input v-model="formLabelAlign.name" placeholder="请输入团队的名称"></el-input>
-          </el-form-item>
-          <el-form-item label="简介">
-            <el-input v-model="formLabelAlign.description" type="textarea" :rows="2" placeholder="简单介绍一下你的团队吧"></el-input>
-          </el-form-item>
-        </el-form>
+      <div class="box">
+        <!-- 展示团队 -->
+        <div class="left">
+          <div class="leftson">
+            <div class="groupName"><i class="el-icon-s-home"></i>&nbsp;&nbsp;{{$store.state.groupName}}</div>
+            <span>{{$store.state.description}}</span>
+          </div>
+        </div>
+        <!-- 展示团队成员 -->
+        <div class="right">
+          <div class="members">
+            <h3>已有成员</h3>
+            <div  v-for="item in members" :key="item.username" style="display:inline-block">
+                <span><i class="el-icon-user"></i>&nbsp;&nbsp;{{item.username}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </div>
+          </div>
+          <div class="codes"  v-if="$store.state.role==1?true:false" >
+            <h3>邀请新成员</h3>
+            可用邀请码<br/>
+            <div v-for="item in useCode" :key="item.id" style="display:inline-block;margin-bottom: 5%;">
+              <span>{{item.code}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </div>
+            <br/>
+            <el-button type="primary" size="small" @click="randomCode" style="foat: left;">生成邀请码</el-button>
+            <span v-text="identityCode.code"></span>
+          </div>
+        </div>
       </div>
     </div>
 </template>
@@ -42,23 +36,64 @@
     export default {
       data() {
         return {
-          tableData: [{
-            name:'Locus',
-            introduction:'这是一个有爱的强大的团队',
-            member:'13人'
-          }],
-          dialogVisible: false,
-          labelPosition: 'right',
-          formLabelAlign: {
-            name: '',
-            description: ''
-          }
+          members:[], //团队成员
+          msg:'',     //测试
+          identityCode:{  //邀请码
+              code:'',
+              flag:'true'
+          },
+          jschars:['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 
+          'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+          useCode:[] //可用邀请码
         };
       },
+      created(){
+        // created钩子函数：实例已经在内存中创建OK，此时 data 和 methods 已经创建OK，此时还没有开始 编译模板。
+        //解决主页刷新之后store中数据丢失(导致主页右上角当前登录用户名消失)的问题 --- 第三步(共三步)
+        //2.在页面加载时再从localStorage里将数据取回来放到vuex里。
+        //在页面加载时读取localStorage里的状态信息
+        localStorage.getItem("stateMsg") && 
+        this.$store.replaceState(Object.assign(this.$store.state,JSON.parse(localStorage.getItem("stateMsg"))));
+        //在页面刷新时将vuex里的信息保存到localStorage里（当浏览器窗口关闭或者刷新时,会触发beforeunload事件。）
+        window.addEventListener("beforeunload",()=>{
+            localStorage.setItem("stateMsg",JSON.stringify(this.$store.state))
+        })
+        
+        this.getAllMember(); //获取团队所有成员
+        this.getUseCode();   //获取可用邀请码
+      },
       methods:{
-        createGroup(){
-          //点击“新建团队”后显示弹框
-          this.dialogVisible = true;
+        getAllMember(){  //查询团队成员
+            this.$axios.get(this.HOST+'/api/getAllMember').then(result=>{
+                if(result.data.msg == '查询团队所有成员失败'){
+                    this.msg = result.data.msg;
+                }else{
+                    this.members = result.data.result;
+                }
+            }).catch(err=>console.log(err))
+        },
+        randomCode(){   //生成随机邀请码
+            var newCode = "";
+            for (var i = 0; i < 4 ; i++) {
+                var id = Math.ceil(Math.random() * 35);
+                newCode += this.jschars[id];
+            }
+            this.$axios.post(this.HOST+'/api/isCode',{code:newCode,flag:'true'}).then(result=>{  //判断数据库有没有该邀请码
+                if(result.data.msg == '该邀请码可以使用'){ //如果数据库没有该邀请码，则插入数据库，并显示在页面上
+                    this.identityCode.code = newCode;
+                }else{
+                    randomCode();  //如果数据库已经有该邀请码，重新生成邀请码
+                }
+            }).catch(err=>console.log(err))
+        },
+        getUseCode(){   //获取可用邀请码
+          this.$axios.get(this.HOST+'/api/getUseCode').then(result=>{
+            if(result.data.msg == '查询可用邀请码失败'){
+              this.msg = result.data.msg;
+            }else{
+              this.useCode = result.data.code;
+            }
+          }).catch(err=>console.log(err))
         }
       }
     }
@@ -66,65 +101,54 @@
 
 <style lang="scss" scoped>
     .group-container{
-      width: 90%;
-      background-color: rosybrown;
-      position: relative;
-    }
-
-    //给table弄一个浅灰色外边框
-    .tableBox{  
-        border: 1px solid rgb(214, 214, 214);
-        width: 100%;
-    }
-
-    //点击“新建团队”后的弹框
-    .editCreateGroup{
       width: 100%;
-      // height: 100px;
-      background-color: rgba($color: snow, $alpha: 1.0);
-      margin-top: 20px;
-
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    //table的标题
-    .title{
-      width: 100%;
-      height: 50px;
-      padding: 10px;
-      text-align: left;
-      background-color: snow;
-      box-sizing: border-box;
-      border-bottom: 1px solid #eaeaea;
+      height: 100%;
       position: relative;
-    }
+      overflow-y: auto;
+      // background: url('../../images/bg.jpg');
+      background-size: cover;
 
-    //'新建团队'按钮
-    .el-button{
-      position: absolute;
-      right: 10px;
-    }
-
-    //新建团队弹框的 标题
-    .dialogTitle{
-      padding: 10px;
-      text-align: left;
-      border-bottom: 1px solid #eaeaea;
-      span{
-        font-size: 14px;
-        color: rgba($color: rgb(102, 99, 99), $alpha: 0.7);
+      .box{
+        width: 70%;
+        border: 1px solid rgb(211, 209, 209);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        display: flex;
+        justify-content: space-between;
+        .left{
+          width: 40%;
+          background-color: rgba($color: rgb(241, 227, 248), $alpha: 0.7);
+          border-right: 1px solid rgb(211, 209, 209);
+          padding: 50px 20px;
+          position: relative;
+          .leftson{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            .groupName{
+              font-weight: 900;
+              font-size: 22px;
+              margin-bottom: 38%;
+            }
+          }
+        }
+        .right{
+          width: 60%;
+          background-color: rgba($color: rgb(236, 252, 215), $alpha: 0.7);
+          .members{
+            text-align:left;
+            padding:50px 20px;
+          }
+          .codes{
+            text-align:left;
+            padding:50px 20px;
+          }
+        }
       }
     }
-
-  .el-form{  //让form的输入框不要贴到右边
-    padding-right: 20px;
-  }
-
-  .el-form-item {
-    margin-top: 20px;
-  }
 </style>
 
 

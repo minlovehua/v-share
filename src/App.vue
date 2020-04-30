@@ -5,7 +5,7 @@
 
             <!-- 主页头部 el-header-->
             <el-header>
-                <div class="groupName">团队：{{$store.state.groupName}} 简介：{{$store.state.description}}</div>
+                <!-- <div class="groupName">团队：{{$store.state.groupName}} 简介：{{$store.state.description}}</div> -->
                 <span class="title">团队内部知识共享平台系统</span>
                 <!-- 主页右上角的“+”新建按钮 el-dropdown-->
                 <el-dropdown class="create">
@@ -187,6 +187,8 @@
         text-align: center;
         //解决el-main中放Element-UI 的table时，表头高度设置不了的问题
         line-height: 30px !important;
+        background: url('images/bg.jpg');
+        background-size: cover;
     }
     .el-container:nth-child(5) .el-aside,
     .el-container:nth-child(6) .el-aside {
