@@ -17,7 +17,7 @@
           </el-table>
           <!-- 弹框确认是否删除文档 -->
           <el-dialog title="确定要删除这篇文档吗？" :visible.sync="dialogVisible" width="30%">
-            <span>您删除的文档将被移动到回收站！</span>
+            <span class="tips">您删除的文档将被移动到回收站！</span>
             <span slot="footer" class="dialog-footer">
               <el-button class="cancelButton" type="primary" size="mini" @click="dialogVisible = false">取 消</el-button>
               <el-button class="sureButton" type="primary" size="mini" @click="sureDelete()">确 定</el-button>
@@ -27,7 +27,7 @@
       <!-- 新建文档 -->
       <div class="createDoscBox" v-if="flag">
         <div class="title">
-          新建文档<br/><span>请先选择一个知识库吧</span>
+          <i class="el-icon-plus"></i>&nbsp;新建文档<br/><span>请先选择一个知识库吧</span>
         </div>
         <div class="tag"  v-for="item in storehouse" :key="item.storeName">
           <el-tag @click="createDosc(item.storeName)">{{item.storeName}}</el-tag>
@@ -109,7 +109,7 @@
   .Box{
     width: 100%;
 
-    .tableBox{  
+    .tableBox{       //展示所有文档
       width: 70%;
       float:left;
       .title{  //标题
@@ -127,16 +127,14 @@
           right: 10px;
         }
       }
-
-      //Dialog弹框
-      .el-dialog{
+      .el-dialog{ //Dialog弹框
         .el-dialog__header {
             padding: 20px !important;
             text-align: left;
         }
         .el-dialog__body {
             padding: 20px !important;
-            color: white;
+            color: black;
             font-size: 18px;
             word-break: break-all;
         }
@@ -147,7 +145,6 @@
             box-sizing: border-box;
         }
       }
-
       .caozuo{ //"编辑"按钮的父元素，即“操作”
         position: relative;
         .edit{ //“编辑”按钮
@@ -167,24 +164,21 @@
       width: 25%;
       float: right;
       border-radius: 5px 5px;
-      border: 1px solid #c7c6c6;
-      background-color: white;
+      border: 5px solid snow; //#c7c6c6
       .title{
         width: 100%;
         height: 70px;
         padding: 10px;
         text-align: left;
         font-size: 18px;
-        // color: white;
         box-sizing: border-box;
         border-bottom: 1px solid #c7c6c6;
+        background-color: rgba($color: snow, $alpha: 1);
         position: relative;
         span{
           font-size: 14px;
-          // color: white;
         }
       }
-
       .tag{
         display: inline-block;
         margin: 5px;

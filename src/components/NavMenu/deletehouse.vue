@@ -21,7 +21,7 @@
           </el-table>
           <!-- 弹框确认是否恢复文档 -->
           <el-dialog title="确定要恢复文档吗？" :visible.sync="returnVisible" width="30%">
-            <span>文档将恢复到【我的文档】模块</span>
+            <span class="tips">文档将恢复到【我的文档】模块</span>
             <span slot="footer" class="dialog-footer">
               <el-button class="cancelButton" type="primary" size="mini" @click="returnVisible = false">取 消</el-button>
               <el-button class="sureButton" type="primary" size="mini" @click="returnTOMyDosc()">确 定</el-button>
@@ -29,7 +29,7 @@
           </el-dialog> 
           <!-- 弹框确认是否彻底删除文档 -->
           <el-dialog title="确定要彻底删除此文档吗？" :visible.sync="dialogVisible" width="30%">
-            <span>慎重考虑哦！</span>
+            <span class="tips">慎重考虑哦！</span>
             <span slot="footer" class="dialog-footer">
               <el-button class="cancelButton" type="primary" size="mini" @click="dialogVisible = false">取 消</el-button>
               <el-button class="sureButton" type="primary" size="mini" @click="verySureDelete()">确 定</el-button>
@@ -131,10 +131,10 @@
 
     //给table弄一个浅灰色外边框
     .tableBox{  
-        border: 1px solid rgb(214, 214, 214);
-        width: 70%;
-        float:left;
-        background-color: rgba($color: white, $alpha: 0.1);
+      border: 1px solid rgb(214, 214, 214);
+      width: 70%;
+      float:left;
+      background-color: rgba($color: white, $alpha: 0.1);
 
       //标题
       .title{
@@ -148,6 +148,9 @@
         box-sizing: border-box;
         border-bottom: 1px solid #eaeaea;
         position: relative;
+      }
+      .el-dialog .tips{
+        color: black;
       }
 
       //'新建文档'按钮

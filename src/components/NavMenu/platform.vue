@@ -1,13 +1,13 @@
 <template>
     <div>
         <div class="cardBox">
-            <div class="tip">团队最新发布</div>
+            <div class="tip">团&nbsp;队&nbsp;最&nbsp;新&nbsp;发&nbsp;布</div>
             <el-card class="box-card" v-for="item in doscForm" :key="item.id">
                 <div class="eachCard">
-                    <div class="title">
+                    <div class="title">    <!-- 左边 -->
                         <span><i class="el-icon-document"></i>&nbsp;{{item.doscName}}</span>                 
                     </div>
-                    <div class="doscMsg">
+                    <div class="doscMsg">  <!-- 右边 -->
                         <span><i class="el-icon-folder"></i>&nbsp;{{item.storeName}}</span>&nbsp;&nbsp;
                         <span><i class="el-icon-user"></i>&nbsp;{{item.author}}</span>&nbsp;&nbsp;
                         <span><i class="el-icon-time"></i>&nbsp;{{item.updateTime|dateFormat}}</span> &nbsp;&nbsp;
@@ -60,6 +60,7 @@ export default {
             color: white;
             text-align: left;
             margin-left: 10px;
+            text-shadow: 1px 1px 2px rgb(12, 12, 11); //水平位置 垂直位置 模糊距离 阴影颜色
         }
         .el-card{
             padding: 0px;
@@ -70,18 +71,21 @@ export default {
             }
             .eachCard{
                 height: 30px;  //必须给高度，否则不会垂直居中对齐，而是偏下
-                position: relative;
+                // position: relative;
+                display: flex;
+                justify-content: space-between;
                 .title{
-                    float: left;
+                    // position: absolute;
+                    // left: 10px;
                     span{
                         font-size: 18px;
                         font-weight: 600;
                         text-align: left;
-                    } 
+                    }
                 }
                 .doscMsg{
-                    position: absolute;
-                    right: 10px;
+                    // position: absolute;
+                    // right: 10px;
                     .edit{
                         color:rgb(6, 65, 241)
                     }

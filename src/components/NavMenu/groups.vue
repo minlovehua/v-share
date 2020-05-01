@@ -1,11 +1,12 @@
 <template>
     <!-- 团队界面 -->
     <div class="group-container">
-      <div class="box">
+      <div class="groupbox">
         <!-- 展示团队 -->
         <div class="left">
           <div class="leftson">
-            <div class="groupName"><i class="el-icon-s-home"></i>&nbsp;&nbsp;{{$store.state.groupName}}</div>
+            <i class="el-icon-s-home"></i>
+            <div class="groupName">{{$store.state.groupName}}</div>
             <span>{{$store.state.description}}</span>
           </div>
         </div>
@@ -107,10 +108,11 @@
       background-size: cover;
       color: white;
 
-      .box{
+      .groupbox{
         width: 70%;
+        min-height: 500px;
         border: 1px solid rgb(12, 12, 11);
-        background-color: white;
+        background-color: rgba($color: snow, $alpha: 0.1);
         position: absolute;
         left: 50%;
         top: 50%;
@@ -119,27 +121,28 @@
         justify-content: space-between;
         .left{
           width: 40%;
-          // background-color: rgba($color: rgb(241, 227, 248), $alpha: 0.5);
-          background-color: rgba($color: rgb(12, 12, 11), $alpha: 0.3);
           border-right: 1px solid rgb(211, 209, 209);
           padding: 50px 20px;
           position: relative;
+          background: url('../../images/groupLeft.jpg');
+          background-size: cover;
           .leftson{
+            width: 80%;
             position: absolute;
             left: 50%;
-            top: 50%;
+            top: 30%;
             transform: translate(-50%,-50%);
             .groupName{
               font-weight: 900;
               font-size: 22px;
-              margin-bottom: 38%;
+              margin-bottom: 18%;
             }
           }
         }
         .right{
           width: 60%;
-          // background-color: rgba($color: rgb(236, 252, 215), $alpha: 0.5);
-          background-color: rgba($color: rgb(12, 12, 11), $alpha: 0.3);
+          background: url('../../images/groupRight.jpg');
+          background-size: cover;
           .members{
             text-align:left;
             padding:50px 20px;

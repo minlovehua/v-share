@@ -1,7 +1,6 @@
 <template>
     <div class="container">
         <div class="v-header">
-            <!-- <el-button> -->
                 <el-dropdown>
                     <span class="el-dropdown-link">
                         <i class="el-icon-s-grid"></i>
@@ -11,15 +10,13 @@
                         <el-dropdown-item @click.native="toplateform">返回团队发布</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
-            <!-- </el-button> -->
-
         </div>
         <div class="v-body">
-            <span class="title">{{this.storehouse.storeName}}</span>
+            <span class="title"><i class="el-icon-folder-opened"></i>&nbsp;{{this.storehouse.storeName}}</span>
             <span class="desc">{{this.storehouse.storeDesc}}</span>
-            <div class="box" v-for="item in this.doscs" :key="item.id">
-                <span class="doscName" @click="lookDosc(item)">{{item.doscName}}</span>
-                <span class="haha">{{item.author}}&nbsp;&nbsp;&nbsp;{{item.updateTime|dateFormat}}</span>
+            <div class="showbox" v-for="item in this.doscs" :key="item.id">
+                <span class="doscName" @click="lookDosc(item)"><i class="el-icon-document"></i>&nbsp;&nbsp;{{item.doscName}}</span>
+                <span class="authorAndTime"><i class="el-icon-user"></i>&nbsp;{{item.author}}&nbsp;&nbsp;&nbsp;<i class="el-icon-time"></i>&nbsp;{{item.updateTime|dateFormat}}</span>
             </div>
             <div class="msg">{{this.msg}}</div>
         </div>
@@ -81,58 +78,70 @@ export default {
     .container{
         width: 100%;
         height: 100%;
-        // background: url('../../images/bg.jpg');
-        background-color: #809477; //#809477
+        min-height: 700px;
+        min-width: 1500;
+        background: url('../../images/bg3.jpg');
+        // background-color: #809477; //#809477
         background-size: cover;
 
         .v-header{
             height: 50px;
             line-height: 50px;
             padding-left: 20px;
-            background-color: white;
+            background-color: #0000;
             border-bottom: gray;
             .el-dropdown-link { //下拉框
                 cursor: pointer;
-                color: gray;
                 font-size: 22px;
+                i{
+                    font-size: 28px;
+                    color: white;
+                }
             }
         }
 
         .v-body{
             width: 50%;
-            height: 500px; //测试
-            background-color: white;
+            min-height: 500px; //测试
+            min-width: 390px;
+            background-color: rgba($color: snow, $alpha: 0.1);
+            border-radius: 5px;
             position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 30%;
+            transform: translateX(-30%);
             margin-top: 50px;
             padding: 0 100px;
             .title{
                 display: block;
                 text-align: center;
-                margin: 10px;
+                margin: 20px 0px 10px;
                 font-size: 22px;
+                color: white;
+                text-shadow: 2px 2px 2px black;
             }
             .desc{
-                margin: 10px;
+                margin: 10px 0px 20px;
                 display: block;
                 text-align: center;
-                color: darkgrey;
+                color: white;
+                text-shadow: 2px 2px 2px black;
             }
             
-            .box{
+            .showbox{
                 display: flex;
                 justify-content: space-between;
-                margin-top: 30px;
+                padding: 5px 0px;
                 .doscName{
                     font-size: 18px;
-                    color:rgb(99, 97, 97)
+                    color:white;
+                text-shadow: 2px 2px 2px black;
                 }
                 .doscName:hover{
-                    color: rgb(46, 132, 243);
+                    color:rgb(33, 158, 231);
                 }
-                .haha{
-                    color:rgb(180, 176, 175);
+                .authorAndTime{
+                    color:white; //rgb(61, 60, 60)
+                text-shadow: 2px 2px 2px black;
                 }
             }
             .msg{

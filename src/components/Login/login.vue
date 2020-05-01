@@ -110,7 +110,7 @@
         width: 80%;
     }
     .login-container{  //登录div
-        background: url('../../images/bg.jpg');
+        background: url('../../images/bg3.jpg');
         background-size: cover;
         height: 100%;
     }

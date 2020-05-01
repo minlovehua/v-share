@@ -1,6 +1,6 @@
 <template>
     <!-- 主页 -->
-    <div class="box">
+    <div class="appBox">
         <el-container>
 
             
@@ -26,7 +26,7 @@
                         <!-- 显示头像图标 -->
                         <i class="el-icon-user"></i>&nbsp;
                         <!-- 主页右上角显示当前登录的用户名 -->
-                        <span>{{$store.state.username}}</span>
+                        <span style="text-shadow: 2px 1px 1px rgb(22, 22, 22);">{{$store.state.username}}</span>
                         <!-- <span>{{$store.state.role}}</span> -->
                         <i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
@@ -166,28 +166,25 @@
         width: 100%;
         height: 100%;
     }
-    .box{
+    .appBox{
         height: 100%;
-        min-width: 1000px;
-        min-height: 600px;
+        min-width: 1500px;
+        min-height: 700px;
     }
-    .box>.el-container{
+    .appBox>.el-container{
         height: 100%;
         background: url('images/bg3.jpg');
         background-size: cover;
+        background-attachment: fixed;
     }
     .el-header{
         color: white;
         text-align: center;
         line-height: 60px;
         position: relative;
-        // padding-left: 30%;
         border-bottom: 1px solid rgb(151, 149, 149);
         .title{
             font-size: 26px;
-            font-weight: 500;
-            // background-color: rgba($color: black, $alpha: 0.9);
-            padding: 0px 3px;
             text-shadow: 2px 2px 2px rgb(12, 12, 11); //水平位置 垂直位置 模糊距离 阴影颜色
         }
     }
@@ -197,7 +194,6 @@
         line-height: 60px;
     }
     .el-aside {
-        color: red;
         text-align: center;
         line-height: 200px;
         border-right: 1px solid rgb(151, 149, 149);
@@ -210,7 +206,6 @@
         text-align: center;
         //解决el-main中放Element-UI 的table时，表头高度设置不了的问题
         line-height: 30px !important;
-        background-size: cover;
     }
     .el-menu {
         border-right: solid 0px #0000;
@@ -222,7 +217,7 @@
             color: white;
         }
     }
-    .el-col-12{//侧栏 NavMenu导航菜单
+    .el-col-12{//侧栏 NavMenu导航菜单(重要)
         height: 100%;
         width: 100%;
     }
