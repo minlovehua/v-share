@@ -67,4 +67,7 @@ router.get('/api/getDoscList/:storeName',service.getDoscList)
 //获取可用邀请码
 router.get('/api/getUseCode',service.getUseCode)
 
+//修改文档的发布状态
+router.post('/api/selectStatus',service.selectStatus)
+
 module.exports = router

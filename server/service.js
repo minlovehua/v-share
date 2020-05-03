@@ -201,7 +201,7 @@ exports.getComment = (req,res)=>{  //get请求是这样子拿到参数值的 req
         if(result.length){ //查询成功
             return res.json({msg:'获取评论成功',comments:result});
         }else{
-            return res.json({msg:'获取评论失败'});
+            return res.json({msg:'暂无评论'});
         }
     })    
 }
@@ -291,4 +291,18 @@ exports.getUseCode = (req,res)=>{
             return res.json({msg:'查询可用邀请码失败'});
         }
     })        
+}
+
+//修改文档的发布状态
+exports.selectStatus = (req,res)=>{
+    let sql = 'update dosc set doscName=?,author=?,status=?,content=?,storeName=?,html=? where id=?';
+    let info = req.body;
+    let data = [info.doscName,info.author,info.status,info.content,info.storeName,info.html,info.id];
+    db.base(sql,data,(result)=>{
+        if(result.affectedRows != 1){
+            return res.json({msg: '修改文档状态失败'});
+        }else{
+            return res.json({msg: '修改文档状态成功'});
+        }
+    });  
 }

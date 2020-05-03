@@ -2,10 +2,24 @@
     <!-- 我的文档界面 -->
     <div class="Box">
       <div class="tableBox">
-          <div class="title">我的文档<el-button class="newDosc" type="primary" size="small" @click="flag=!flag">新建文档</el-button></div>
+          <div class="title">
+            我的文档
+            <el-button class="newDosc" type="primary" size="small" @click="flag=!flag">新建文档</el-button>
+          </div>
           <el-table :data="doscForm" @row-click="lookDosc" style="width: 100%" fit>
             <el-table-column prop="doscName" label="名称"></el-table-column>
-            <el-table-column prop="status" label="状态"> </el-table-column>
+            <el-table-column label="状态">
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.status" @change="selectStatus($event,scope.row)" style="width:50%;">
+                  <el-option 
+                  v-for="item in options" 
+                  :key="item.value" 
+                  :label="item.label" 
+                  :value="item.value">
+                  </el-option>
+                </el-select>
+              </template>
+            </el-table-column>
             <el-table-column prop="storeName" label="所属知识库"></el-table-column>
             <el-table-column label="操作" class="caozuo">
               <template slot-scope="scope">
@@ -45,7 +59,14 @@
           clickStore:'',        // 所选择的知识库
           doscForm:[],          // 用于存储获取到的所有文档
           dialogVisible: false, //控制是否弹框确认删除
-          row:{}                //当前被点击的行对应的文档对象
+          row:{},                //当前被点击的行对应的文档对象
+          options:[{
+            value: '未发布',
+            label:'未发布'
+          },{
+            value: '已发布',
+            label:'已发布'
+          }]
         }
       },
       created(){
@@ -100,6 +121,16 @@
                   this.getMyAllDosc(); //刷新页面
               }
           }).catch(err=>console.log(err))
+        },
+        selectStatus(event,row){       //修改文档的status   参数val的值为“已发布”或“未发布”
+          //触发el-select的change事件后，表格的行对象row的status值会变成选中的那个值
+          this.$axios.post(this.HOST+'/api/selectStatus',row).then(result=>{
+              if(result.data.msg == '修改文档状态失败'){
+                console.log('修改文档的发布状态失败')
+              }else{
+                // console.log('修改文档的发布状态成功')
+              }
+          }).catch(err=>console.log(err))   
         }
       }
     }
@@ -110,7 +141,7 @@
     width: 100%;
 
     .tableBox{       //展示所有文档
-      width: 70%;
+      width: 75%;
       float:left;
       .title{  //标题
         width: 100%;
@@ -125,6 +156,46 @@
         .newDosc{ //'新建文档'按钮
           position: absolute;
           right: 10px;
+        }
+      }
+      .el-table td, .el-table th {
+          padding: 15px 5px;  //第一个：将table的行高变大一点。第二个：让文字不要靠太近表格左边。
+          min-width: 0;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+          text-overflow: ellipsis;
+          vertical-align: middle;
+          position: relative;
+          text-align: left;
+          font-size: 16px;  //table中字体调大一点
+      }
+      .el-select{
+        .el-input__inner {  //改变el-select框的高度
+            -webkit-appearance: none;
+            background-color: #FFF;
+            background-image: none;
+            border-radius: 4px;
+            border: 1px solid #DCDFE6;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            color: #606266;
+            display: inline-block;
+            font-size: inherit;
+            height: 23px;          //改变el-select框的高度
+            line-height: 23px;
+            outline: 0;
+            padding: 0 10px;
+            -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+            transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+            width: 100%;
+        }
+        .el-input__icon {  //改小，使得el-select右侧小箭头垂直居中
+            height: 100%;
+            width: 25px;
+            text-align: center;
+            -webkit-transition: all .3s;
+            transition: all .3s;
+            line-height: 23px;    //改小，使得el-select右侧小箭头垂直居中
         }
       }
       .el-dialog{ //Dialog弹框
@@ -150,30 +221,33 @@
         .edit{ //“编辑”按钮
           position: absolute;
           left: 9px;
-          top: 5px;
+          // top: 15px;
         }
         .delete{
           position: absolute;
           left: 69px;
-          top: 5px;
+          // top: 15px;
         }
       }
     }
 
     .createDoscBox{  //右侧“新建文档”操作框
-      width: 25%;
+      width: 20%;
       float: right;
       border-radius: 5px 5px;
-      border: 5px solid snow; //#c7c6c6
+      border: 1px solid snow; //#c7c6c6
+      // border: 5px solid snow; //#c7c6c6
       .title{
         width: 100%;
         height: 70px;
         padding: 10px;
         text-align: left;
         font-size: 18px;
+        color:white;
+        text-shadow: 2px 2px 2px rgb(8, 8, 8);
         box-sizing: border-box;
         border-bottom: 1px solid #c7c6c6;
-        background-color: rgba($color: snow, $alpha: 1);
+        // background-color: rgba($color: snow, $alpha: 1);
         position: relative;
         span{
           font-size: 14px;
@@ -183,8 +257,20 @@
         display: inline-block;
         margin: 5px;
         padding: 5px;
-        .el-tag{
-          background-color: white;
+        .el-tag {
+            background-color: #ecf5ff;
+            border-color: #d9ecff;
+            display: inline-block;
+            height: 32px;
+            padding: 0 10px;
+            line-height: 30px;
+            font-size: 14px;
+            color: rgb(12, 13, 14);
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 4px;
+            box-sizing: border-box;
+            white-space: nowrap;
         }
       }
     }

@@ -46,7 +46,7 @@ export default {
                     console.log(result.data.comments)
                    this.comments=result.data.comments;
                 }else{
-                    console.log("获取评论数据失败！")
+                    console.log(result.data.msg)
                 }
             }).catch(err=>console.log(err))  
         },
