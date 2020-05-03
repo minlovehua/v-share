@@ -2,17 +2,12 @@
     <div class="createDosc-container">
         <!-- 编辑文档 -->
         <div class="editDoscHeader">
-            <!-- 返回工作台、文档列表 -->
-            <el-dropdown>
-                <span class="el-dropdown-link">
-                    <i class="el-icon-s-grid"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item @click.native="toDocument">返回“我的文档”</el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <span>{{doscForm.storeName}}</span>
-            &nbsp;&nbsp;
+            <!-- 左上角显示“我的文档/知识库名称” -->
+            <el-breadcrumb separator="/">
+                <el-breadcrumb-item :to="{ path: '/platform/document' }">我的文档</el-breadcrumb-item>
+                <el-breadcrumb-item>{{doscForm.storeName}}</el-breadcrumb-item>
+            </el-breadcrumb> &nbsp;&nbsp;
+
             <!-- 这里的el-input必须给个宽度width，否则不会显示这个输入框 -->
             <el-input style="width:30%;" v-model="doscForm.doscName" placeholder="请输入文档标题"></el-input>
             <span style="color:skyblue;" id="Msg">{{this.msg}}</span>
@@ -44,7 +39,6 @@
                     status:'未发布', //默认 未发布
                     updateTime:new Date()
                 }
-
             }
         },
         created(){
@@ -79,42 +73,28 @@
                         }
                     }).catch(err=>console.log(err))                  
                 }
-            },            
-            toDocument(){        //返回"我的文档"
-                this.$router.replace('/platform/document').catch(data => {  });
-            },
+            }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    .title{
-        font-weight: 900;
-    }
-    .editDoscHeader{
-        height: 50px;  
-        line-height: 50px;
-        border-bottom: 1px solid rgba($color: grey, $alpha: 0.3);
-        padding-left: 10px;
-        position: relative;
-    }
-    .time{
-        font-size: 14px;
-        color:grey;
-    }
-    //下拉框
-    .el-dropdown-link {
-        cursor: pointer;
-        color: gray;
-        font-size: 22px;
-    }
-    .el-icon-arrow-down {
-        font-size: 12px;
-    }
-    .submitButton{
-        position: absolute;
-        right: 1%;
-        top: 50%;
-        transform: translateY(-50%);
+    .createDosc-container{
+        .editDoscHeader{
+            height: 50px;  
+            line-height: 50px;
+            border-bottom: 1px solid rgba($color: grey, $alpha: 0.3);
+            padding-left: 10px;
+            position: relative;
+            .el-breadcrumb{
+                display: inline-block;
+            }
+            .submitButton{
+                position: absolute;
+                right: 1%;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
     }
 </style>

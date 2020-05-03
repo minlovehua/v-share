@@ -1,30 +1,21 @@
 <template>
-    <div>
+    <div class="update-container">
         <!-- 编辑文档 -->
         <div class="editDoscHeader">
-            <!-- 返回工作台、文档列表 -->
-            <el-dropdown>
-                <span class="el-dropdown-link">
-                    <i class="el-icon-s-grid"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item @click.native="toplateform">返回到“团队发布”</el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <span>{{doscForm.storeName}}</span>
-            &nbsp;&nbsp;
+            <!-- 面包屑 左上角显示“我的文档/知识库”-->
+            <el-breadcrumb separator="/">
+                <el-breadcrumb-item :to="{ path: '/platform/document' }">我的文档</el-breadcrumb-item>
+                <el-breadcrumb-item>{{doscForm.storeName}}</el-breadcrumb-item>
+            </el-breadcrumb> &nbsp;&nbsp;
+
             <!-- 这里的el-input必须给个宽度width，否则不会显示这个输入框 -->
             <el-input style="width:30%;" v-model="doscForm.doscName" placeholder="请输入内容"></el-input>
             <span style="color:skyblue;" id="Msg">{{this.msg}}</span>
             <button class="submitButton" @click="submit">更新</button>
         </div>
-        
-        <div>   <!-- markdown编辑器 -->
-            <mavon-editor 
-                v-model="doscForm.content" 
-                ref="md" 
-                @change="change" 
-                style="min-height: 600px"/>
+        <!-- markdown编辑器 -->
+        <div>   
+            <mavon-editor v-model="doscForm.content" ref="md" @change="change" style="min-height: 600px"/>
         </div>
     </div>
 </template>
@@ -70,40 +61,27 @@
                     }).catch(err=>console.log(err))                    
                 }
             },
-            toplateform(){         //返回 团队发布
-                this.$router.replace('/platform').catch(data => {  });
-            },
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    .title{
-        font-weight: 900;
-    }
-    .editDoscHeader{
-        height: 50px;  
-        line-height: 50px;
-        border-bottom: 1px solid rgba($color: grey, $alpha: 0.3);
-        padding-left: 10px;
-        position: relative;
-    }
-    .time{
-        font-size: 14px;
-        color:grey;
-    }
-    .el-dropdown-link { //下拉框
-        cursor: pointer;
-        color: gray;
-        font-size: 22px;
-    }
-    .el-icon-arrow-down {
-        font-size: 12px;
-    }
-    .submitButton{
-        position: absolute;
-        right: 1%;
-        top: 50%;
-        transform: translateY(-50%);
+    .update-container{
+        .editDoscHeader{
+            height: 50px;  
+            line-height: 50px;
+            border-bottom: 1px solid rgba($color: grey, $alpha: 0.3);
+            padding-left: 10px;
+            position: relative;
+            .submitButton{
+                position: absolute;
+                right: 1%;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            .el-breadcrumb{
+                display: inline-block;
+            }
+        }
     }
 </style>

@@ -273,7 +273,7 @@ exports.deleteAllSelected = (req,res)=>{
 
 //根据知识库id获取该知识库下所有文档
 exports.getDoscList = (req,res)=>{
-    db.base("select * from dosc where storeName = ? order by id desc",req.params.storeName,(result)=>{
+    db.base("select * from dosc where storeName = ? and status = '已发布' order by id desc",req.params.storeName,(result)=>{
         if(result.length){ //查询成功
             return res.json({msg:'获取文档列表成功',doscs:result});
         }else{

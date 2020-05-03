@@ -73,9 +73,9 @@
                 }
             }).catch(err=>console.log(err))
         },
-        randomCode(){   //生成随机邀请码
+        randomCode(){   //生成随机邀请码 (将0-9，A-Z放在一个数组里。6次随机生成数组下标，将下标对应的数字或字符进行拼接。)
             var newCode = "";
-            for (var i = 0; i < 4 ; i++) {
+            for (var i = 0; i < 6 ; i++) {
                 var id = Math.ceil(Math.random() * 35);
                 newCode += this.jschars[id];
             }

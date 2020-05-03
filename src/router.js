@@ -3,9 +3,6 @@ import VueRouter from 'vue-router'
 
 //导入团队初始化组件【队长/管理员】
 import groupInit from './components/Admin/groupInit.vue'
-//导入团队后台管理组件
-import groupManage from './components/Admin/groupManage.vue'
-
 
 //导入开始页面组件
 import start from './components/Login/start.vue'
@@ -25,26 +22,20 @@ import groups from './components/NavMenu/groups.vue'
 import platform from './components/NavMenu/platform.vue'
 import storehouse from './components/NavMenu/storehouse.vue'
 
-//管理页面 子组件
-import membersManage from './components/Admin/membersManage.vue'
-import storehouseManage from './components/Admin/storehouseManage.vue'
-
 //导入编辑文档组件
 import createDosc from './components/Dosc/createDosc.vue'
 //导入修改(更新)文档组件
 import updateDosc from './components/Dosc/updateDosc.vue'
 //导入“查看全文”组件
 import lookDosc from './components/Dosc/lookDosc.vue'
-
+//导入“展示知识库内所有已发布文档”组件
 import showDoscList from './components/StoreHouse/showDoscList.vue'
 
 //创建路由对象
 var router = new VueRouter({
     routes:[ //配置路由规则
         //管理员
-        // {path:'/',redirect:'/platform/document'},  //测试入口
         {path:'/',component:groupInit}, //团队初始化页面 【这个是要的】
-        // {path:'/',component:login},  //测试入口
         //用户注册、登录
         {path:'/start',component:start},
         {path:'/login',component:login},
@@ -58,15 +49,7 @@ var router = new VueRouter({
                 {path:'/platform/document',component:document},
                 {path:'/platform/groups',component:groups},
                 {path:'/platform/storehouse',component:storehouse},
-                {path:'/platform/manage',redirect:'/platform/manage/storehouse'}, //这个是要的
-                // {path:'/platform/manage',redirect:'/platform/manage/members'},  //测试
-                {path:'/platform/manage',component:groupManage,
-                    children:[
-                        {path:'/platform/manage/members',component:membersManage},
-                        {path:'/platform/manage/storehouse',component:storehouseManage}
-                    ]
-                }
-                
+                {path:'/platform/manage',redirect:'/platform/manage/storehouse'}
             ]
         },
         {path:'/createDosc',name:'/createDosc',component:createDosc},

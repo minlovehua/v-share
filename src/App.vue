@@ -78,10 +78,10 @@
                                 <span slot="title">回收站&nbsp;&nbsp;&nbsp;</span>
                             </el-menu-item>
                             <!-- 只有管理员(role为1)才能看到“管理”功能 -->
-                            <el-menu-item v-if="$store.state.role==1?true:false" index="/platform/manage">
+                            <!-- <el-menu-item v-if="$store.state.role==1?true:false" index="/platform/manage">
                                 <i class="el-icon-circle-plus-outline"></i>
                                 <span slot="title">管理&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            </el-menu-item>
+                            </el-menu-item> -->
                             </el-menu>
                         </el-col>
                     </el-row> 

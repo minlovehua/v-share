@@ -67,7 +67,7 @@
                 }
             }).catch(err=>console.log(err))
         },
-        lookStore(row, event, column){  //点击行，查看该知识库的所有文档列表
+        lookStore(row, event, column){  //点击行，查看该知识库的所有已发布文档列表
           //解决了直接用this.$route.query.storehouse时页面刷新之后数据会丢失的问题（第一步）。第二步在showDoscList.vue
           sessionStorage.setItem("storehouse",JSON.stringify(row))
           this.$router.push({ name: '/showDoscList', query:{storehouse:row}}).catch(data=>{});

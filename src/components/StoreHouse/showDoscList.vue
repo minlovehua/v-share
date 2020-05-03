@@ -1,15 +1,9 @@
 <template>
-    <div class="container">
+    <div class="showDoscList-container">
         <div class="v-header">
-                <el-dropdown>
-                    <span class="el-dropdown-link">
-                        <i class="el-icon-s-grid"></i>
-                    </span>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item @click.native="tostorehouse">返回知识库</el-dropdown-item>
-                        <el-dropdown-item @click.native="toplateform">返回团队发布</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
+            <el-breadcrumb separator="/">
+                <el-breadcrumb-item class="bread" :to="{ path: '/platform/storehouse' }"><i class="el-icon-back"></i>&nbsp;知识库</el-breadcrumb-item>
+            </el-breadcrumb>
         </div>
         <div class="v-body">
             <span class="title"><i class="el-icon-folder-opened"></i>&nbsp;{{this.storehouse.storeName}}</span>
@@ -63,46 +57,35 @@ export default {
           //解决了直接用this.$route.query.dosc时页面刷新之后数据会丢失的问题（第一步）。第二步在lookDosc.vue
           sessionStorage.setItem("dosc",JSON.stringify(row))
           this.$router.push({ name: '/lookDosc', query:{dosc:row}}).catch(data=>{});  //跳转到文档详情页面
-        },
-        toplateform(){         //返回 团队发布
-            this.$router.replace('/platform').catch(data => {  });
-        },
-        tostorehouse(){         //返回 知识库
-            this.$router.push('/platform/storehouse').catch(data => {  });
-        },
+        }
     }
 }
 </script>
 
-<style lang="scss" scoped>
-    .container{
+<style lang="scss">
+    .showDoscList-container{
         width: 100%;
         height: 100%;
         min-height: 700px;
         min-width: 1500;
         background: url('../../images/bg3.jpg');
-        // background-color: #809477; //#809477
         background-size: cover;
 
         .v-header{
-            height: 50px;
-            line-height: 50px;
             padding-left: 20px;
-            background-color: #0000;
-            border-bottom: gray;
-            .el-dropdown-link { //下拉框
-                cursor: pointer;
-                font-size: 22px;
-                i{
-                    font-size: 28px;
-                    color: white;
-                }
+            padding-top: 20px;
+            .el-breadcrumb__item:last-child .el-breadcrumb__inner, .el-breadcrumb__item:last-child .el-breadcrumb__inner a, .el-breadcrumb__item:last-child .el-breadcrumb__inner a:hover, .el-breadcrumb__item:last-child {
+                font-weight: 400;
+                color: white !important;
+                cursor: text;
+                font-size: 18px;
+
             }
         }
 
         .v-body{
             width: 50%;
-            min-height: 500px; //测试
+            min-height: 500px; //测试？？？
             min-width: 390px;
             background-color: rgba($color: snow, $alpha: 0.1);
             border-radius: 5px;
@@ -151,6 +134,5 @@ export default {
             }
         }
     }
-
 
 </style>
