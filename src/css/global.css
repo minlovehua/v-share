@@ -4,9 +4,10 @@ html,body,#app{
     margin: 0;
     padding: 0;
 
+    background: url('../images/bg3.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
     /* 设置浏览器最小宽度和最小高度 */
 }
-
-
-
-

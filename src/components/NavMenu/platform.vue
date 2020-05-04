@@ -15,6 +15,7 @@
                     </div>
                 </div>                             
             </el-card>
+            <div class="msg">{{msg}}</div>
         </div>
     </div>
 </template>
@@ -24,7 +25,8 @@ import Cookie from 'js-cookie'
 export default {
     data(){
         return{
-            doscForm:[]
+            doscForm:[],
+            msg:''
         }
     },
     created(){
@@ -35,6 +37,7 @@ export default {
           this.$axios.get(this.HOST+'/api/getAllGroupDosc').then(result=>{
               if(result.data.msg == '获取文档失败'){
                   console.log(result.data.msg);
+                  this.msg = '暂时没有发布的文档，快去发布一篇吧！';
               }else{
                   this.doscForm = result.data.result;
               }
@@ -51,7 +54,7 @@ export default {
 
 <style lang="scss">
     .cardBox{
-        width: 70%;
+        width: 75%;
         box-sizing: border-box;
         padding: 10px;
         .tip{
@@ -62,10 +65,17 @@ export default {
             margin-left: 10px;
             text-shadow: 1px 1px 2px rgb(12, 12, 11); //水平位置 垂直位置 模糊距离 阴影颜色
         }
+        .msg{
+            color: white;               //添加
+            text-shadow: 2px 2px 2px black;         //添加
+        }
         .el-card{
             padding: 0px;
             margin: 15px 10px;
-            background-color: rgba($color: white, $alpha: 1.0);  //设置背景颜色和透明度
+            color: white;               //添加
+            text-shadow: 2px 2px 2px black;         //添加
+            border: 1px solid #0000;                //添加
+            background-color: rgba($color: rgb(226, 196, 196), $alpha: 0.3);  //设置背景颜色和透明度
             .el-card__body {
                 padding: 15px;
             }
@@ -87,7 +97,7 @@ export default {
                     // position: absolute;
                     // right: 10px;
                     .edit{
-                        color:rgb(6, 65, 241)
+                        color:#0AF7D6;
                     }
                 }
             }

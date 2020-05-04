@@ -44,8 +44,9 @@
           <i class="el-icon-plus"></i>&nbsp;新建文档<br/><span>请先选择一个知识库吧</span>
         </div>
         <div class="tag"  v-for="item in storehouse" :key="item.storeName">
-          <el-tag @click="createDosc(item.storeName)">{{item.storeName}}</el-tag>
+          <el-tag @click="createDosc(item.id,item.storeName)">{{item.storeName}}</el-tag>
         </div>
+        <div class="nullMsg">{{nullMsg}}</div>
       </div>
     </div>
 </template>
@@ -54,10 +55,10 @@
     export default {
       data() {
         return {
+          nullMsg:'',           //‘管理员还没有创建知识库’
           storehouse:[],        //存储所有知识库的数组，默认为空
-          flag:false,           // flag为true 则右边的“选择知识库”框框显示，否则隐藏
-          clickStore:'',        // 所选择的知识库
-          doscForm:[],          // 用于存储获取到的所有文档
+          flag:false,           // flag为true 则右边的“选择知识库”框框显示，否则隐藏      
+          doscForm:[],          // 用于存储获取到的所有文档，展示在界面的Table中
           dialogVisible: false, //控制是否弹框确认删除
           row:{},                //当前被点击的行对应的文档对象
           options:[{
@@ -71,17 +72,16 @@
       },
       created(){
         this.getAllStore();  //页面一旦创建就展示所有知识库
-        this.getMyAllDosc();
+        this.getMyAllDosc(); 
       },
       methods:{
-        createDosc(storeName){         //点击知识库标签之后，跳转到文档编辑页面同时将这个知识库的名字通过query传递过去
-          this.clickStore = storeName;
-          this.$router.push({path:'/createDosc',query:{storeName:this.clickStore}}).catch(data => {  });
+        createDosc(storeId,storeName){         //点击知识库标签之后，跳转到文档编辑页面同时将这个知识库的名字通过query传递过去
+          this.$router.push({path:'/createDosc',query:{storeId:storeId,storeName:storeName}}).catch(data => {  });
         },
         getAllStore(){                 //展示知识库
             this.$axios.get(this.HOST+'/api/getAllStore').then(result=>{
                 if(result.data.msg == '知识库查询失败'){
-                    this.msg = result.data.msg;
+                    this.nullMsg = '请管理员先创建知识库!';
                 }else{
                     this.storehouse = result.data.result;
                 }
@@ -89,7 +89,7 @@
         },
         getMyAllDosc(){                //获取我的所有文档
           this.$axios.get(this.HOST+'/api/getMyAllDosc/'+this.$store.state.username).then(result=>{
-              if(result.data.msg == '文档查询失败'){
+              if(result.data.msg == '文档查询失败'){  //没有查询到符合条件的文档
                   //因为删除文档之后要调用这个getMyAllDosc函数来重新获取数据渲染页面
                   //所以，要添加这一句，来解决删除最后一条文档的时候，没有刷新页面，导致数据没有在前端删去的问题
                   this.doscForm = []; 
@@ -100,7 +100,7 @@
         },
         edit(index,dosc){              //编辑文档
           //this.$router.push() 方法中path不能和params一起使用，否则params将无效。只能用name来指定页面。
-          this.$router.push({ name: '/updateDosc', params:{dosc:dosc}}).catch(data => {  }); 
+          this.$router.push({ name: '/updateDosc', params:{dosc:dosc}}).catch(data => {  });
         },
         lookDosc(row, event, column){  //点击行，查看文档详情
           //解决了直接用this.$route.query.dosc时页面刷新之后数据会丢失的问题（第一步）。第二步在lookDosc.vue
@@ -113,8 +113,7 @@
         },
         sureDelete(){                  //点击删除按钮，将文档的status设置为“已删除”
           this.dialogVisible = false; //关闭弹框
-          this.row.status = '已删除'
-          this.$axios.post(this.HOST+'/api/toDeletehouse',this.row).then(result=>{
+          this.$axios.post(this.HOST+'/api/toDeletehouse',{id:this.row.id,status:'已删除'}).then(result=>{
               if(result.data.msg == '文档放进回收站失败'){
                   console.log(result.data.msg);
               }else{ //文档成功放进回收站
@@ -124,7 +123,7 @@
         },
         selectStatus(event,row){       //修改文档的status   参数val的值为“已发布”或“未发布”
           //触发el-select的change事件后，表格的行对象row的status值会变成选中的那个值
-          this.$axios.post(this.HOST+'/api/selectStatus',row).then(result=>{
+          this.$axios.post(this.HOST+'/api/selectStatus',{id:row.id,status:row.status}).then(result=>{
               if(result.data.msg == '修改文档状态失败'){
                 console.log('修改文档的发布状态失败')
               }else{
@@ -232,6 +231,7 @@
     }
 
     .createDoscBox{  //右侧“新建文档”操作框
+      margin-top: 20px;
       width: 20%;
       float: right;
       border-radius: 5px 5px;
@@ -258,20 +258,25 @@
         margin: 5px;
         padding: 5px;
         .el-tag {
-            background-color: #ecf5ff;
-            border-color: #d9ecff;
-            display: inline-block;
-            height: 32px;
-            padding: 0 10px;
-            line-height: 30px;
-            font-size: 14px;
-            color: rgb(12, 13, 14);
-            border-width: 1px;
-            border-style: solid;
-            border-radius: 4px;
-            box-sizing: border-box;
-            white-space: nowrap;
+          background-color: #ecf5ff;
+          border-color: #d9ecff;
+          display: inline-block;
+          height: 32px;
+          padding: 0 10px;
+          line-height: 30px;
+          font-size: 14px;
+          color: rgb(12, 13, 14);
+          border-width: 1px;
+          border-style: solid;
+          border-radius: 4px;
+          box-sizing: border-box;
+          white-space: nowrap;
         }
+      }
+      .nullMsg{
+        margin: 10px 0px;
+        color:orange;
+        text-shadow: 2px 2px 2px rgb(8, 8, 8);
       }
     }
   }

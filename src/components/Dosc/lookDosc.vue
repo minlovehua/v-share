@@ -51,10 +51,6 @@ export default {
     .container-box{ //根盒子
         width: 100%;
         position: relative;
-         //这个背景颜色，只有给.container-box设置了height才有效。
-         //但是height设置了100%也就只有上方屏幕那么大的地方有效，超出屏幕的地方显示不了背景色。
-         //怎样将高度设置为scrollHeight呢？
-         // background-color: black;  
     }
     .centerBox{ //水平居中的盒子
         position: absolute;
@@ -71,13 +67,13 @@ export default {
         border-bottom: 1px solid rgba($color: rgb(58, 54, 57), $alpha: 0.3);
         box-sizing: border-box;
         padding: 5px 5px 10px;
-        background-color: rgb(255, 252, 223);
+        background-color: snow;
         border-radius: 5px;
     }
     .content{
         width: 100%;
         box-sizing: border-box;
-        background-color: rgb(255, 252, 223);
+        background-color:white;
         padding: 20px;
         border-radius: 5px;
     }

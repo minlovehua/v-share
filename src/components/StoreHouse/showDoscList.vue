@@ -12,7 +12,7 @@
                 <span class="doscName" @click="lookDosc(item)"><i class="el-icon-document"></i>&nbsp;&nbsp;{{item.doscName}}</span>
                 <span class="authorAndTime"><i class="el-icon-user"></i>&nbsp;{{item.author}}&nbsp;&nbsp;&nbsp;<i class="el-icon-time"></i>&nbsp;{{item.updateTime|dateFormat}}</span>
             </div>
-            <div class="msg">{{this.msg}}</div>
+            <div class="msg">{{this.msg}}</div>  <!-- 提示：当前知识库还没有文档哦，快去发布一篇吧！ -->
         </div>
     </div>
 </template>
@@ -22,7 +22,7 @@ export default {
     data(){
         return{
             storehouse:{}, //当前知识库
-            doscs:[], //存储该知识库下的所有文档
+            doscs:[],      //存储该知识库下的所有文档
             msg:''
         }
     },
@@ -44,9 +44,10 @@ export default {
             this.storehouse = JSON.parse(sessionStorage.getItem("storehouse"))
         },
         getDoscList(){ //获取当前知识库下所有的文档
-            this.$axios.get(this.HOST+'/api/getDoscList/'+this.storehouse.storeName).then(result=>{
+                console.log(this.storehouse.id)
+            // this.$axios.get(this.HOST+'/api/getDoscList/'+this.storehouse.storeName).then(result=>{
+            this.$axios.get(this.HOST+'/api/getDoscList/'+this.storehouse.id).then(result=>{
                 if(result.data.msg == '获取文档列表失败'){
-                    console.log(result.data.msg);
                     this.msg = '当前知识库还没有文档哦，快去发布一篇吧！'
                 }else{ //获取文档列表成功
                     this.doscs = result.data.doscs; 

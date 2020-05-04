@@ -37,7 +37,7 @@
                 rules:{   //登录表单的验证规则
                     username:[  //验证用户名是否合法
                         { required: true, message: '请输入用户名', trigger: 'blur' },
-                        { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+                        { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
                     ],
                     password:[  //验证密码是否合法
                         { required: true, message: '请输入密码', trigger: 'blur' },

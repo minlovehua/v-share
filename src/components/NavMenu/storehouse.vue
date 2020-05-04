@@ -5,8 +5,20 @@
         <div class="show">  
           <div class="title">知识库<el-button type="primary" size="small" v-if="$store.state.role==1?true:false"  @click="flag=!flag">新建知识库</el-button></div>
           <el-table :data="storehouse" style="width: 100%" @row-click="lookStore" fit>
-          <el-table-column prop="storeName" label="名称"></el-table-column>
+          <el-table-column prop="storeName" label="名称" width="220px"></el-table-column>
           <el-table-column prop="storeDesc" label="简介"></el-table-column>
+
+          <!-- 搞这里 还没搞-->
+          <!-- 搞这里 还没搞-->
+          <!-- 搞这里 还没搞-->
+          <el-table-column label="操作" class="caozuo" width="200px">
+            <template slot-scope="scope">
+                <el-button class="edit" type="primary" size="mini" @click="edit(scope.$index, scope.row)">编辑</el-button>
+                <el-button class="delete" @click.stop="deleteVisible = true" type="danger" size="mini" 
+                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+
           </el-table>
         </div>
         <!-- 新建知识库 仅管理员可操作-->
@@ -61,7 +73,7 @@
         getAllStore(){                  //展示知识库
             this.$axios.get(this.HOST+'/api/getAllStore').then(result=>{
                 if(result.data.msg == '知识库查询失败'){
-                    this.msg = result.data.msg;
+                    console.log('暂时没有知识库哦，快叫管理员去新建吧！')
                 }else{
                     this.storehouse = result.data.result;
                 }
@@ -70,7 +82,8 @@
         lookStore(row, event, column){  //点击行，查看该知识库的所有已发布文档列表
           //解决了直接用this.$route.query.storehouse时页面刷新之后数据会丢失的问题（第一步）。第二步在showDoscList.vue
           sessionStorage.setItem("storehouse",JSON.stringify(row))
-          this.$router.push({ name: '/showDoscList', query:{storehouse:row}}).catch(data=>{});
+          // this.$router.push({ name: '/showDoscList', query:{storehouse:row}}).catch(data=>{});
+          this.$router.push('/showDoscList').catch(data=>{});
         },
         createStore(formName){          //创建知识库
             this.$refs[formName].validate((valid)=>{
@@ -87,6 +100,25 @@
                 }).catch(err=>console.log(err))
             });
         },
+        edit(index,storehouse){              //编辑知识库
+          //this.$router.push() 方法中path不能和params一起使用，否则params将无效。只能用name来指定页面。
+          // this.$router.push({ name: '/updateDosc', params:{dosc:dosc}}).catch(data => {  }); 
+        },
+        handleDelete(index,row){       //点击删除按钮，弹框
+          // this.dialogVisible = true
+          // this.row = row
+        },
+        sureDelete(){                  //点击删除按钮，删除知识库
+          // this.dialogVisible = false; //关闭弹框
+          // this.row.status = '已删除'
+          // this.$axios.post(this.HOST+'/api/toDeletehouse',this.row).then(result=>{
+          //     if(result.data.msg == '文档放进回收站失败'){
+          //         console.log(result.data.msg);
+          //     }else{ //文档成功放进回收站
+          //         this.getMyAllDosc(); //刷新页面
+          //     }
+          // }).catch(err=>console.log(err))
+        },
       }
     }
 </script>
@@ -98,9 +130,8 @@
     border: 1px solid #0000;  //必须
     background-color: rgba(255, 255, 255, 0); //必须
 
-
     .show{  //展示知识库及简介
-      width: 70%;
+      width: 73%;
       float: left;
       .title{ //标题
         width: 100%;
@@ -116,15 +147,29 @@
         position: absolute;
         right: 10px;
       }
+      .caozuo{ //"删除"按钮的父元素，即“操作”
+        position: relative;
+        // .edit{ //“编辑”按钮
+        //   position: absolute;
+        //   left: 9px;
+        //   // top: 15px;
+        // }
+        .delete{  //"删除"按钮
+          position: absolute;
+          left: 69px;
+          // top: 15px;
+        }
+      }
     }
 
     .create{ //新建知识库
-      width: 25%;
+      width: 23%;
       float: right;
-      margin-right: 5px;
+      // margin-right: 5px;
       .el-card{
         width: 100%;
-        background-color: snow;  //honeydew
+        background-color: white;  //honeydew snow
+        margin-top: 5px;
         .add{
           .clearfix:before,
           .clearfix:after {

@@ -173,9 +173,6 @@
     }
     .appBox>.el-container{
         height: 100%;
-        background: url('images/bg3.jpg');
-        background-size: cover;
-        background-attachment: fixed;
     }
     .el-header{
         color: white;

@@ -5,7 +5,8 @@
             <!-- 左上角显示“我的文档/知识库名称” -->
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item :to="{ path: '/platform/document' }">我的文档</el-breadcrumb-item>
-                <el-breadcrumb-item>{{doscForm.storeName}}</el-breadcrumb-item>
+                <!-- <el-breadcrumb-item>{{doscForm.storeName}}</el-breadcrumb-item> -->
+                <el-breadcrumb-item>{{storeName}}</el-breadcrumb-item>
             </el-breadcrumb> &nbsp;&nbsp;
 
             <!-- 这里的el-input必须给个宽度width，否则不会显示这个输入框 -->
@@ -13,9 +14,9 @@
             <span style="color:skyblue;" id="Msg">{{this.msg}}</span>
             <button class="submitButton" @click="submit">提交</button>
         </div>     
-        <div>
+        <div class="markdownEditor">
             <!-- markdown编辑器插件 -->
-            <mavon-editor v-model="doscForm.content" ref="md" @change="change" style="min-height: 600px"/>
+            <mavon-editor v-model="doscForm.content" ref="md" @change="change" style="min-height: 670px"/>
         </div>
     </div>
 </template>
@@ -30,14 +31,15 @@
         data() {
             return {
                 msg:'',
+                storeName:this.$route.query.storeName,  //添加
                 doscForm:{
-                    doscName:'无标题',  //文档标题  默认无标题
-                    content:'', // 输入的markdown
-                    html:'',    // 及时转的html
-                    storeName:this.$route.query.storeName,  //当前这篇文档所属知识库
-                    author:this.$store.state.username,
-                    status:'未发布', //默认 未发布
-                    updateTime:new Date()
+                    store_id:this.$route.query.storeId,  //当前这篇文档所属知识库
+                    doscName:'无标题',                    //文档标题  默认无标题
+                    author:this.$store.state.username,    //作者
+                    status:'未发布',                      //默认 未发布
+                    content:'',                          //输入的markdown
+                    html:'',                             //及时转的html
+                    updateTime:new Date()                //提交时间
                 }
             }
         },
@@ -68,8 +70,9 @@
                         if(result.data.msg == '新建文档成功'){
                             this.msg = '新建文档成功'
                             this.$router.replace('/platform/document')
+                            console.log('createDosc.vue 新建文档成功')
                         }else{
-                            console.log(result.data.msg)
+                            console.log('createDosc.vue 新建文档失败')
                         }
                     }).catch(err=>console.log(err))                  
                 }
@@ -80,6 +83,8 @@
 
 <style lang="scss" scoped>
     .createDosc-container{
+        background-color:white;
+        min-height: 100%;
         .editDoscHeader{
             height: 50px;  
             line-height: 50px;

@@ -84,8 +84,7 @@
         },
         returnTOMyDosc(){              //恢复文档
           this.returnVisible = false; //关闭弹框
-          this.row.status = '未发布'
-          this.$axios.post(this.HOST+'/api/returnTOMyDosc',this.row).then(result=>{
+          this.$axios.post(this.HOST+'/api/returnTOMyDosc',{id:this.row.id,status:'未发布'}).then(result=>{
               if(result.data.msg == '文档恢复失败'){
                   console.log(result.data.msg);
               }else{ //文档成功放进回收站

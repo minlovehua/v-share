@@ -61,8 +61,9 @@ router.post('/api/verySureDelete/:id',service.verySureDelete)
 //彻底删除多选框选中的文档
 router.post('/api/deleteAllSelected',service.deleteAllSelected)
 
-//根据知识库id获取该知识库下所有文档
-router.get('/api/getDoscList/:storeName',service.getDoscList)
+//根据知识库id获取该知识库下所有文档     请求发生在 showDoscList.vue
+// router.get('/api/getDoscList/:storeName',service.getDoscList)
+router.get('/api/getDoscList/:id',service.getDoscList)
 
 //获取可用邀请码
 router.get('/api/getUseCode',service.getUseCode)

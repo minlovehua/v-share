@@ -32,12 +32,13 @@
                 msg:'',
                 doscForm:{
                     id:this.$route.params.dosc.id,              //唯一标识一个文档
-                    doscName:this.$route.params.dosc.doscName,  //文档标题  默认无标题
+                    store_id:this.$route.params.dosc.store_id,  //当前这篇文档所属知识库
+                    doscName:this.$route.params.dosc.doscName,  //文档标题
+                    author:this.$route.params.dosc.author,      //作者
+                    status:this.$route.params.dosc.status,      //发布状态
                     content:this.$route.params.dosc.content,    //输入的markdown
                     html:this.$route.params.dosc.html,          //及时转的html
-                    storeName:this.$route.params.dosc.storeName,//当前这篇文档所属知识库
-                    author:this.$route.params.dosc.author,      //作者
-                    status:'未发布',                            //默认 未发布
+                    // updateTime:new Date()                    //更新时间
                 }
             }
         },
@@ -67,6 +68,8 @@
 
 <style lang="scss" scoped>
     .update-container{
+        min-height: 100%;
+        background-color: #fff;
         .editDoscHeader{
             height: 50px;  
             line-height: 50px;

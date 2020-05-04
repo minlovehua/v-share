@@ -19,7 +19,7 @@ export default {
         return {
             comments:[],                                  //所有的评论数据
             comment:{
-                doscId:this.id,                           //评论所属文档的ID
+                dosc_id:this.id,                          //评论所属文档的ID
                 user_name:this.$store.state.username,     //评论人
                 add_time:new Date(),                      //评论时间
                 content:''                                //评论的内容
