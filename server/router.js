@@ -44,6 +44,7 @@ router.get('/api/getAllGroupDosc',service.getAllGroupDosc)
 
 //提交评论
 router.post('/api/postComment',service.postComment)
+
 //获取评论
 router.get('/api/getComment/:id',service.getComment)
 
@@ -70,5 +71,8 @@ router.get('/api/getUseCode',service.getUseCode)
 
 //修改文档的发布状态
 router.post('/api/selectStatus',service.selectStatus)
+
+//删除知识库
+router.post('/api/deleteStorehouse/:id',service.deleteStorehouse)
 
 module.exports = router

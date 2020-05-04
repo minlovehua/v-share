@@ -213,6 +213,16 @@ exports.getDoscList = (req,res)=>{
     })    
 }
 
+// 4.删除知识库
+exports.deleteStorehouse=(req,res)=>{
+    db.base('delete from storehouse where id = ?',req.params.id,(result)=>{
+        if(result.affectedRows != 1){
+            return res.json({msg: '删除知识库失败'});
+        }else{
+            return res.json({msg: '删除知识库成功'});
+        }
+    })
+}
 
 
 

@@ -1,25 +1,36 @@
 <template>
     <!-- 知识库界面 -->
-    <div class="tableBox">
+    <div class="storehouseBox">
       <!-- 展示所有知识库及简介 -->
         <div class="show">  
-          <div class="title">知识库<el-button type="primary" size="small" v-if="$store.state.role==1?true:false"  @click="flag=!flag">新建知识库</el-button></div>
+          <div class="title">
+            知识库
+            <el-button class="createStoreButton" type="primary" size="small" v-if="$store.state.role==1?true:false"  @click="flag=!flag">新建知识库</el-button>
+          </div>
           <el-table :data="storehouse" style="width: 100%" @row-click="lookStore" fit>
-          <el-table-column prop="storeName" label="名称" width="220px"></el-table-column>
-          <el-table-column prop="storeDesc" label="简介"></el-table-column>
+            <el-table-column prop="storeName" label="名称" width="220px"></el-table-column>
+            <el-table-column prop="storeDesc" label="简介"></el-table-column>
 
-          <!-- 搞这里 还没搞-->
-          <!-- 搞这里 还没搞-->
-          <!-- 搞这里 还没搞-->
-          <el-table-column label="操作" class="caozuo" width="200px">
-            <template slot-scope="scope">
-                <el-button class="edit" type="primary" size="mini" @click="edit(scope.$index, scope.row)">编辑</el-button>
-                <el-button class="delete" @click.stop="deleteVisible = true" type="danger" size="mini" 
-                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-            </template>
-          </el-table-column>
+            <!-- 搞这里 还没搞 编辑、只有管理员才能删知识库-->
+            <!-- 搞这里 还没搞 编辑、只有管理员才能删知识库-->
+            <!-- 搞这里 还没搞 编辑、只有管理员才能删知识库-->
+            <el-table-column label="操作" class="caozuo" width="200px">
+              <template slot-scope="scope">
+                  <el-button class="edit" type="primary" size="mini" @click="edit(scope.$index, scope.row)">编辑</el-button>
+                  <el-button class="delete" @click.stop="deleteVisible = true" type="danger" size="mini" 
+                  @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
 
           </el-table>
+          <!-- 弹框确认是否确定要删除知识库 -->
+          <el-dialog title="确定要删除此知识库？" :visible.sync="dialogVisible" width="30%">
+            <span class="tips">知识库内的文档也会被删除</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button class="cancelButton" type="primary" size="mini" @click="dialogVisible = false">取 消</el-button>
+              <el-button class="sureButton" type="primary" size="mini" @click="verySureDelete()">确 定</el-button>
+            </span>
+          </el-dialog>
         </div>
         <!-- 新建知识库 仅管理员可操作-->
         <div class="create" v-if="flag">
@@ -31,10 +42,10 @@
               </div>
               <el-form :model="storeForm" status-icon :rules="rules" ref="ruleForm" label-width="60px" class="demo-ruleForm">
                   <el-form-item label="名称" prop="storeName">
-                      <el-input prefix-icon="el-icon-s-custom" type="text" v-model="storeForm.storeName" autocomplete="off"></el-input>
+                      <el-input prefix-icon="el-icon-folder" type="text" v-model="storeForm.storeName" autocomplete="off"></el-input>
                   </el-form-item>
                   <el-form-item label="简介" prop="storeDesc">
-                      <el-input prefix-icon="el-icon-edit" type="text" v-model="storeForm.storeDesc" autocomplete="off"></el-input>
+                      <el-input prefix-icon="el-icon-reading" type="text" v-model="storeForm.storeDesc" autocomplete="off"></el-input>
                   </el-form-item>
               </el-form>
               <div>{{msg}}</div>  <!--如果新建知识库失败，会在这里提示用户-->
@@ -63,7 +74,9 @@
                   { required: true, message: '请输入知识库的简介', trigger: 'blur' },
                   { min: 1, max: 200, message: '长度在 1 到 200 个字符', trigger: 'blur' }
               ],
-          }
+          },
+          row:{},             //要删除的行对应的知识库对象
+          dialogVisible:false //控制删除确认框的显示和隐藏
         }
       },
       created(){
@@ -72,8 +85,8 @@
       methods:{
         getAllStore(){                  //展示知识库
             this.$axios.get(this.HOST+'/api/getAllStore').then(result=>{
-                if(result.data.msg == '知识库查询失败'){
-                    console.log('暂时没有知识库哦，快叫管理员去新建吧！')
+                if(result.data.msg == '知识库查询失败'){  //暂时没有知识库
+                    this.storehouse = [];
                 }else{
                     this.storehouse = result.data.result;
                 }
@@ -105,19 +118,18 @@
           // this.$router.push({ name: '/updateDosc', params:{dosc:dosc}}).catch(data => {  }); 
         },
         handleDelete(index,row){       //点击删除按钮，弹框
-          // this.dialogVisible = true
-          // this.row = row
+          this.dialogVisible = true
+          this.row = row
         },
-        sureDelete(){                  //点击删除按钮，删除知识库
-          // this.dialogVisible = false; //关闭弹框
-          // this.row.status = '已删除'
-          // this.$axios.post(this.HOST+'/api/toDeletehouse',this.row).then(result=>{
-          //     if(result.data.msg == '文档放进回收站失败'){
-          //         console.log(result.data.msg);
-          //     }else{ //文档成功放进回收站
-          //         this.getMyAllDosc(); //刷新页面
-          //     }
-          // }).catch(err=>console.log(err))
+        verySureDelete(){              //点击删除按钮，删除知识库
+          this.dialogVisible = false; //关闭弹框
+          this.$axios.post(this.HOST+'/api/deleteStorehouse/'+this.row.id).then(result=>{
+              if(result.data.msg == '删除知识库失败'){
+                  console.log(result.data.msg);
+              }else{ //删除知识库成功
+                  this.getAllStore(); //刷新页面
+              }
+          }).catch(err=>console.log(err))
         },
       }
     }
@@ -125,7 +137,7 @@
 
 <style lang="scss" scoped>
   //给table弄一个浅灰色外边框
-  .tableBox{  
+  .storehouseBox{  
     width: 100%;
     border: 1px solid #0000;  //必须
     background-color: rgba(255, 255, 255, 0); //必须
@@ -142,22 +154,47 @@
         box-sizing: border-box;
         border-bottom: 1px solid #eaeaea;
         position: relative;
-      }
-      .el-button{ //'新建文档'按钮
-        position: absolute;
-        right: 10px;
-      }
-      .caozuo{ //"删除"按钮的父元素，即“操作”
-        position: relative;
-        // .edit{ //“编辑”按钮
-        //   position: absolute;
-        //   left: 9px;
-        //   // top: 15px;
-        // }
-        .delete{  //"删除"按钮
+        .createStoreButton{ //'新建知识库'按钮
           position: absolute;
-          left: 69px;
-          // top: 15px;
+          right: 10px;
+        }
+      }
+      .el-table{
+        .caozuo{ //"删除"按钮的父元素，即“操作”
+          position: relative;
+          .edit{ //“编辑”按钮
+            position: absolute;
+            left: 9px;
+            // top: 15px;
+          }
+          .delete{  //"删除"按钮
+            position: absolute;
+            left: 69px;
+            // top: 15px;
+          }
+        }
+      }
+
+      //Dialog弹框
+      .el-dialog{
+        .el-dialog__header {
+            padding: 20px !important;
+            text-align: left;
+        }
+        .el-dialog__body {
+            padding: 20px !important;
+            color: #606266;
+            font-size: 14px;
+            word-break: break-all;
+        }
+        .el-dialog__footer {
+            padding: 20px !important;
+            text-align: right;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        .el-dialog .tips{
+          color: black;
         }
       }
     }

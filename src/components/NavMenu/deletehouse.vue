@@ -1,7 +1,7 @@
 <template>
     <!-- 回收站 -->
     <div class="Box">
-      <div class="tableBox">
+      <div class="deleteBox">
           <div class="title">回收站
             <el-button class="newDosc" type="danger" size="small" v-if="multipleSelection.length" 
             @click="deleteSelected = true">删除选中</el-button>
@@ -124,19 +124,14 @@
 </script>
 
 <style lang="scss">
-    .Box{
-      width: 100%;
-    }
-
-    //给table弄一个浅灰色外边框
-    .tableBox{  
+  .Box{
+    width: 100%;
+    .deleteBox{   //给table弄一个浅灰色外边框
       border: 1px solid rgb(214, 214, 214);
       width: 70%;
       float:left;
       background-color: rgba($color: white, $alpha: 0.1);
-
-      //标题
-      .title{
+      .title{ //标题
         width: 100%;
         height: 50px;
         padding: 10px;
@@ -147,50 +142,49 @@
         box-sizing: border-box;
         border-bottom: 1px solid #eaeaea;
         position: relative;
-      }
-      .el-dialog .tips{
-        color: black;
-      }
-
-      //'新建文档'按钮
-      .newDosc{
-        position: absolute;
-        right: 10px;
+        .newDosc{ //'新建文档'按钮
+          position: absolute;
+          right: 10px;
+        }
       }
 
-      .caozuo{ //"编辑"按钮的父元素，即“操作”
-        position: relative;
+      .el_table{  //表格
+        .caozuo{ //"编辑"按钮的父元素，即“操作”
+          position: relative;
+          .edit{ //“编辑”按钮
+            position: absolute;
+            left: 9px;
+            top: 10px;
+          }
+          .delete{
+            position: absolute;
+            left: 69px;
+            top: 10px;
+          }
+        }
       }
 
-      .edit{ //“编辑”按钮
-        position: absolute;
-        left: 9px;
-        top: 10px;
-      }
-      .delete{
-        position: absolute;
-        left: 69px;
-        top: 10px;
+      .el-dialog{ //Dialog弹框确认
+        .el-dialog__header {
+            padding: 20px !important;
+            text-align: left;
+        }
+        .el-dialog__body {
+            padding: 20px !important;
+            color: #606266;
+            font-size: 14px;
+            word-break: break-all;
+        }
+        .el-dialog__footer {
+            padding: 20px !important;
+            text-align: right;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        .el-dialog .tips{
+          color: black;
+        }
       }
     }
-
-    //Dialog弹框
-    .el-dialog{
-      .el-dialog__header {
-          padding: 20px !important;
-          text-align: left;
-      }
-      .el-dialog__body {
-          padding: 20px !important;
-          color: #606266;
-          font-size: 14px;
-          word-break: break-all;
-      }
-      .el-dialog__footer {
-          padding: 20px !important;
-          text-align: right;
-          -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-      }
-    }
+  }
 </style>
