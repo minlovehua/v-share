@@ -224,6 +224,18 @@ exports.deleteStorehouse=(req,res)=>{
     })
 }
 
+// 5.修改知识库
+exports.editStore=(req,res)=>{
+    let sql = 'update storehouse set storeName=?,storeDesc=? where id=?';
+    let data = [req.body.storeName,req.body.storeDesc,req.body.id];
+    db.base(sql,data,(result)=>{
+        if(result.affectedRows != 1){
+            return res.json({msg: '知识库修改失败'});
+        }else{
+            return res.json({msg: '知识库修改成功'});
+        }
+    });
+}
 
 
 //------------------------------团队 模块----------------------------------------

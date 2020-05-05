@@ -2,27 +2,47 @@
     <!-- 知识库界面 -->
     <div class="storehouseBox">
       <!-- 展示所有知识库及简介 -->
-        <div class="show">  
-          <div class="title">
-            知识库
-            <el-button class="createStoreButton" type="primary" size="small" v-if="$store.state.role==1?true:false"  @click="flag=!flag">新建知识库</el-button>
+        <div class="show"> 
+          <!-- 展示知识库 --> 
+          <div class="showTable">  
+            <div class="title">
+              知识库
+              <el-button class="createStoreButton" type="primary" size="small" v-if="$store.state.role==1?true:false"  @click="flag=!flag;editFlag=false;">新建知识库</el-button>
+            </div>
+            <el-table :data="storehouse" style="width: 100%" @row-click="lookStore" fit>
+              <el-table-column prop="storeName" label="名称" width="280px"></el-table-column>
+              <el-table-column prop="storeDesc" label="简介"></el-table-column>
+              <!-- 只有管理员才能删改知识库！！！-->
+              <el-table-column label="操作" class="caozuo" width="200px" v-if="$store.state.role==1?true:false">
+                <template slot-scope="scope">
+                    <el-button class="edit" type="primary" size="mini" @click="showEditBox(scope.$index, scope.row)"
+                    @click.stop="deleteVisible = true">修改</el-button>
+                    <el-button class="delete" @click.stop="deleteVisible = true" type="danger" size="mini" 
+                    @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
           </div>
-          <el-table :data="storehouse" style="width: 100%" @row-click="lookStore" fit>
-            <el-table-column prop="storeName" label="名称" width="220px"></el-table-column>
-            <el-table-column prop="storeDesc" label="简介"></el-table-column>
+          <!-- 修改知识库 -->
+          <div class="editStore" v-if="editFlag">
+            <el-card class="add">
+                <div slot="header" class="clearfix">
+                    <i class="el-icon-edit"></i>
+                    <span>修改知识库</span>
+                    <el-button style="float: right; padding: 3px 0" type="text" @click="editStore('ruleForm')">确定</el-button>
+                </div>
+                <el-form :model="editStoreForm" status-icon :rules="rules" ref="ruleForm" label-width="60px" class="demo-ruleForm">
+                    <el-form-item label="名称" prop="storeName">
+                        <el-input prefix-icon="el-icon-folder" type="text" v-model="editStoreForm.storeName" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="简介" prop="storeDesc">
+                        <el-input prefix-icon="el-icon-reading" type="text" v-model="editStoreForm.storeDesc" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-form>
+                <div>{{editMsg}}</div>  <!--如果新建知识库失败，会在这里提示用户-->
+            </el-card>
+          </div>
 
-            <!-- 搞这里 还没搞 编辑、只有管理员才能删知识库-->
-            <!-- 搞这里 还没搞 编辑、只有管理员才能删知识库-->
-            <!-- 搞这里 还没搞 编辑、只有管理员才能删知识库-->
-            <el-table-column label="操作" class="caozuo" width="200px">
-              <template slot-scope="scope">
-                  <el-button class="edit" type="primary" size="mini" @click="edit(scope.$index, scope.row)">编辑</el-button>
-                  <el-button class="delete" @click.stop="deleteVisible = true" type="danger" size="mini" 
-                  @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-              </template>
-            </el-table-column>
-
-          </el-table>
           <!-- 弹框确认是否确定要删除知识库 -->
           <el-dialog title="确定要删除此知识库？" :visible.sync="dialogVisible" width="30%">
             <span class="tips">知识库内的文档也会被删除</span>
@@ -64,7 +84,9 @@
               storeDesc:'',  //知识库简介
           },
           flag:false,        //flag 为false时，不展示新建知识库模块
+          editFlag:false,    //editFlag 为false时，不展示修改知识库模块
           msg:'',            //新建知识库失败时显示提示
+          editMsg:'',        //修改知识库失败时显示提示
           rules:{            //新建知识库的验证规则
               storeName:[    //验证知识库名称是否合法
                   { required: true, message: '请输入知识库名称', trigger: 'blur' },
@@ -76,7 +98,12 @@
               ],
           },
           row:{},             //要删除的行对应的知识库对象
-          dialogVisible:false //控制删除确认框的显示和隐藏
+          dialogVisible:false, //控制删除确认框的显示和隐藏
+          editStoreForm:{        //【修改知识库模块】
+              id:'',
+              storeName:'',    //知识库名称
+              storeDesc:'',    //知识库简介
+          },
         }
       },
       created(){
@@ -113,9 +140,25 @@
                 }).catch(err=>console.log(err))
             });
         },
-        edit(index,storehouse){              //编辑知识库
-          //this.$router.push() 方法中path不能和params一起使用，否则params将无效。只能用name来指定页面。
-          // this.$router.push({ name: '/updateDosc', params:{dosc:dosc}}).catch(data => {  }); 
+        showEditBox(index,storehouse){              //修改知识库
+          this.editStoreForm.id = storehouse.id
+          this.editStoreForm.storeName = storehouse.storeName
+          this.editStoreForm.storeDesc = storehouse.storeDesc 
+          this.flag = false  //显示修改模块之前，先关闭新建模块
+          this.editFlag=!this.editFlag       //控制显示或隐藏 修改知识库模块
+        },
+        editStore(formName){
+            this.$refs[formName].validate((valid)=>{
+                if(!valid) return;  //如果valid值为false，则return，不发送请求。
+                this.$axios.post(this.HOST+'/api/editStore',this.editStoreForm).then(result=>{
+                    if(result.data.msg == '知识库修改成功'){
+                        this.getAllStore();  //重新从数据库获取数据，同步到网页上
+                        this.editFlag = false;  //隐藏修改知识库模块
+                    }else{
+                      this.editMsg = result.data.msg;
+                    }
+                }).catch(err=>console.log(err))
+            });
         },
         handleDelete(index,row){       //点击删除按钮，弹框
           this.dialogVisible = true
@@ -145,33 +188,42 @@
     .show{  //展示知识库及简介
       width: 73%;
       float: left;
-      .title{ //标题
-        width: 100%;
-        height: 50px;
-        padding: 10px;
-        text-align: left;
-        background-color: snow;
-        box-sizing: border-box;
-        border-bottom: 1px solid #eaeaea;
-        position: relative;
-        .createStoreButton{ //'新建知识库'按钮
-          position: absolute;
-          right: 10px;
+      .showTable{  //展示知识库的table
+        .title{ //标题
+          width: 100%;
+          height: 50px;
+          padding: 10px;
+          text-align: left;
+          background-color: snow;
+          box-sizing: border-box;
+          border-bottom: 1px solid #eaeaea;
+          position: relative;
+          .createStoreButton{ //'新建知识库'按钮
+            position: absolute;
+            right: 10px;
+          }
+        }
+        .el-table{   
+          .caozuo{ //"删除"按钮的父元素，即“操作”
+            position: relative;
+            .edit{ //“修改”按钮
+              position: absolute;
+              left: 9px;
+              // top: 15px;
+            }
+            .delete{  //"删除"按钮
+              position: absolute;
+              left: 69px;
+              // top: 15px;
+            }
+          }
         }
       }
-      .el-table{
-        .caozuo{ //"删除"按钮的父元素，即“操作”
-          position: relative;
-          .edit{ //“编辑”按钮
-            position: absolute;
-            left: 9px;
-            // top: 15px;
-          }
-          .delete{  //"删除"按钮
-            position: absolute;
-            left: 69px;
-            // top: 15px;
-          }
+
+      .editStore{  //修改知识库
+        margin-top: 50px;
+        .clearfix{
+          color: black;
         }
       }
 

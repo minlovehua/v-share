@@ -44,8 +44,6 @@ export default {
             this.storehouse = JSON.parse(sessionStorage.getItem("storehouse"))
         },
         getDoscList(){ //获取当前知识库下所有的文档
-                console.log(this.storehouse.id)
-            // this.$axios.get(this.HOST+'/api/getDoscList/'+this.storehouse.storeName).then(result=>{
             this.$axios.get(this.HOST+'/api/getDoscList/'+this.storehouse.id).then(result=>{
                 if(result.data.msg == '获取文档列表失败'){
                     this.msg = '当前知识库还没有文档哦，快去发布一篇吧！'

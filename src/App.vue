@@ -137,7 +137,9 @@
         methods:{
             exit:function(){//退出登录
                 //回到开始界面
-                this.$router.replace('/start').catch(data => {  });  
+                // this.$router.replace('/start').catch(data => {  });  
+                //回到登录页面
+                this.$router.replace('/login').catch(data => {  });  
                 //禁用浏览器的“返回”按钮
                 history.pushState(null, null, document.URL);
                 window.addEventListener("popstate",function(e) {  

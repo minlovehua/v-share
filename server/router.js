@@ -75,4 +75,7 @@ router.post('/api/selectStatus',service.selectStatus)
 //删除知识库
 router.post('/api/deleteStorehouse/:id',service.deleteStorehouse)
 
+//修改知识库
+router.post('/api/editStore',service.editStore)
+
 module.exports = router

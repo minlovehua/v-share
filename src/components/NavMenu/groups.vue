@@ -18,7 +18,7 @@
                 <span><i class="el-icon-user"></i>&nbsp;&nbsp;{{item.username}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             </div>
           </div>
-          <div class="codes"  v-if="$store.state.role==1?true:false" >
+          <div class="codes"  v-if="$store.state.role==1?true:false">
             <h3>邀请新成员</h3>
             可用邀请码<br/>
             <div v-for="item in useCode" :key="item.id" style="display:inline-block;margin-bottom: 5%;">
