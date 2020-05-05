@@ -4,6 +4,10 @@
       <div class="tableBox">
           <div class="title">
             我的文档
+            <!-- 搜索功能 -->
+            <el-input class="searchInput" placeholder="请输入搜索内容" suffix-icon="el-icon-search" size="mini"
+             v-model="searchInput" @change="handleSearch"></el-input>
+             <!-- 新建文档 -->
             <el-button class="newDosc" type="primary" size="small" @click="flag=!flag">新建文档</el-button>
           </div>
           <el-table :data="doscForm" @row-click="lookDosc" style="width: 100%" fit>
@@ -30,13 +34,13 @@
             </el-table-column>
           </el-table>
           <!-- 弹框确认是否删除文档 -->
-          <el-dialog title="确定要删除这篇文档吗？" :visible.sync="dialogVisible" width="30%">
+          <el-dialog class="doscDialog" title="确定要删除这篇文档吗？" :visible.sync="dialogVisible" width="350px">
             <span class="tips">您删除的文档将被移动到回收站！</span>
             <span slot="footer" class="dialog-footer">
               <el-button class="cancelButton" type="primary" size="mini" @click="dialogVisible = false">取 消</el-button>
               <el-button class="sureButton" type="primary" size="mini" @click="sureDelete()">确 定</el-button>
             </span>
-          </el-dialog>         
+          </el-dialog> 
       </div>
       <!-- 新建文档 -->
       <div class="createDoscBox" v-if="flag">
@@ -61,13 +65,15 @@
           doscForm:[],          // 用于存储获取到的所有文档，展示在界面的Table中
           dialogVisible: false, //控制是否弹框确认删除
           row:{},                //当前被点击的行对应的文档对象
-          options:[{
+          options:[{            //发布状态选择下拉框的选项
             value: '未发布',
             label:'未发布'
           },{
             value: '已发布',
             label:'已发布'
-          }]
+          }],
+          searchInput:'',        //搜索框输入的内容
+          searchDoscs:[],        //存放满足条件的文档
         }
       },
       created(){
@@ -130,6 +136,15 @@
                 // console.log('修改文档的发布状态成功')
               }
           }).catch(err=>console.log(err))   
+        },
+        handleSearch(){                //搜索功能
+          this.doscForm.forEach(item => {
+              // indexOf(int ch): 在母串中搜子串，返回子串在母字符串中第一次出现处的索引，没找到则返回 -1。
+              if(item.doscName.indexOf(this.searchInput)>=0){
+                  this.searchDoscs.push(item)
+              }
+          });
+          this.doscForm = this.searchDoscs;
         }
       }
     }
@@ -152,60 +167,79 @@
         box-sizing: border-box;
         border-bottom: 1px solid #eaeaea;
         position: relative;
+        .searchInput{
+          width: 180px;
+          margin-left: 20px;
+        }
         .newDosc{ //'新建文档'按钮
           position: absolute;
           right: 10px;
         }
       }
-      .el-table td, .el-table th {
-          padding: 15px 5px;  //第一个：将table的行高变大一点。第二个：让文字不要靠太近表格左边。
-          min-width: 0;
-          -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-          text-overflow: ellipsis;
-          vertical-align: middle;
-          position: relative;
-          text-align: left;
-          font-size: 16px;  //table中字体调大一点
-      }
-      .el-select{
-        .el-input__inner {  //改变el-select框的高度
-            -webkit-appearance: none;
-            background-color: #FFF;
-            background-image: none;
-            border-radius: 4px;
-            border: 1px solid #DCDFE6;
+      .el_table{
+        .el-table td, .el-table th {
+            padding: 15px 5px;  //第一个：将table的行高变大一点。第二个：让文字不要靠太近表格左边。
+            min-width: 0;
             -webkit-box-sizing: border-box;
             box-sizing: border-box;
-            color: #606266;
-            display: inline-block;
-            font-size: inherit;
-            height: 23px;          //改变el-select框的高度
-            line-height: 23px;
-            outline: 0;
-            padding: 0 10px;
-            -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-            transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-            width: 100%;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+            position: relative;
+            text-align: left;
+            font-size: 16px;  //table中字体调大一点
         }
-        .el-input__icon {  //改小，使得el-select右侧小箭头垂直居中
-            height: 100%;
-            width: 25px;
-            text-align: center;
-            -webkit-transition: all .3s;
-            transition: all .3s;
-            line-height: 23px;    //改小，使得el-select右侧小箭头垂直居中
+        .el-select{
+          .el-input__inner {  //改变el-select框的高度
+              -webkit-appearance: none;
+              background-color: #FFF;
+              background-image: none;
+              border-radius: 4px;
+              border: 1px solid #DCDFE6;
+              -webkit-box-sizing: border-box;
+              box-sizing: border-box;
+              color: #606266;
+              display: inline-block;
+              font-size: inherit;
+              height: 23px;          //改变el-select框的高度
+              line-height: 23px;
+              outline: 0;
+              padding: 0 10px;
+              -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+              transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+              width: 100%;
+          }
+          .el-input__icon {  //改小，使得el-select右侧小箭头垂直居中
+              height: 100%;
+              width: 25px;
+              text-align: center;
+              -webkit-transition: all .3s;
+              transition: all .3s;
+              line-height: 23px;    //改小，使得el-select右侧小箭头垂直居中
+          }
+        }
+        .caozuo{ //"编辑"按钮的父元素，即“操作”
+          position: relative;
+          .edit{ //“编辑”按钮
+            position: absolute;
+            left: 9px;
+            // top: 15px;
+          }
+          .delete{
+            position: absolute;
+            left: 69px;
+            // top: 15px;
+          }
         }
       }
-      .el-dialog{ //Dialog弹框
+      .doscDialog{ //Dialog弹框
         .el-dialog__header {
             padding: 20px !important;
             text-align: left;
         }
         .el-dialog__body {
             padding: 20px !important;
-            color: black;
-            font-size: 18px;
+            color: #606266;
+            font-size: 14px;
             word-break: break-all;
         }
         .el-dialog__footer {
@@ -214,18 +248,8 @@
             -webkit-box-sizing: border-box;
             box-sizing: border-box;
         }
-      }
-      .caozuo{ //"编辑"按钮的父元素，即“操作”
-        position: relative;
-        .edit{ //“编辑”按钮
-          position: absolute;
-          left: 9px;
-          // top: 15px;
-        }
-        .delete{
-          position: absolute;
-          left: 69px;
-          // top: 15px;
+        .el-dialog .tips{
+          color: black;
         }
       }
     }

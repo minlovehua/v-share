@@ -7,7 +7,12 @@
           <div class="showTable">  
             <div class="title">
               知识库
-              <el-button class="createStoreButton" type="primary" size="small" v-if="$store.state.role==1?true:false"  @click="flag=!flag;editFlag=false;">新建知识库</el-button>
+              <!-- 搜索功能 -->
+              <el-input class="searchInput" placeholder="请输入搜索内容" suffix-icon="el-icon-search" size="mini"
+              v-model="searchInput" @change="handleSearch"></el-input>
+              <!-- 新建知识库 -->
+              <el-button class="createStoreButton" type="primary" size="small" v-if="$store.state.role==1?true:false"  
+              @click="flag=!flag;editFlag=false;">新建知识库</el-button>
             </div>
             <el-table :data="storehouse" style="width: 100%" @row-click="lookStore" fit>
               <el-table-column prop="storeName" label="名称" width="280px"></el-table-column>
@@ -42,9 +47,8 @@
                 <div>{{editMsg}}</div>  <!--如果新建知识库失败，会在这里提示用户-->
             </el-card>
           </div>
-
           <!-- 弹框确认是否确定要删除知识库 -->
-          <el-dialog title="确定要删除此知识库？" :visible.sync="dialogVisible" width="30%">
+          <el-dialog class="storeDialog" title="确定要删除此知识库？" :visible.sync="dialogVisible" width="350px">
             <span class="tips">知识库内的文档也会被删除</span>
             <span slot="footer" class="dialog-footer">
               <el-button class="cancelButton" type="primary" size="mini" @click="dialogVisible = false">取 消</el-button>
@@ -52,7 +56,7 @@
             </span>
           </el-dialog>
         </div>
-        <!-- 新建知识库 仅管理员可操作-->
+      <!-- 新建知识库 仅管理员可操作-->
         <div class="create" v-if="flag">
           <el-card class="add">
               <div slot="header" class="clearfix">
@@ -104,6 +108,8 @@
               storeName:'',    //知识库名称
               storeDesc:'',    //知识库简介
           },
+          searchInput:'',      //搜索框的内容
+          searchStore:[]       //存放搜索到的知识库
         }
       },
       created(){
@@ -174,6 +180,15 @@
               }
           }).catch(err=>console.log(err))
         },
+        handleSearch(){                //搜索功能
+          this.storehouse.forEach(item => {
+              // indexOf(int ch): 在母串中搜子串，返回子串在母字符串中第一次出现处的索引，没找到则返回 -1。
+              if(item.storeName.indexOf(this.searchInput)>=0){
+                  this.searchStore.push(item)
+              }
+          });
+          this.storehouse = this.searchStore;
+        }
       }
     }
 </script>
@@ -198,6 +213,10 @@
           box-sizing: border-box;
           border-bottom: 1px solid #eaeaea;
           position: relative;
+          .searchInput{
+            width: 180px;
+            margin-left: 20px;
+          }
           .createStoreButton{ //'新建知识库'按钮
             position: absolute;
             right: 10px;
@@ -227,8 +246,7 @@
         }
       }
 
-      //Dialog弹框
-      .el-dialog{
+      .storeDialog{ //Dialog弹框
         .el-dialog__header {
             padding: 20px !important;
             text-align: left;

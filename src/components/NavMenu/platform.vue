@@ -1,7 +1,10 @@
 <template>
     <div>
         <div class="cardBox">
-            <div class="tip">团&nbsp;队&nbsp;最&nbsp;新&nbsp;发&nbsp;布</div>
+            <div class="tip">团&nbsp;队&nbsp;最&nbsp;新&nbsp;发&nbsp;布&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <el-input class="searchInput" suffix-icon="el-icon-search" size="mini" placeholder="请输入搜索内容" 
+                v-model="searchInput" @change="handleSearch" v-if="flag"></el-input>
+            </div>
             <el-card class="box-card" v-for="item in doscForm" :key="item.id">
                 <div class="eachCard">
                     <div class="title">    <!-- 左边 -->
@@ -21,12 +24,16 @@
 </template>
 
 <script>
+
 import Cookie from 'js-cookie'
 export default {
     data(){
         return{
             doscForm:[],
-            msg:''
+            msg:'',
+            searchInput:'',  //搜索框输入的内容
+            searchDoscs:[],  //存放满足条件的文档
+            flag:false       //是否展示搜索框
         }
     },
     created(){
@@ -36,10 +43,12 @@ export default {
         getAllGroupDosc(){ //获取团队的所有已发布的文档
           this.$axios.get(this.HOST+'/api/getAllGroupDosc').then(result=>{
               if(result.data.msg == '获取文档失败'){
-                  console.log(result.data.msg);
+                  this.flag = false;
+                  console.log('团队暂时没有发布的文档');
                   this.msg = '暂时没有发布的文档，快去发布一篇吧！';
               }else{
                   this.doscForm = result.data.result;
+                  this.flag = true;
               }
           }).catch(err=>console.log(err))
         },
@@ -47,6 +56,16 @@ export default {
             //解决了直接用this.$route.query.dosc时页面刷新之后数据会丢失的问题（第一步）。第二步在lookDosc.vue
             sessionStorage.setItem("dosc",JSON.stringify(dosc))
             this.$router.push({ name: '/lookDosc', query:{dosc:dosc}}).catch(data=>{});
+        },
+        handleSearch(){    //搜索框输入内容，返回结果（直接拿前端数据进行过滤）
+            this.doscForm.forEach(item => {
+                // indexOf(int ch): 在母串中搜子串，返回子串在母字符串中第一次出现处的索引，没找到则返回 -1。
+                if(item.doscName.indexOf(this.searchInput)>=0){
+                    this.searchDoscs.push(item)
+                }
+            });
+            this.doscForm = this.searchDoscs;
+            if(this.searchDoscs.length == 0) this.msg='暂无数据'
         }
     }
 }
@@ -58,15 +77,26 @@ export default {
         box-sizing: border-box;
         padding: 10px;
         .tip{
+            box-sizing: border-box;
             font-size: 18px;
-            // color: rgb(189, 192, 8);
             color: white;
             text-align: left;
             margin-left: 10px;
             text-shadow: 1px 1px 2px rgb(12, 12, 11); //水平位置 垂直位置 模糊距离 阴影颜色
+            padding-right: 12px;
+            .searchInput{
+                width: 180px;
+                text-shadow: 0 0 0 #0000;
+                float: right;
+                background-color:#0000;
+            }
         }
         .msg{
-            color: white;               //添加
+            margin-top: 20px;
+            margin-left: 20px;
+            text-align: left;
+            font-size: 16px;
+            color: rgb(238, 159, 41);               //添加
             text-shadow: 2px 2px 2px black;         //添加
         }
         .el-card{
@@ -85,8 +115,6 @@ export default {
                 display: flex;
                 justify-content: space-between;
                 .title{
-                    // position: absolute;
-                    // left: 10px;
                     span{
                         font-size: 18px;
                         font-weight: 600;

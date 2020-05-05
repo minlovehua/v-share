@@ -2,8 +2,13 @@
     <!-- 回收站 -->
     <div class="Box">
       <div class="deleteBox">
-          <div class="title">回收站
-            <el-button class="newDosc" type="danger" size="small" v-if="multipleSelection.length" 
+          <div class="title">
+            回收站
+            <!-- 搜索功能 -->
+            <el-input class="searchInput" placeholder="请输入搜索内容" suffix-icon="el-icon-search" size="mini"
+            v-model="searchInput" @change="handleSearch"></el-input>
+            <!-- 删除所选中的文档 -->
+            <el-button class="deleteDosc" type="danger" size="small" v-if="multipleSelection.length" 
             @click="deleteSelected = true">删除选中</el-button>
           </div>
           <el-table :data="doscForm" @row-click="lookDosc" style="width: 100%" fit @selection-change="handleSelectionChange">
@@ -20,7 +25,7 @@
             </el-table-column>
           </el-table>
           <!-- 弹框确认是否恢复文档 -->
-          <el-dialog title="确定要恢复文档吗？" :visible.sync="returnVisible" width="30%">
+          <el-dialog title="确定要恢复文档吗？" :visible.sync="returnVisible" width="350px">
             <span class="tips">文档将恢复到【我的文档】模块</span>
             <span slot="footer" class="dialog-footer">
               <el-button class="cancelButton" type="primary" size="mini" @click="returnVisible = false">取 消</el-button>
@@ -28,7 +33,7 @@
             </span>
           </el-dialog> 
           <!-- 弹框确认是否彻底删除文档 -->
-          <el-dialog title="确定要彻底删除此文档吗？" :visible.sync="dialogVisible" width="30%">
+          <el-dialog title="确定要彻底删除此文档吗？" :visible.sync="dialogVisible" width="350px">
             <span class="tips">慎重考虑哦！</span>
             <span slot="footer" class="dialog-footer">
               <el-button class="cancelButton" type="primary" size="mini" @click="dialogVisible = false">取 消</el-button>
@@ -36,7 +41,7 @@
             </span>
           </el-dialog>
           <!-- 弹框确认是否彻底删除多选框选中的文档 -->
-          <el-dialog title="确定要彻底删除选中的文档吗？" :visible.sync="deleteSelected" width="30%">
+          <el-dialog title="确定要彻底删除选中的文档吗？" :visible.sync="deleteSelected" width="350px">
             <span>删除将不可恢复！</span>
             <span slot="footer" class="dialog-footer">
               <el-button class="cancelButton" type="primary" size="mini" @click="deleteSelected = false">取 消</el-button>
@@ -56,7 +61,9 @@
           returnVisible:false,         //控制是否弹框确认 恢复文档
           row:{},                      //当前被点击的行对应的文档对象
           deleteSelected:false,        //控制是否弹框确认 删除选中
-          multipleSelection: []        //被选中的文档对象组成的数组(多选框Checkbox选中的文档)
+          multipleSelection: [],        //被选中的文档对象组成的数组(多选框Checkbox选中的文档)
+          searchInput:'',        //搜索框输入的内容
+          searchDoscs:[],        //存放满足条件的文档
         }
       },
       created(){
@@ -118,6 +125,15 @@
               this.getMyAllDeleteDosc(); //刷新页面
             }
           }).catch(err=>console.log(err))
+        },
+        handleSearch(){                //搜索功能
+          this.doscForm.forEach(item => {
+              // indexOf(int ch): 在母串中搜子串，返回子串在母字符串中第一次出现处的索引，没找到则返回 -1。
+              if(item.doscName.indexOf(this.searchInput)>=0){
+                  this.searchDoscs.push(item)
+              }
+          });
+          this.doscForm = this.searchDoscs;
         }
       }
     }
@@ -138,11 +154,14 @@
         text-align: left;
         font-size: 18px;
         background-color: snow;
-        // background-color: rgba($color: white, $alpha: 0.1);
         box-sizing: border-box;
         border-bottom: 1px solid #eaeaea;
         position: relative;
-        .newDosc{ //'新建文档'按钮
+        .searchInput{
+          width: 180px;
+          margin-left: 20px;
+        }
+        .deleteDosc{ //'删除选中'按钮
           position: absolute;
           right: 10px;
         }
