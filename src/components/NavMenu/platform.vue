@@ -52,7 +52,7 @@ export default {
               }
           }).catch(err=>console.log(err))
         },
-        look(dosc){        //点击“查看全文”,显示文章内容
+        look(dosc){        //点击“查看全文”,显示文章内容(此dosc含storeName)
             //解决了直接用this.$route.query.dosc时页面刷新之后数据会丢失的问题（第一步）。第二步在lookDosc.vue
             sessionStorage.setItem("dosc",JSON.stringify(dosc))
             this.$router.push({ name: '/lookDosc', query:{dosc:dosc}}).catch(data=>{});

@@ -146,18 +146,20 @@
                 }).catch(err=>console.log(err))
             });
         },
-        showEditBox(index,storehouse){              //修改知识库
+        showEditBox(index,storehouse){              //修改知识库1
           this.editStoreForm.id = storehouse.id
           this.editStoreForm.storeName = storehouse.storeName
           this.editStoreForm.storeDesc = storehouse.storeDesc 
           this.flag = false  //显示修改模块之前，先关闭新建模块
           this.editFlag=!this.editFlag       //控制显示或隐藏 修改知识库模块
         },
-        editStore(formName){
+        editStore(formName){ //修改知识库2
             this.$refs[formName].validate((valid)=>{
                 if(!valid) return;  //如果valid值为false，则return，不发送请求。
                 this.$axios.post(this.HOST+'/api/editStore',this.editStoreForm).then(result=>{
                     if(result.data.msg == '知识库修改成功'){
+                      
+                        console.log(result.data)
                         this.getAllStore();  //重新从数据库获取数据，同步到网页上
                         this.editFlag = false;  //隐藏修改知识库模块
                     }else{

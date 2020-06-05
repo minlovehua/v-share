@@ -17,7 +17,7 @@
                         <el-dropdown-item>新建文档</el-dropdown-item>
                         <el-dropdown-item>新建知识库</el-dropdown-item>
                     </el-dropdown-menu> 
-                </el-dropdown>-->     <!--待实现 -->
+                </el-dropdown>-->     <!--待 -->
 
 
                 <!-- 主页右上角的“用户”按钮 el-dropdown-->
@@ -26,13 +26,14 @@
                         <!-- 显示头像图标 -->
                         <i class="el-icon-user"></i>&nbsp;
                         <!-- 主页右上角显示当前登录的用户名 -->
-                        <span style="text-shadow: 2px 1px 1px rgb(22, 22, 22);">{{$store.state.username}}</span>
+                        <span v-if="$store.state.role==1?true:false" style="text-shadow: 2px 1px 1px rgb(22, 22, 22);">管理员-{{$store.state.username}}</span>
+                        <span v-else style="text-shadow: 2px 1px 1px rgb(22, 22, 22);">{{$store.state.username}}</span>
                         <!-- <span>{{$store.state.role}}</span> -->
                         <i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                        <!-- <el-dropdown-item>个人主页</el-dropdown-item> -->  <!--待实现 -->
-                        <!-- <el-dropdown-item>账户设置</el-dropdown-item> -->  <!--待实现 -->
+                        <!-- <el-dropdown-item>个人主页</el-dropdown-item> -->  <!--待 -->
+                        <!-- <el-dropdown-item>账户设置</el-dropdown-item> -->  <!--待 -->
                         <!-- dropdown的点击事件@click无效，要@click.native才有效 -->
                         <el-dropdown-item @click.native="exit">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
@@ -69,10 +70,10 @@
                                 <i class="el-icon-help"></i>
                                 <span slot="title">团队&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             </el-menu-item>
-                            <el-menu-item index="/platform/collection">
+                            <!-- <el-menu-item index="/platform/collection">
                                 <i class="el-icon-star-off"></i>
                                 <span slot="title">收藏&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            </el-menu-item>
+                            </el-menu-item> -->
                             <el-menu-item index="/platform/deletehouse">
                                 <i class="el-icon-delete"></i>
                                 <span slot="title">回收站&nbsp;&nbsp;&nbsp;</span>

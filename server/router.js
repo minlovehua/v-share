@@ -51,6 +51,7 @@ router.get('/api/getComment/:id',service.getComment)
 //将删除的文档放进回收站
 router.post('/api/toDeletehouse',service.toDeletehouse)
 
+//获取所有回收站的文档
 router.get('/api/getMyAllDeleteDosc/:username',service.getMyAllDeleteDosc)
 
 //从回收站恢复文档

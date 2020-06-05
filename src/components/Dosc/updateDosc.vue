@@ -30,19 +30,18 @@
         data() {
             return {
                 msg:'',
-                doscForm:{
-                    id:this.$route.params.dosc.id,              //唯一标识一个文档
-                    store_id:this.$route.params.dosc.store_id,  //当前这篇文档所属知识库
-                    doscName:this.$route.params.dosc.doscName,  //文档标题
-                    author:this.$route.params.dosc.author,      //作者
-                    status:this.$route.params.dosc.status,      //发布状态
-                    content:this.$route.params.dosc.content,    //输入的markdown
-                    html:this.$route.params.dosc.html,          //及时转的html
-                    // updateTime:new Date()                    //更新时间
-                }
+                doscForm:{},
+                flag:this.$route.params.flag
             }
         },
+        created(){
+            this.getDosc();
+        },
         methods: {
+            getDosc(){
+                //解决了直接用this.$route.query.dosc时页面刷新之后数据会丢失的问题（第二步）。第一步在platform.vue
+                this.doscForm = JSON.parse(sessionStorage.getItem("updateDosc"))
+            },
             change(value, render){ // markdown编辑器的所有操作都会被解析重新渲染
                 this.doscForm.html = render;  // render 为 markdown 解析后的结果[html]
             },
@@ -55,7 +54,15 @@
                     this.$axios.post(this.HOST+'/api/updateDosc',this.doscForm).then(result=>{ //将数据插入数据库
                         if(result.data.msg == '更新文档成功'){
                             this.msg = '更新文档成功';
-                            this.$router.replace('/platform/document');
+                            if(this.flag == '1'){ //其它人修改，回到lookDosc界面
+                                // 修改完后，回到查看全文界面
+                                sessionStorage.setItem("dosc",JSON.stringify(this.doscForm))
+                                this.$router.push({ name: '/lookDosc', query:{dosc:this.doscForm}}).catch(data=>{});
+                                // 修改完后,回到团队发布界面
+                                // this.$router.replace('/platform');
+                            }else{ //作者修改，回到“我的文档界面”
+                                this.$router.replace('/platform/document');
+                            }
                         }else{
                             console.log(result.data.msg);
                         }

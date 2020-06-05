@@ -78,7 +78,7 @@
       },
       created(){
         this.getAllStore();  //页面一旦创建就展示所有知识库
-        this.getMyAllDosc(); 
+        this.getMyAllDosc(); //获取dosc表的内容+知识库名
       },
       methods:{
         createDosc(storeId,storeName){         //点击知识库标签之后，跳转到文档编辑页面同时将这个知识库的名字通过query传递过去
@@ -106,7 +106,8 @@
         },
         edit(index,dosc){              //编辑文档
           //this.$router.push() 方法中path不能和params一起使用，否则params将无效。只能用name来指定页面。
-          this.$router.push({ name: '/updateDosc', params:{dosc:dosc}}).catch(data => {  });
+          sessionStorage.setItem("updateDosc",JSON.stringify(dosc))
+          this.$router.push({ name: '/updateDosc', params:{dosc:dosc,flag:'2'}}).catch(data => {  });
         },
         lookDosc(row, event, column){  //点击行，查看文档详情
           //解决了直接用this.$route.query.dosc时页面刷新之后数据会丢失的问题（第一步）。第二步在lookDosc.vue

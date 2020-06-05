@@ -61,9 +61,9 @@
           returnVisible:false,         //控制是否弹框确认 恢复文档
           row:{},                      //当前被点击的行对应的文档对象
           deleteSelected:false,        //控制是否弹框确认 删除选中
-          multipleSelection: [],        //被选中的文档对象组成的数组(多选框Checkbox选中的文档)
-          searchInput:'',        //搜索框输入的内容
-          searchDoscs:[],        //存放满足条件的文档
+          multipleSelection: [],       //被选中的文档对象组成的数组(多选框Checkbox选中的文档)
+          searchInput:'',              //搜索框输入的内容
+          searchDoscs:[],             //存放满足条件的文档
         }
       },
       created(){

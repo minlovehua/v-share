@@ -93,6 +93,7 @@
               this.msg = result.data.msg;
             }else{
               this.useCode = result.data.code;
+              console.log(result.data)
             }
           }).catch(err=>console.log(err))
         }

@@ -43,8 +43,7 @@ export default {
         getComments(){ //获取评论
             this.$axios.get(this.HOST+'/api/getComment/'+this.id).then(result=>{
                 if(result.data.msg == '获取评论成功'){
-                    console.log(result.data.comments)
-                   this.comments=result.data.comments;
+                    this.comments=result.data.comments;
                 }else{
                     console.log(result.data.msg)
                 }
@@ -74,7 +73,7 @@ export default {
     .comment-container{
         background-color: rgb(232, 247, 181);
         width: 100%;
-        padding: 10px;
+        padding: 8px;
         box-sizing: border-box;
         min-height: 300px;
         margin-bottom: 20px;
@@ -93,7 +92,7 @@ export default {
             .comment-item{
                 font-size: 16px;
                 border-bottom: 1px dashed rgb(187, 186, 186);
-                padding: 15px;
+                padding: 10px;
                 .user{
                     font-weight: 900;
                 }

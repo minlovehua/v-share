@@ -21,10 +21,13 @@ app.use('/api/*', function (req, res, next) {
     next();
 });
 
+
 // 挂载参数处理中间件
-app.use(bodyParser.urlencoded({extended:false}))
+// app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.urlencoded({limit: '1000mb', extended: true}));
 // 处理json格式的参数
-app.use(bodyParser.json())
+// app.use(bodyParser.json())
+app.use(bodyParser.json({limit: '1000mb'}));
 
 //启动服务器功能
 app.use(router)               //配置路由
