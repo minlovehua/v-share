@@ -1,2 +1,2 @@
-# Knowledge sharing platform within the team.
+### Knowledge sharing platform within the team.
 
