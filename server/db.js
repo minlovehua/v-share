@@ -8,8 +8,8 @@ exports.base = (sql,data,callback)=>{
     const connection = mysql.createConnection({
         host     : 'localhost',  //数据库所在服务器的域名或IP地址
         user     : 'root',       //用户名
-        password : '',           //密码
-        database : 'vshare'       //我创建的那个数据库的名字
+        password : '123456',     //密码
+        database : 'vshare'      //我创建的那个数据库的名字
     });
 
     //3.执行连接操作
