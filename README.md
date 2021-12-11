@@ -1,2 +1,2 @@
-# 团队内部知识共享平台
+# Knowledge sharing platform within the team.
 
